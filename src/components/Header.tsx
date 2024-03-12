@@ -15,7 +15,7 @@ const Header = () => {
 
   return (
     <header>
-      <div className="flex items-center justify-between lg:w-10/12 w-10/12 mx-auto py-8">
+      <div className="flex items-center justify-between lg:w-10/12 w-10/12 mx-auto lg:h-[14vh] h-[10vh]">
         <div className="left-nav flex items-center justify-between lg:w-auto w-full lg:space-x-8">
           <Image
             src={logoImg}
