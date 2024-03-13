@@ -1,7 +1,5 @@
 "use client";
-import { useState } from "react";
-import { Input } from "./ui/input";
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 import {
@@ -13,10 +11,24 @@ import { useRouter } from "next/navigation";
 
 const OtpForm = () => {
   const { push } = useRouter();
-  const [hide, setHide] = useState(true);
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
+  const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({ value: "" });
+
+  useEffect(() => {
+    // Check if window is defined (i.e., if we're in the browser)
+    if (typeof window !== "undefined") {
+      // Access localStorage safely
+      const storedData = localStorage.getItem("email");
+      if (storedData) {
+        // If there is stored data, update the form state
+        setEmail(JSON.parse(storedData));
+      }
+    }
+  }, []);
+
+  console.log(email);
 
   const handleInputChange = (e: any) => {
     const { value } = e.target;
@@ -53,7 +65,7 @@ const OtpForm = () => {
         </h1>
         <p className="mt-3 text-gray-500 text-sm text-center">
           Kindly enter the verification code sent to{" "}
-          <span className="font-bold text">vinfarm@gmail.com</span>{" "}
+          <span className="font-bold text">{email}</span>{" "}
         </p>
         <form onSubmit={handleVerification}>
           <div className="form-control mt-8">

@@ -48,6 +48,10 @@ const SignupForm = () => {
       newErrors.password = "Password is required";
     }
 
+    if (formData.password != formData.confirmPassword) {
+      newErrors.confirmPassword = "Password did not match";
+    }
+
     setErrors(newErrors);
 
     if (Object.values(newErrors).every((error) => !error)) {

@@ -17,20 +17,22 @@ const Header = () => {
     <header>
       <div className="flex items-center justify-between lg:w-10/12 w-10/12 mx-auto lg:h-[14vh] h-[10vh]">
         <div className="left-nav flex items-center justify-between lg:w-auto w-full lg:space-x-8">
-          <Image
-            src={logoImg}
-            alt="Aquatrack"
-            width="150"
-            height="150"
-            className="lg:flex hidden"
-          />
-          <Image
-            src={logoImg}
-            alt="Aquatrack"
-            width="120"
-            height="120"
-            className="flex lg:hidden"
-          />
+          <Link href="/">
+            <Image
+              src={logoImg}
+              alt="Aquatrack"
+              width="150"
+              height="150"
+              className="lg:flex hidden"
+            />
+            <Image
+              src={logoImg}
+              alt="Aquatrack"
+              width="120"
+              height="120"
+              className="flex lg:hidden"
+            />
+          </Link>
 
           <nav className="nav-links hidden space-x-14 lg:flex items-center">
             {navs?.map((nav) => (
@@ -53,9 +55,11 @@ const Header = () => {
             aria-hidden="true"
           />
         </div>
-        <Button className="bg-[--primary] lg:flex hidden hover:bg-blue-500 w-[195px] h-[53px] text-white px-8">
-          Log In
-        </Button>
+        <Link href="/">
+          <Button className="bg-[--primary] lg:flex hidden hover:bg-blue-500 w-[195px] h-[53px] text-white px-8">
+            Log In
+          </Button>
+        </Link>
 
         {/* Mobile view */}
 
