@@ -1,7 +1,5 @@
 "use client";
-import { useState } from "react";
-import { Input } from "./ui/input";
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 import {
@@ -13,12 +11,22 @@ import { useRouter } from "next/navigation";
 
 const OtpForm = () => {
   const { push } = useRouter();
-  const [hide, setHide] = useState(true);
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
+  const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({ value: "" });
 
-  const email = localStorage.getItem("email");
+  useEffect(() => {
+    // Check if window is defined (i.e., if we're in the browser)
+    if (typeof window !== "undefined") {
+      // Access localStorage safely
+      const storedData = localStorage.getItem("email");
+      if (storedData) {
+        // If there is stored data, update the form state
+        setEmail(JSON.parse(storedData));
+      }
+    }
+  }, []);
 
   console.log(email);
 
