@@ -18,6 +18,10 @@ const OtpForm = () => {
   const [value, setValue] = useState("");
   const [errors, setErrors] = useState({ value: "" });
 
+  const email = localStorage.getItem("email");
+
+  console.log(email);
+
   const handleInputChange = (e: any) => {
     const { value } = e.target;
     console.log(value);
@@ -53,7 +57,7 @@ const OtpForm = () => {
         </h1>
         <p className="mt-3 text-gray-500 text-sm text-center">
           Kindly enter the verification code sent to{" "}
-          <span className="font-bold text">vinfarm@gmail.com</span>{" "}
+          <span className="font-bold text">{email}</span>{" "}
         </p>
         <form onSubmit={handleVerification}>
           <div className="form-control mt-8">

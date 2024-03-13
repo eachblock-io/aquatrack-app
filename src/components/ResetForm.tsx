@@ -6,12 +6,14 @@ import { Checkbox } from "./ui/checkbox";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import SuccessModal from "./SuccessModal";
 
 const ResetForm = () => {
   const { push } = useRouter();
   const [hide, setHide] = useState(true);
   const [hide1, setHide1] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -38,18 +40,29 @@ const ResetForm = () => {
       newErrors.password = "Password is required";
     }
 
+    if (formData.password != formData.confirmPassword) {
+      newErrors.confirmPassword = "Password did not match";
+    }
+
     setErrors(newErrors);
 
     if (Object.values(newErrors).every((error) => !error)) {
       setLoading(true);
+      setOpen(true);
       // Proceed with login
-      push("/");
       console.log(formData);
     }
   };
 
   return (
     <section className=" h-auto flex items-center justify-center lg:py-20 py-10">
+      <SuccessModal
+        text="Password Reset successfully"
+        link="/"
+        btnText="Log In"
+        open={open}
+        setOpen={setOpen}
+      />
       <div className="form-container lg:w-4/12 w-10/12 mx-auto">
         <h1 className="font-bold text-xl lg:text-2xl text-center lg:mb-4">
           Create new password

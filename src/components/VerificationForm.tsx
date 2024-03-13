@@ -4,6 +4,7 @@ import { Input } from "./ui/input";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import SuccessModal from "./SuccessModal";
 
 const VerificationForm = () => {
   const { push } = useRouter();
@@ -11,6 +12,7 @@ const VerificationForm = () => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ email: "" });
   const [errors, setErrors] = useState({ email: "" });
+  const [open, setOpen] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -31,14 +33,25 @@ const VerificationForm = () => {
     if (Object.values(newErrors).every((error) => !error)) {
       setLoading(true);
       // Proceed with login
+      localStorage.setItem("email", formData?.email);
+      setOpen(true);
 
-      push("/forgot-password/otp");
+      // push("/forgot-password/otp");
       console.log(formData);
     }
   };
 
   return (
     <section className=" lg:h-[86vh] h-[90vh] flex items-center justify-center ">
+      <SuccessModal
+        title="Verification Sent"
+        text="An email with verification code has been sent to"
+        email={formData.email}
+        link="/forgot-password/otp"
+        btnText="Continue"
+        open={open}
+        setOpen={setOpen}
+      />
       <div className="form-container lg:w-3/12 w-10/12 mx-auto">
         <h1 className="font-bold text-xl lg:text-2xl text-center">
           Forgot your password?
