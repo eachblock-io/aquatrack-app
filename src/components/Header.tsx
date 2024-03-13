@@ -73,7 +73,7 @@ const Header = () => {
             <div className="flex items-center justify-between w-11/12 py-6 h-[60px] rounded-2xl mx-auto">
               <Image
                 src={logoImg}
-                alt="Nocos logo"
+                alt="Aquatrack logo"
                 width="100"
                 height="100"
                 layout="fixed"

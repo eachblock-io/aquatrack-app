@@ -1,5 +1,7 @@
 import React from "react";
 import { Sidenav } from "@/components/Sidenav";
+import NavHeader from "./NavHeader";
+import { MobileNav } from "./MobileNav";
 
 const Layout = ({
   children,
@@ -10,7 +12,7 @@ const Layout = ({
     <section className="flex sm:h-screen h-screen w-full overflow-hidden">
       <Sidenav />
       <main className="w-full relative overflow-y-auto">
-        {/* <Header data={data} /> */}
+        <NavHeader />
         {children}
       </main>
     </section>
