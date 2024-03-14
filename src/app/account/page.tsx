@@ -9,7 +9,7 @@ const AccountPage = () => {
     <main className="h-screen w-full">
       <Hero />
       <Overview />
-      <section className="flex lg:flex-row flex-col lg:space-x-8 space-y-10 lg:mt-20 mt-10 w-11/12 mx-auto pb-10">
+      <section className="flex lg:flex-row flex-col lg:space-x-8 space-y-10 lg:space-y-0 lg:mt-20 mt-10 w-11/12 mx-auto pb-10">
         <MortalityChat />
         <AddTask />
       </section>

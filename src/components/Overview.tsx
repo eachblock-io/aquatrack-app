@@ -6,11 +6,11 @@ import expensesIcon from "@/public/icons/expenses.png";
 
 const Overview = () => {
   return (
-    <section className="lg:w-11/12 w-10/12 mx-auto lg:mt-4 mt-10">
+    <section className="lg:w-11/12 w-11/12 mx-auto lg:mt-4 mt-10">
       <h2 className="text-[--primary] font-bold lg:text-2xl text-lg">
         Overview
       </h2>
-      <div className="grid lg:grid-cols-3 grid-cols-2 gap-4 lg:mt-8 mt-4">
+      <div className="grid lg:grid-cols-3 grid-cols-2 lg:gap-4 gap-y-6 lg:mt-10 mt-4">
         <div className="card flex lg:items-center lg:space-x-4 space-x-2">
           <div>
             <Image

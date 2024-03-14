@@ -22,9 +22,9 @@ export function Sidenav() {
           <Link
             key={data?.id}
             href={data?.link}
-            className={`flex items-center hover:font-semibold space-x-2 text-[--primary] hover:bg-[#0181ea15] py-3 pl-4 transition-all ${
+            className={`flex items-center hover:font-semibold space-x-2 text-[--secondary] hover:bg-[#0181ea15] py-3 pl-4 transition-all ${
               pathname === data?.link
-                ? `bg-[#0181ea15] font-semibold border-[--primary] border-l-8`
+                ? `bg-[#0181ea15] font-semibold border-[--secondary] border-l-8`
                 : ``
             }`}>
             <Image
