@@ -9,7 +9,7 @@ const Layout = ({
   children: React.ReactNode | React.ReactElement;
 }) => {
   return (
-    <section className="flex sm:h-screen h-screen w-full overflow-hidden">
+    <section className="flex sm:h-screen h-screen w-full overflow-hidden bg-[#f3f3f5]">
       <Sidenav />
       <main className="w-full relative overflow-y-auto">
         <NavHeader />

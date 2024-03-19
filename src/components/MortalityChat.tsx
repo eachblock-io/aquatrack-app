@@ -7,16 +7,18 @@ import { GoDotFill } from "react-icons/go";
 const MortalityChat = () => {
   return (
     <div className="lg:w-[60%] w-full">
-      <h2 className="text-[--primary] font-bold lg:text-2xl text-lg ">
+      <h2 className="text-[--primary] font-bold lg:text-2xl text-lg mb-4 ">
         Mortality Rate
       </h2>
-      <Image src={chartImg} alt="chart" width="600" height="400" />
+      <div className="bg-white rounded-xl p-6">
+        <Image src={chartImg} alt="chart" width="600" height="400" />
+      </div>
 
       <div className="chart mt-8">
-        <h2 className="text-[--primary] font-bold lg:text-2xl text-lg mb-10">
+        <h2 className="text-[--primary] font-bold lg:text-2xl text-lg mb-6 mt-6">
           Farm Details
         </h2>
-        <div className="grid lg:grid-cols-2 grid-cols-2 items-center">
+        <div className="grid lg:grid-cols-2 grid-cols-2 items-center bg-white p-6 rounded-xl">
           <Image
             src={farmImg}
             alt="chart"

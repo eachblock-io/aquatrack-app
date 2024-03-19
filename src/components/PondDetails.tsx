@@ -2,14 +2,19 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Progress } from "@/components/ui/progress";
+import FarmStaticsModal from "./FarmStaticsModal";
+import DeleteModal from "./DeleteModal";
 
 const PondDetails = () => {
   const [progress, setProgress] = useState(13);
+  const [open, setOpen] = useState(true);
   return (
-    <div className="card">
+    <div className="card bg-white rounded-xl p-6">
+      <DeleteModal open={open} setOpen={setOpen} />
       <div className="head flex items-center justify-between mb-2">
-        <h2 className="font-bold text-[--primary] text-xl ">Green Pond</h2>
+        <h2 className="font-bold text-[--primary] text-base ">Green Pond</h2>
         <Button
+          onClick={() => setOpen(true)}
           variant="ghost"
           className="text-xs text-[--secondary] font-normal">
           view details

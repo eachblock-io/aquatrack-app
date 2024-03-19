@@ -8,8 +8,20 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Switch } from "@/components/ui/switch";
 import { MdAccessTime } from "react-icons/md";
+import { Calendar } from "@/components/ui/calendar";
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { format } from "date-fns";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 const AddTaskModal = ({ open, setOpen }: any) => {
+  const [formData, setFormData] = useState({
+    calendar: "",
+  })
   const cancelButtonRef = useRef(null);
 
   return (
@@ -68,6 +80,44 @@ const AddTaskModal = ({ open, setOpen }: any) => {
                         className=" focus-visible:outline-none py-6 "
                       />
                     </div>
+                    <div className="form-control">
+                      <Label
+                        htmlFor="message-2"
+                        className="text-[--primary] font-normal mb-2">
+                        Title
+                      </Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <div>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-[240px] pl-3 text-left font-normal",
+                                !formData.calendar && "text-muted-foreground"
+                              )}>
+                              {formData.calendar ? (
+                                format(formData.calendar, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </div>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            // selected={formData.calendar}
+                            // onSelect={field.onChange}
+                            // disabled={(date) =>
+                            //   date > new Date() || date < new Date("1900-01-01")
+                            // }
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+
                     <div className="form-control">
                       <Label
                         htmlFor="message-2"

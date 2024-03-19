@@ -5,7 +5,7 @@ import { Checkbox } from "./ui/checkbox";
 import AddTaskModal from "./AddTaskModal";
 
 const AddTask = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   return (
     <div className="lg:w-[40%] w-full">
       <AddTaskModal open={open} setOpen={setOpen} />
@@ -17,7 +17,7 @@ const AddTask = () => {
         className="border-none outline-none text-lg font-semibold text-white bg-[--primary] hover:bg-blue-500 w-full lg:h-[60px] h-[50px] ">
         + Add new task
       </Button>
-      <div className="current-task mt-20">
+      <div className="current-task mt-16 bg-white rounded-xl p-6">
         <h2 className="text-[--primary] font-bold lg:text-2xl text-lg mb-6">
           Current tasks
         </h2>
