@@ -1,11 +1,17 @@
-import React from 'react'
+import PondDetails from "@/components/PondDetails";
+import QuickAction from "@/components/QuickAction";
 
 const PoundsPage = () => {
   return (
-    <main className="h-screen w-full flex items-center justify-center bg-[--primary] ">
-      <h1 className="text-6xl font-bold text-white">Pounds Page</h1>
+    <main className="w-full">
+      <QuickAction />
+      <section className="lg:w-11/12 w-11/12 mx-auto lg:pb-20 mt-10 pb-20 grid lg:grid-cols-3 gap-8">
+        {[1, 2, 3, 4, 5, 6, 7].map((index) => (
+          <PondDetails key={index} />
+        ))}
+      </section>
     </main>
   );
-}
+};
 
-export default PoundsPage
+export default PoundsPage;
