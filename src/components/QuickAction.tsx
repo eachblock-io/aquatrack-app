@@ -16,7 +16,7 @@ const QuickAction = () => {
       <h2 className="text-[--primary] font-bold lg:text-2xl text-lg">
         Quick Actions
       </h2>
-      <div className="grid grid-cols-2 lg:gap-8 gap-6 lg:mt-10 mt-4">
+      <div className="lg:w-8/12 grid grid-cols-2 lg:gap-8 gap-6 lg:mt-10 mt-4">
         <div
           onClick={() => setOpen(true)}
           className="card bg-white rounded-xl p-6 cursor-pointer flex lg:items-center lg:space-x-4 space-x-2">

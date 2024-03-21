@@ -61,7 +61,7 @@ export const links: LinkItem[] = [
     link: "/account/inventory",
   },
   {
-    id: 5,
+    id: 6,
     title: "Settings",
     icon: settingsIcon,
     link: "/account/settings",

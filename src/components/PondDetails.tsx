@@ -7,7 +7,7 @@ import DeleteModal from "./DeleteModal";
 
 const PondDetails = () => {
   const [progress, setProgress] = useState(13);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   return (
     <div className="card bg-white rounded-xl p-6">
       <DeleteModal open={open} setOpen={setOpen} />
