@@ -7,9 +7,9 @@ import Link from "next/link";
 
 const Hero = () => {
   return (
-    <section className="lg:w-11/12 w-11/12 mx-auto bg-white rounded-xl px-8 py-4 ">
+    <section className="lg:w-11/12 w-11/12 mx-auto  ">
       <div className="flex items-center justify-between lg:mt-0 mt-4">
-        <div className="left-side flex lg:space-x-6 space-x-4">
+        <div className="left-side flex lg:space-x-6 space-x-4 bg-white rounded-xl px-8 py-8 lg:w-8/12">
           <div>
             <Image
               src={heroImg}
@@ -28,7 +28,7 @@ const Hero = () => {
               className="lg:hidden flex"
             />
           </div>
-          <div className="content">
+          <div className="content w-full">
             <h2 className="text-[--primary] font-bold lg:text-xl text-lg ">
               Good Afternoon, Jane
             </h2>

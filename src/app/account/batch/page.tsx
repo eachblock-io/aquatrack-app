@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { IoMdSearch } from "react-icons/io";
 import {
@@ -14,10 +15,12 @@ import { Button } from "@/components/ui/button";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa6";
 import BatchTable from "@/components/BatchTable";
+import AddBatchModal from "@/components/AddBatchModal";
+import DeleteModal from "@/components/DeleteModal";
 
 const dummyData = [
   {
-    id: 1,
+    id: 15,
     date: "2024-03-18",
     name: "John Doe",
     unitPurchased: 5,
@@ -25,7 +28,7 @@ const dummyData = [
     status: "Delivered",
   },
   {
-    id: 2,
+    id: 42,
     date: "2024-03-19",
     name: "Jane Smith",
     unitPurchased: 3,
@@ -33,7 +36,7 @@ const dummyData = [
     status: "Pending",
   },
   {
-    id: 3,
+    id: 34,
     date: "2024-03-20",
     name: "Alice Johnson",
     unitPurchased: 2,
@@ -44,8 +47,12 @@ const dummyData = [
 ];
 
 const BatchPage = () => {
+  const [open, setOpen] = useState(false);
+  const [openDel, setOpenDel] = useState(false);
   return (
     <main className="w-11/12 mx-auto mt-8 ">
+      <AddBatchModal open={open} setOpen={setOpen} />
+      <DeleteModal open={openDel} setOpen={setOpenDel} />
       {/* Header section */}
       <section className="grid lg:grid-cols-2 grid-cols-1 gap-8">
         <div className="flex items-center space-x-6">
@@ -58,10 +65,14 @@ const BatchPage = () => {
             />
           </div>
           <div className="btns space-x-4 lg:hidden flex">
-            <Button className="px-2 py-5 bg-[--primary] hover:bg-[--primary]">
+            <Button
+              onClick={() => setOpen(true)}
+              className="px-2 py-5 bg-[--primary] hover:bg-[--primary]">
               <FaPlus className="w-6 h-6" />
             </Button>
-            <Button className="px-2 py-5 bg-red-500 hover:bg-red-400">
+            <Button
+              onClick={() => setOpenDel(true)}
+              className="px-2 py-5 bg-red-500 hover:bg-red-400">
               <RiDeleteBinLine className="w-6 h-6" />
             </Button>
           </div>
@@ -82,10 +93,14 @@ const BatchPage = () => {
             </Select>
           </div>
           <div className="btns space-x-6 hidden lg:flex">
-            <Button className="px-6 py-5 bg-[--primary] hover:bg-[--primary]">
+            <Button
+              onClick={() => setOpen(true)}
+              className="px-6 py-5 bg-[--primary] hover:bg-[--primary]">
               + Add new batch
             </Button>
-            <Button className="px-6 py-5 bg-red-500 hover:bg-red-400">
+            <Button
+              onClick={() => setOpenDel(true)}
+              className="px-6 py-5 bg-red-500 hover:bg-red-400">
               Delete
             </Button>
           </div>
