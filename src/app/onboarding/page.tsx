@@ -87,7 +87,7 @@ const OnboardingForm = () => {
   };
 
   return (
-    <section className=" h-auto flex items-center justify-center lg:py-20 py-10">
+    <section className=" h-screen flex items-center justify-center lg:py-20 py-10">
       <div className="form-container lg:w-4/12 w-10/12 mx-auto">
         <h1 className="font-bold text-xl lg:text-2xl text-center lg:mb-4">
           Complete your profile

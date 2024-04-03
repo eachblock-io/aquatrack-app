@@ -66,27 +66,26 @@ const SignupForm = () => {
           localStorage.setItem("userEmail", formData?.email);
         }
 
-        // console.log(res);
         if (res?.status == 200) {
           push("/verify");
           toast.success(res?.data?.message);
         }
-      } catch (error) {
-        toast.error("Invalid Credentials");
+      } catch (error: any) {
+        toast.error(error?.response?.data?.message);
         setLoading(false);
       }
     }
   };
 
   return (
-    <section className=" h-auto flex items-center justify-center lg:py-20 py-10">
+    <section className=" h-auto flex items-center justify-center lg:py-20 pt-10 pb-20">
       <div className="form-container lg:w-4/12 w-10/12 mx-auto">
-        <h1 className="font-bold text-xl lg:text-2xl text-center lg:mb-4">
+        <h1 className="font-bold text-xl lg:text-2xl text-center mb-8">
           Create an account
         </h1>
         <form onSubmit={handleSignup}>
           <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-x-6">
-            <div className="form-control mt-8">
+            <div className="form-control mt-4">
               <label htmlFor="fullname">First name</label>
               <Input
                 type="text"
@@ -100,7 +99,7 @@ const SignupForm = () => {
                 <p className="text-red-500 text-xs">{errors.first_name}</p>
               )}
             </div>
-            <div className="form-control mt-8">
+            <div className="form-control mt-4">
               <label htmlFor="lastname">Last name</label>
               <Input
                 type="text"
@@ -115,7 +114,7 @@ const SignupForm = () => {
               )}
             </div>
           </div>
-          <div className="form-control mt-8">
+          <div className="form-control mt-4">
             <label htmlFor="email">Email address</label>
             <Input
               type="email"
@@ -129,7 +128,7 @@ const SignupForm = () => {
               <p className="text-red-500 text-xs">{errors.email}</p>
             )}
           </div>
-          <div className="form-control mt-6">
+          <div className="form-control mt-4">
             <label htmlFor="password">Password</label>
             <div className="relative flex items-center">
               <Input
@@ -158,7 +157,7 @@ const SignupForm = () => {
               <p className="text-red-500 text-xs">{errors.password}</p>
             )}
           </div>
-          <div className="form-control mt-6">
+          <div className="form-control mt-4">
             <label htmlFor="password_confirmation">Confirm Password</label>
             <div className="relative flex items-center">
               <Input

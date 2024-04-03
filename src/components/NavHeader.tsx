@@ -39,7 +39,7 @@ interface userType {
   };
 }
 
-const NavHeader = ({ data }: userType) => {
+const NavHeader = () => {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -77,16 +77,15 @@ const NavHeader = ({ data }: userType) => {
             <DropdownMenuTrigger className="flex items-center space-x-2 outline-none border-none">
               <Avatar>
                 <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>
-                  {data?.attributes?.first_name[0]}{" "}
-                  {data?.attributes?.last_name[0]}
-                </AvatarFallback>
+                {/* <AvatarFallback>
+                  {firstName[0]} {lastName[0]}
+                </AvatarFallback> */}
               </Avatar>
-              <div>
+              {/* <div>
                 <p className="text-sm font-semibold text-[--primary]">
-                  {data?.attributes?.first_name} {data?.attributes?.last_name}
+                  {firstName} {lastName}
                 </p>
-              </div>
+              </div> */}
               <IoIosArrowDown className="text-[--primary] " />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="px-6 pt-4">

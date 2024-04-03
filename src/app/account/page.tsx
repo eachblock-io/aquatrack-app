@@ -31,7 +31,7 @@ const AccountPage = async () => {
 
   return (
     <>
-      <NavHeader data={user} />
+      <NavHeader />
       <main className="w-full  mt-4">
         <Hero username={user?.attributes?.first_name} />
         <Overview />

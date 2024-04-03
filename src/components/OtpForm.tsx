@@ -28,8 +28,6 @@ const OtpForm = () => {
     }
   }, []);
 
-  console.log(email);
-
   const handleInputChange = (e: any) => {
     const { value } = e.target;
     console.log(value);

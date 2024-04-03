@@ -24,52 +24,52 @@ import { MdDelete } from "react-icons/md";
 import EditModal from "../@editModal/page";
 import DeleteModal from "../@deleteModal/page";
 
-interface TableData {
-  id: number;
-  date: string;
-  name: string;
-  unitPurchased: number;
-  fishType: string;
-  status: string;
-}
+// interface TableData {
+//   id: number;
+//   date: string;
+//   name: string;
+//   unitPurchased: number;
+//   fishType: string;
+//   status: string;
+// }
 
-interface TableProps {
-  data: TableData[];
-}
+// interface TableProps {
+//   data: TableData[];
+// }
 
-const ExpensesTable: React.FC<TableProps> = ({ data }) => {
+const ExpensesTable: React.FC<any> = ({ data }) => {
   const [open, setOpen] = useState(false);
   const [openDel, setOpenDel] = useState(false);
-  const [selectAll, setSelectAll] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  // const [selectAll, setSelectAll] = useState(false);
+  // const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
-  const toggleSelectAll = () => {
-    setSelectAll(!selectAll);
-    setSelectedItems(selectAll ? [] : data.map((item) => item.id));
-  };
+  // const toggleSelectAll = () => {
+  //   setSelectAll(!selectAll);
+  //   setSelectedItems(selectAll ? [] : data.map((item) => item.id));
+  // };
 
-  const handleCheckboxChange = (id: number) => {
-    const selectedIndex = selectedItems.indexOf(id);
-    let newSelectedItems: number[] = [];
+  // const handleCheckboxChange = (id: number) => {
+  //   const selectedIndex = selectedItems.indexOf(id);
+  //   let newSelectedItems: number[] = [];
 
-    if (selectedIndex === -1) {
-      newSelectedItems = [...selectedItems, id];
-    } else {
-      newSelectedItems = [
-        ...selectedItems.slice(0, selectedIndex),
-        ...selectedItems.slice(selectedIndex + 1),
-      ];
-    }
+  //   if (selectedIndex === -1) {
+  //     newSelectedItems = [...selectedItems, id];
+  //   } else {
+  //     newSelectedItems = [
+  //       ...selectedItems.slice(0, selectedIndex),
+  //       ...selectedItems.slice(selectedIndex + 1),
+  //     ];
+  //   }
 
-    setSelectedItems(newSelectedItems);
-    setSelectAll(newSelectedItems.length === data.length);
-  };
+  //   setSelectedItems(newSelectedItems);
+  //   setSelectAll(newSelectedItems.length === data.length);
+  // };
 
   return (
     <div className="bg-gray-50 border-collapse border border-gray-300 pt-6 pb-4 rounded-xl">
       <EditModal open={open} setOpen={setOpen} />
       <DeleteModal open={openDel} setOpen={setOpenDel} />
-      <Table className="w-full">
+      {/* <Table className="w-full">
         <TableHeader className="">
           <TableRow>
             <TableHead className="py-4 pl-8 text-black ">
@@ -130,7 +130,7 @@ const ExpensesTable: React.FC<TableProps> = ({ data }) => {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </Table> */}
     </div>
   );
 };
