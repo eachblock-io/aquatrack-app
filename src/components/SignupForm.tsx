@@ -5,24 +5,28 @@ import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { Checkbox } from "./ui/checkbox";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const SignupForm = () => {
+  const { push } = useRouter();
   const [hide, setHide] = useState(true);
   const [hide1, setHide1] = useState(true);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    password_confirmation: "",
   });
   const [errors, setErrors] = useState({
-    firstname: "",
-    lastname: "",
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    password_confirmation: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,14 +35,14 @@ const SignupForm = () => {
     setErrors({ ...errors, [name]: "" });
   };
 
-  const handleLogin = (e: { preventDefault: () => void }) => {
+  const handleSignup = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     let newErrors = {
-      firstname: "",
-      lastname: "",
+      first_name: "",
+      last_name: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      password_confirmation: "",
     };
 
     if (!formData.email) {
@@ -48,58 +52,69 @@ const SignupForm = () => {
       newErrors.password = "Password is required";
     }
 
-    if (formData.password != formData.confirmPassword) {
-      newErrors.confirmPassword = "Password did not match";
+    if (formData.password != formData.password_confirmation) {
+      newErrors.password_confirmation = "Password did not match";
     }
 
     setErrors(newErrors);
 
     if (Object.values(newErrors).every((error) => !error)) {
       setLoading(true);
-      // Proceed with login
+      try {
+        const res = await axios.post(`/api/register`, formData);
+        if (window != undefined) {
+          localStorage.setItem("userEmail", formData?.email);
+        }
 
-      console.log(formData);
+        if (res?.status == 200) {
+          push("/verify");
+          toast.success(res?.data?.message);
+        }
+      } catch (error: any) {
+        toast.error(error?.response?.data?.message);
+        setLoading(false);
+      }
     }
   };
 
   return (
-    <section className=" h-auto flex items-center justify-center lg:py-20 py-10">
+    <section className=" h-auto flex items-center justify-center lg:py-20 pt-10 pb-20">
       <div className="form-container lg:w-4/12 w-10/12 mx-auto">
-        <h1 className="font-bold text-xl lg:text-2xl text-center lg:mb-4">
+        <h1 className="font-bold text-xl lg:text-2xl text-center mb-8">
           Create an account
         </h1>
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleSignup}>
           <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-x-6">
-            <div className="form-control mt-8">
+            <div className="form-control mt-4">
               <label htmlFor="fullname">First name</label>
               <Input
                 type="text"
                 placeholder="Enter your first name"
                 className="h-[60px] mt-1 px-6 bg-transparent outline-none border-gray-500"
-                name="firstname"
-                value={formData.firstname}
+                name="first_name"
+                value={formData.first_name}
                 onChange={handleInputChange}
               />
-              {errors.firstname && (
-                <p className="text-red-500 text-xs">{errors.firstname}</p>
+              {errors.first_name && (
+                <p className="text-red-500 text-xs">{errors.first_name}</p>
               )}
             </div>
-            <div className="form-control mt-8">
+            <div className="form-control mt-4">
               <label htmlFor="lastname">Last name</label>
               <Input
                 type="text"
                 placeholder="Enter your last name"
                 className="h-[60px] mt-1 px-6 bg-transparent outline-none border-gray-500"
-                name="lastname"
-                value={formData.lastname}
+                name="last_name"
+                value={formData.last_name}
                 onChange={handleInputChange}
               />
-              {errors.lastname && (
-                <p className="text-red-500 text-xs">{errors.lastname}</p>
+              {errors.last_name && (
+                <p className="text-red-500 text-xs">{errors.last_name}</p>
               )}
             </div>
           </div>
-          <div className="form-control mt-8">
+          <div className="form-control mt-4">
             <label htmlFor="email">Email address</label>
             <Input
               type="email"
@@ -113,7 +128,7 @@ const SignupForm = () => {
               <p className="text-red-500 text-xs">{errors.email}</p>
             )}
           </div>
-          <div className="form-control mt-6">
+          <div className="form-control mt-4">
             <label htmlFor="password">Password</label>
             <div className="relative flex items-center">
               <Input
@@ -142,15 +157,15 @@ const SignupForm = () => {
               <p className="text-red-500 text-xs">{errors.password}</p>
             )}
           </div>
-          <div className="form-control mt-6">
-            <label htmlFor="confirmPassword">Confirm Password</label>
+          <div className="form-control mt-4">
+            <label htmlFor="password_confirmation">Confirm Password</label>
             <div className="relative flex items-center">
               <Input
                 type={hide1 ? "password" : "text"}
                 placeholder="Re-enter password"
                 className="h-[60px] mt-1 px-6 bg-transparent outline-none"
-                name="confirmPassword"
-                value={formData.confirmPassword}
+                name="password_confirmation"
+                value={formData.password_confirmation}
                 onChange={handleInputChange}
               />
               <div className="eyes absolute right-6 cursor-pointer">
@@ -167,8 +182,10 @@ const SignupForm = () => {
                 )}
               </div>
             </div>
-            {errors.confirmPassword && (
-              <p className="text-red-500 text-xs">{errors.confirmPassword}</p>
+            {errors.password_confirmation && (
+              <p className="text-red-500 text-xs">
+                {errors.password_confirmation}
+              </p>
             )}
           </div>
 

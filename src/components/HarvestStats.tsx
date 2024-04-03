@@ -26,7 +26,7 @@ const HarvestStats = () => {
             <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
               N 5,842,000{" "}
             </h2>
-            <div className="text-right flex items-center justify-end">
+            <div className="text-right flex items-center justify-end mt-2">
               <span className="text-xs flex items-center text-[#FF7878] bg-[#ff787840] font-semibold px-2 py-1 rounded-full">
                 2.5%
                 <GoArrowDownRight />
@@ -43,7 +43,7 @@ const HarvestStats = () => {
             <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
               N 5,842,000{" "}
             </h2>
-            <div className="text-right flex items-center justify-end">
+            <div className="text-right flex items-center justify-end mt-2">
               <span className="text-xs flex items-center text-[#FF7878] bg-[#ff787840] font-semibold px-2 py-1 rounded-full">
                 2.5%
                 <GoArrowDownRight />
@@ -51,7 +51,7 @@ const HarvestStats = () => {
             </div>
           </div>
         </div>
-        <div className="card lg:flex hidden bg-white py-4 px-6 rounded-xl">
+        <div className="card lg:block hidden bg-white py-4 px-6 rounded-xl">
           <div className="flex items-center  lg:space-x-4 space-x-2">
             <FaArrowTrendUp className="text-[--primary]" />
             <p className="text-gray-400 lg:text-sm text-xs">Total Profit</p>
@@ -60,7 +60,7 @@ const HarvestStats = () => {
             <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
               N 5,842,000{" "}
             </h2>
-            <div className="text-right flex items-center justify-end">
+            <div className="text-right flex items-center justify-end mt-2">
               <span className="text-xs flex items-center text-[#FF7878] bg-[#ff787840] font-semibold px-2 py-1 rounded-full">
                 2.5%
                 <GoArrowDownRight />

@@ -4,8 +4,11 @@ import heroImg from "@/public/icons/greet.png";
 import heroWorkImg from "@/public/heroImg.png";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { greetUser } from "@/utils";
 
-const Hero = () => {
+const Hero = ({ username }: any) => {
+  // Greeting user function
+  const greeting = greetUser();
   return (
     <section className="lg:w-11/12 w-11/12 mx-auto  ">
       <div className="flex items-center justify-between lg:mt-0 mt-4">
@@ -30,7 +33,7 @@ const Hero = () => {
           </div>
           <div className="content w-full">
             <h2 className="text-[--primary] font-bold lg:text-xl text-lg ">
-              Good Afternoon, Jane
+              {greeting}, {username}
             </h2>
             {/* <p className="text-gray-500 lg:text-base text-xs lg:mt-2 mt-1">
               Welcome to your AquaTrack dashboard.{" "}

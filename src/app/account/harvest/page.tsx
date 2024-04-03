@@ -108,7 +108,7 @@ const HarvestPage = () => {
         </div>
       </section>
 
-      <div className="table w-full mt-20 mb-10 bg-red-500">
+      <div className="table w-full mt-20 mb-10">
         <h2 className="text-[--primary] font-bold lg:text-2xl text-lg mb-6">
           Harvest History
         </h2>
