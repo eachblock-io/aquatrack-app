@@ -24,11 +24,9 @@ interface TableProps {
   data: TableData[];
 }
 
-
 const HarvestTable: React.FC<TableProps> = ({ data }) => {
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
-
 
   const toggleSelectAll = () => {
     setSelectAll(!selectAll);
@@ -54,10 +52,10 @@ const HarvestTable: React.FC<TableProps> = ({ data }) => {
 
   return (
     <div className="bg-gray-50 border-collapse border border-gray-300 pt-6 pb-4 rounded-xl">
-      <Table className="w-full">
+      <Table className="lg:w-full w-10/12 overflow-scroll">
         <TableHeader className="">
           <TableRow>
-            <TableHead className="py-4 pl-8 text-black ">
+            <TableHead className="py-4 lg:pl-8 pl-4 text-black ">
               <input
                 type="checkbox"
                 checked={selectAll}
@@ -65,10 +63,16 @@ const HarvestTable: React.FC<TableProps> = ({ data }) => {
                 className="mr-1 w-4 h-4"
               />
             </TableHead>
-            <TableHead className="py-4 text-black font-bold">Date</TableHead>
-            <TableHead className="py-4 text-black font-bold">Name</TableHead>
-            <TableHead className="py-4 text-black font-bold">Batch</TableHead>
-            <TableHead className="py-4 text-black font-bold">
+            <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+              Date
+            </TableHead>
+            <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+              Name
+            </TableHead>
+            <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+              Batch
+            </TableHead>
+            <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
               Total Sales
             </TableHead>
           </TableRow>
@@ -76,7 +80,7 @@ const HarvestTable: React.FC<TableProps> = ({ data }) => {
         <TableBody className="bg-white pl-8">
           {data.map((item) => (
             <TableRow key={item.id}>
-              <TableCell className="py-4 pl-8">
+              <TableCell className="py-4 lg:pl-8 pl-4">
                 <input
                   type="checkbox"
                   checked={selectedItems.includes(item.id)}
@@ -88,10 +92,17 @@ const HarvestTable: React.FC<TableProps> = ({ data }) => {
               <TableCell className="py-4">{item.name}</TableCell>
               <TableCell className="py-4">{item.unitPurchased}</TableCell>
               <TableCell className="py-4">{item.fishType}</TableCell>
-              <TableCell className="py-4">
+              <TableCell className="py-4 lg:hidden flex">
                 <Link
                   href={`/account/harvest/${item.id}`}
-                  className="border border-[--primary] text-[--primary] py-2 px-6 rounded-lg ">
+                  className="border border-[--primary] text-[--primary] lg:py-2 py-1 lg:px-6 px-2 lg:text-base text-xs rounded-lg ">
+                  view
+                </Link>
+              </TableCell>
+              <TableCell className="py-4 lg:flex hidden">
+                <Link
+                  href={`/account/harvest/${item.id}`}
+                  className="border border-[--primary] text-[--primary] lg:py-2 py-1 lg:px-6 px-2 lg:text-base text-xs rounded-lg ">
                   view details
                 </Link>
               </TableCell>

@@ -22,7 +22,24 @@ import { Dialog } from "@headlessui/react";
 import logoImg from "@/public/logo.png";
 import Link from "next/link";
 
-const NavHeader = () => {
+interface userType {
+  data: {
+    id: string;
+    type: string;
+    attributes: {
+      first_name: string;
+      last_name: string;
+      email: string;
+      email_verified_at: string | null;
+      role: string | null;
+      fully_onboarded: boolean;
+      profile_photo: string;
+    };
+    farms: any[];
+  };
+}
+
+const NavHeader = ({ data }: userType) => {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -60,11 +77,14 @@ const NavHeader = () => {
             <DropdownMenuTrigger className="flex items-center space-x-2 outline-none border-none">
               <Avatar>
                 <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarFallback>
+                  {data?.attributes?.first_name[0]}{" "}
+                  {data?.attributes?.last_name[0]}
+                </AvatarFallback>
               </Avatar>
               <div>
                 <p className="text-sm font-semibold text-[--primary]">
-                  John Deo
+                  {data?.attributes?.first_name} {data?.attributes?.last_name}
                 </p>
               </div>
               <IoIosArrowDown className="text-[--primary] " />

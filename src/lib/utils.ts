@@ -1,34 +1,47 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
-import { useState, useEffect } from "react";
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+export function formatTime(timestamp: any) {
+  const date = new Date(timestamp);
+  const options = { hour: `2-digit`, minute: `2-digit`, hour12: true };
+  const formattedTime = new Intl.DateTimeFormat(`en-US`, options as any).format(
+    date
+  );
+
+  // Extracting the minute and AM/PM part
+  const timeParts = formattedTime.match(/(\d{2}:\d{2})([APMapm]{2})/);
+  if (timeParts) {
+    return `${timeParts[1]}${timeParts[2].toLowerCase()}`;
+  }
+
+  return formattedTime; // fallback
 }
 
-// function Greeting() {
-//   const [timeOfDay, setTimeOfDay] = useState("");
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
-//   useEffect(() => {
-//     const currentTime = new Date().getHours();
-//     let greeting;
+function sendNotification(message: any, user: any) {
+  const notification = new Notification("New message from FiatPlug", {
+    icon: "https://res.cloudinary.com/calebcloud/image/upload/v1708217921/app_icon.png",
+    body: `@${user}: ${message}`,
+  });
+  notification.onclick = () =>
+    function () {
+      window.open("http://localhost:3000/chat");
+    };
+}
 
-//     if (currentTime >= 5 && currentTime < 12) {
-//       greeting = "Morning";
-//     } else if (currentTime >= 12 && currentTime < 18) {
-//       greeting = "Afternoon";
-//     } else {
-//       greeting = "Evening";
-//     }
-
-//     setTimeOfDay(greeting);
-//   }, []);
-
-//   return (
-//     <div>
-//       <h1>Good {timeOfDay}, User!</h1>
-//     </div>
-//   );
-// }
-
-
+export default function Notify(message: any, user: any) {
+  if (!("Notification" in window)) {
+    alert("This browser does not support system notifications!");
+  } else if (Notification.permission === "granted") {
+    sendNotification(message, user);
+  } else if (Notification.permission !== "denied") {
+    Notification.requestPermission((permission) => {
+      if (permission === "granted") {
+        sendNotification(message, user);
+      }
+    });
+  }
+}

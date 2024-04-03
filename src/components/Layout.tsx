@@ -1,9 +1,7 @@
 import React from "react";
 import { Sidenav } from "@/components/Sidenav";
-import NavHeader from "./NavHeader";
-import { MobileNav } from "./MobileNav";
 
-const Layout = ({
+const Layout = async ({
   children,
 }: {
   children: React.ReactNode | React.ReactElement;
@@ -11,10 +9,7 @@ const Layout = ({
   return (
     <section className="flex sm:h-screen h-screen w-full overflow-hidden bg-[#f3f3f5]">
       <Sidenav />
-      <main className="w-full relative overflow-y-auto">
-        <NavHeader />
-        {children}
-      </main>
+      <main className="w-full relative overflow-y-auto">{children}</main>
     </section>
   );
 };

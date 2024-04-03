@@ -3,12 +3,11 @@ import { useState } from "react";
 import { Input } from "./ui/input";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
 import SuccessModal from "./SuccessModal";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const VerificationForm = () => {
-  const { push } = useRouter();
-  const [hide, setHide] = useState(true);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ email: "" });
   const [errors, setErrors] = useState({ email: "" });
@@ -20,9 +19,9 @@ const VerificationForm = () => {
     setErrors({ ...errors, [name]: "" });
   };
 
-  const handleVerification = (e: { preventDefault: () => void }) => {
+  const handleVerification = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    let newErrors = { email: "", password: "" };
+    let newErrors = { email: ""};
 
     if (!formData.email) {
       newErrors.email = "Email is required";
@@ -32,12 +31,18 @@ const VerificationForm = () => {
 
     if (Object.values(newErrors).every((error) => !error)) {
       setLoading(true);
-      // Proceed with login
-      localStorage.setItem("email", formData?.email);
-      setOpen(true);
-
-      // push("/forgot-password/otp");
-      console.log(formData);
+      try {
+        const res = await axios.post(`/api/forget-password`, formData);
+        
+        if (res?.status == 200) {
+          setLoading(false);
+          setOpen(true);
+          toast.success(res?.data?.message);
+        }
+      } catch (error) {
+        toast.error("Invalid Credentials");
+        setLoading(false);
+      }
     }
   };
 

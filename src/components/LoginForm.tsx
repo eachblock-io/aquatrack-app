@@ -6,6 +6,8 @@ import { Checkbox } from "./ui/checkbox";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const LoginForm = () => {
   const { push } = useRouter();
@@ -20,7 +22,7 @@ const LoginForm = () => {
     setErrors({ ...errors, [name]: "" });
   };
 
-  const handleLogin = (e: { preventDefault: () => void }) => {
+  const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     let newErrors = { email: "", password: "" };
 
@@ -35,9 +37,20 @@ const LoginForm = () => {
 
     if (Object.values(newErrors).every((error) => !error)) {
       setLoading(true);
-      // Proceed with login
-      push("/account");
-      console.log(formData);
+      setLoading(true);
+      try {
+        const res = await axios.post(`/api/login`, formData);
+
+        // console.log(res);
+        if (res?.status == 200) {
+          push("/account");
+          toast.success(res?.data?.message);
+        }
+        // setLoading(false);
+      } catch (error) {
+        toast.error("Invalid Credentials");
+        setLoading(false);
+      }
     }
   };
 

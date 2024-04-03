@@ -7,6 +7,8 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import SuccessModal from "./SuccessModal";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const ResetForm = () => {
   const { push } = useRouter();
@@ -29,7 +31,7 @@ const ResetForm = () => {
     setErrors({ ...errors, [name]: "" });
   };
 
-  const handleLogin = (e: { preventDefault: () => void }) => {
+  const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     let newErrors = {
       password: "",
@@ -48,9 +50,18 @@ const ResetForm = () => {
 
     if (Object.values(newErrors).every((error) => !error)) {
       setLoading(true);
-      setOpen(true);
-      // Proceed with login
-      console.log(formData);
+      try {
+        const res = await axios.post(`/api/forget-password`, formData);
+
+        if (res?.status == 200) {
+          // push("/verify");
+          setOpen(true);
+          toast.success(res?.data?.message);
+        }
+      } catch (error) {
+        toast.error("Invalid Credentials");
+        setLoading(false);
+      }
     }
   };
 
