@@ -12,7 +12,7 @@ const Hero = ({ username }: any) => {
   return (
     <section className="lg:w-11/12 w-11/12 mx-auto  ">
       <div className="flex items-center justify-between lg:mt-0 mt-4">
-        <div className="left-side flex lg:space-x-6 space-x-4 bg-white rounded-xl px-8 py-8 lg:w-8/12">
+        <div className="left-side flex lg:space-x-6 space-x-4 bg-white rounded-xl px-8 py-8 lg:w-9/12 w-full">
           <div>
             <Image
               src={heroImg}

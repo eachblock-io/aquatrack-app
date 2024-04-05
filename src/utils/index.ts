@@ -19,6 +19,16 @@ export const dateFormaterAndTime = (date: any) => {
   }
 };
 
+export function formatDate(dateString: any) {
+  const date = new Date(dateString);
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Month starts from 0
+  const year = date.getFullYear();
+
+  return `${month}-${day}-${year}`;
+}
+
 export function formatCurrency(input: number | string): string {
   // Convert input to a number (if it's a string)
   const number: number = typeof input === `string` ? parseFloat(input) : input;

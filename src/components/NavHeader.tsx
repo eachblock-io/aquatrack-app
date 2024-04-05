@@ -1,13 +1,5 @@
 "use client";
-import { useState } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import notification from "@/public/icons/Notification.png";
 import Image from "next/image";
@@ -21,30 +13,30 @@ import { IoIosMenu, IoMdClose } from "react-icons/io";
 import { Dialog } from "@headlessui/react";
 import logoImg from "@/public/logo.png";
 import Link from "next/link";
+import AddFarmModal from "./AddFarmModal";
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarTrigger,
+} from "@/components/ui/menubar";
+import { useGetAllFarmsQuery } from "@/redux/services/farmApiSlice";
+import fetchToken from "@/lib/auth";
+import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 
-interface userType {
-  data: {
-    id: string;
-    type: string;
-    attributes: {
-      first_name: string;
-      last_name: string;
-      email: string;
-      email_verified_at: string | null;
-      role: string | null;
-      fully_onboarded: boolean;
-      profile_photo: string;
-    };
-    farms: any[];
-  };
-}
-
-const NavHeader = () => {
+const NavHeader = ({ userdata }: any) => {
+  const { data } = useGetAllFarmsQuery(null);
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const { defaultFarmId, handleFarmClick } = useDefaultFarmId(data?.data);
 
   return (
     <nav className="bg-white w-full lg:h-[10vh] h-[8vh] flex items-center justify-center">
+      <AddFarmModal open={open} setOpen={setOpen} />
       <div className="flex items-center justify-between w-11/12 mx-auto">
         <IoIosMenu
           className="text-[--primary] h-8 w-8 lg:hidden"
@@ -73,41 +65,45 @@ const NavHeader = () => {
             height="30"
             className="cursor-pointer"
           />
-          <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center space-x-2 outline-none border-none">
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                {/* <AvatarFallback>
+          <Menubar className="border-none">
+            <MenubarMenu>
+              <MenubarTrigger className="flex items-center space-x-2 outline-none border-none shadow-none">
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  {/* <AvatarFallback>
                   {firstName[0]} {lastName[0]}
                 </AvatarFallback> */}
-              </Avatar>
-              {/* <div>
-                <p className="text-sm font-semibold text-[--primary]">
-                  {firstName} {lastName}
-                </p>
-              </div> */}
-              <IoIosArrowDown className="text-[--primary] " />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="px-6 pt-4">
-              <DropdownMenuLabel className="flex items-center font-medium cursor-pointer ">
-                <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />
-                Farm 1
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuLabel className="flex items-center font-medium cursor-pointer ">
-                <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />
-                Add new farm
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuLabel className="flex items-center font-medium cursor-pointer ">
-                <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />
-                Community
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Button
-                  variant="ghost"
-                  className="flex w-full items-center justify-start font-bold space-x-2 text-red-500 hover:bg-[#ea1c0115] hover:text-red-500 py-8 pl-4  rounded-xl transition-all">
+                </Avatar>
+                <div>
+                  <p className="text-sm font-semibold text-[--primary]">
+                    {userdata?.attributes?.first_name}{" "}
+                    {userdata?.attributes?.last_name}
+                  </p>
+                </div>
+                <IoIosArrowDown className="text-[--primary] " />
+              </MenubarTrigger>
+              <MenubarContent className="p-4">
+                {data?.data?.map((farm: any, index: any) => (
+                  <MenubarItem
+                    key={farm?.id}
+                    onClick={() => handleFarmClick(farm.id)}
+                    className={farm?.id === defaultFarmId ? `bg-gray-200` : ``}>
+                    <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />
+                    Farm {index + 1}
+                  </MenubarItem>
+                ))}
+                <MenubarSeparator />
+                <MenubarItem onClick={() => setOpen(true)}>
+                  <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />
+                  Add new farm
+                </MenubarItem>
+                <MenubarSeparator />
+                <MenubarItem>
+                  <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />
+                  Community
+                </MenubarItem>
+                <MenubarSeparator />
+                <MenubarItem className="flex w-full items-center justify-start font-bold space-x-2 text-red-500 focus:bg-[#ea1c0115] focus:text-red-500 pl-4  rounded-xl transition-all">
                   <Image
                     src={logoutIcon}
                     alt="Logout"
@@ -116,15 +112,14 @@ const NavHeader = () => {
                     height="25"
                   />
                   <p>Log Out</p>
-                </Button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                </MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
+          </Menubar>
         </div>
       </div>
 
       {/* Mobile view */}
-
       <Dialog
         as="div"
         className="lg:hidden"
