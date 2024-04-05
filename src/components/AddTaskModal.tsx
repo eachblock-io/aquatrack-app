@@ -17,12 +17,81 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { describe } from "node:test";
+import { formatDate } from "@/utils";
+import toast from "react-hot-toast";
+import { useCreateTaskMutation } from "@/redux/services/taskApiSlice";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const AddTaskModal = ({ open, setOpen }: any) => {
-  const [formData, setFormData] = useState({
-    calendar: "",
-  })
   const cancelButtonRef = useRef(null);
+  const [createTask] = useCreateTaskMutation();
+  const [loading, setLoading] = useState(false);
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+  const [des, setDes] = useState("");
+  const [reminder, setReminder] = useState("");
+  const [title, setTitle] = useState("");
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+    set_reminder: "",
+  });
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    const strDate = formatDate(startDate);
+    const edDate = formatDate(endDate);
+    setLoading(true);
+    e.preventDefault();
+    let newErrors = {
+      title: "",
+      description: "",
+      set_reminder: "",
+      startDate: "",
+      endDate: "",
+    };
+
+    if (!title) {
+      newErrors.title = "Name is required";
+    }
+    if (!startDate) {
+      newErrors.startDate = "Start date is required";
+    }
+
+    setErrors(newErrors);
+
+    const formdata = {
+      title: title,
+      description: des,
+      start_date: strDate,
+      due_date: edDate,
+      set_reminder: reminder,
+    };
+
+    if (Object.values(newErrors).every((error) => !error)) {
+      const farmId = localStorage.getItem("defaultFarmId");
+      console.log(farmId);
+      setLoading(true);
+      try {
+        await createTask({ formdata, farmId }).unwrap();
+        toast.success("Task created ✔️");
+        setOpen(false);
+        setLoading(false);
+      } catch (error) {
+        toast.error(
+          "Something went wrong please try again or check your network connection"
+        );
+        setLoading(false);
+      }
+    }
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -67,7 +136,7 @@ const AddTaskModal = ({ open, setOpen }: any) => {
                       </Dialog.Title>
                     </div>
                   </div>
-                  <form className="space-y-6 mt-8">
+                  <form onSubmit={handleSubmit} className="space-y-6 mt-8">
                     <div className="form-control">
                       <Label
                         htmlFor="message-2"
@@ -76,46 +145,106 @@ const AddTaskModal = ({ open, setOpen }: any) => {
                       </Label>
                       <Input
                         type="text"
+                        name="title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                         placeholder="Task title"
                         className=" focus-visible:outline-none py-6 "
                       />
                     </div>
+                    <div className="grid grid-cols-2 gap-x-4">
+                      <div className="form-control">
+                        <Label
+                          htmlFor="message-2"
+                          className="text-[--primary] font-normal mb-2">
+                          Start date
+                        </Label>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full py-6 justify-start text-left font-normal",
+                                !startDate && "text-muted-foreground"
+                              )}>
+                              <CalendarIcon className="mr-2 h-4 w-4" />
+                              {startDate ? (
+                                format(startDate, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={startDate}
+                              onSelect={setStartDate}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                      <div className="form-control">
+                        <Label
+                          htmlFor="message-2"
+                          className="text-[--primary] font-normal mb-2">
+                          End date
+                        </Label>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full py-6 justify-start text-left font-normal",
+                                !endDate && "text-muted-foreground"
+                              )}>
+                              <CalendarIcon className="mr-2 h-4 w-4" />
+                              {endDate ? (
+                                format(endDate, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={endDate}
+                              onSelect={setEndDate}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                    </div>
+
                     <div className="form-control">
                       <Label
                         htmlFor="message-2"
                         className="text-[--primary] font-normal mb-2">
-                        Title
+                        Select Reminder
                       </Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <div>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-[240px] pl-3 text-left font-normal",
-                                !formData.calendar && "text-muted-foreground"
-                              )}>
-                              {formData.calendar ? (
-                                format(formData.calendar, "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </div>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            // selected={formData.calendar}
-                            // onSelect={field.onChange}
-                            // disabled={(date) =>
-                            //   date > new Date() || date < new Date("1900-01-01")
-                            // }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <Select
+                        onValueChange={(value) => setReminder(value)}
+                        value={reminder}>
+                        <SelectTrigger className="w-full py-6">
+                          <SelectValue placeholder="Set reminder" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="5 minutes">5 minutes</SelectItem>
+                          <SelectItem value="10  minutes">
+                            10 minutes
+                          </SelectItem>
+                          <SelectItem value="15 minutes">15 minutes</SelectItem>
+                          <SelectItem value="30  minutes">
+                            30 minutes
+                          </SelectItem>
+                          <SelectItem value="1 hour">1 hour</SelectItem>
+                          <SelectItem value="2 hours">2 hours</SelectItem>
+                          <SelectItem value="1 day">1 day</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     <div className="form-control">
@@ -127,6 +256,9 @@ const AddTaskModal = ({ open, setOpen }: any) => {
                       <Textarea
                         placeholder="Type your task Description here."
                         rows={4}
+                        name="description"
+                        value={des}
+                        onChange={(e) => setDes(e.target.value)}
                         className="resize-none"
                         id="message-2"
                       />
@@ -149,7 +281,7 @@ const AddTaskModal = ({ open, setOpen }: any) => {
                       </div>
                     </div>
                     <Button className=" mt-10 outline-none border-none font-semibold bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
-                      Add Task
+                      {loading ? "Creating..." : "Add Task"}
                     </Button>
                   </form>
                 </div>

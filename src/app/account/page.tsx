@@ -25,7 +25,7 @@ const AccountPage = () => {
         <Overview data={dashboard?.data} />
         <section className="flex lg:flex-row flex-col lg:space-x-8 space-y-10 lg:space-y-0 lg:mt-20 mt-10 w-11/12 mx-auto pb-10">
           <Chats data={dashboard?.data} />
-          <AddTask />
+          <AddTask farmID={data?.data?.farms[0]?.id} />
         </section>
       </main>
     </>
