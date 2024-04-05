@@ -5,7 +5,7 @@ const taskApiConfig = apiSlice.enhanceEndpoints({ addTagTypes: ["Tasks"] });
 const taskApi = taskApiConfig.injectEndpoints({
   endpoints: (builder) => ({
     getAllTaskData: builder.query({
-      query: ({ farmId }) => `/farmer/${farmId}/task`,
+      query: ({ farmId }) => `/farmer/${farmId}/tasks`,
       providesTags: ["Tasks"],
     }),
     createTask: builder.mutation({

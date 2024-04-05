@@ -24,15 +24,15 @@ import {
 } from "@/components/ui/menubar";
 import { useGetAllFarmsQuery } from "@/redux/services/farmApiSlice";
 import fetchToken from "@/lib/auth";
-import useDefaultFarmId from "@/hooks/useDefaultFarmId";
+// import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 
 const NavHeader = ({ userdata }: any) => {
   const { data } = useGetAllFarmsQuery(null);
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
-  const { defaultFarmId, handleFarmClick } = useDefaultFarmId(data?.data);
+
+  // const { defaultFarmId, handleFarmClick } = useDefaultFarmId(data?.data);
 
   return (
     <nav className="bg-white w-full lg:h-[10vh] h-[8vh] flex items-center justify-center">
@@ -83,7 +83,7 @@ const NavHeader = ({ userdata }: any) => {
                 <IoIosArrowDown className="text-[--primary] " />
               </MenubarTrigger>
               <MenubarContent className="p-4">
-                {data?.data?.map((farm: any, index: any) => (
+                {/* {data?.data?.map((farm: any, index: any) => (
                   <MenubarItem
                     key={farm?.id}
                     onClick={() => handleFarmClick(farm.id)}
@@ -91,7 +91,7 @@ const NavHeader = ({ userdata }: any) => {
                     <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />
                     Farm {index + 1}
                   </MenubarItem>
-                ))}
+                ))} */}
                 <MenubarSeparator />
                 <MenubarItem onClick={() => setOpen(true)}>
                   <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />

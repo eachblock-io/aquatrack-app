@@ -7,16 +7,15 @@ import React from "react";
 import NavHeader from "@/components/NavHeader";
 import { useGetCurrentUserQuery } from "@/redux/services/userApiSlice";
 import { useGetFarmDataQuery } from "@/redux/services/farmApiSlice";
-import useDefaultFarmId from "@/hooks/useDefaultFarmId";
+// import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 
 const AccountPage = () => {
   const { data } = useGetCurrentUserQuery(null);
-  const { defaultFarmId } = useDefaultFarmId(data?.data);
+  // console.log(data?.data);
+  // const { defaultFarmId } = useDefaultFarmId(data?.data?.farms[0]?.id);
   const { data: dashboard } = useGetFarmDataQuery({
-    farmId: defaultFarmId,
+    farmId: data?.data?.farms[0]?.id,
   });
-
-  
 
   return (
     <>
