@@ -34,6 +34,8 @@ const NavHeader = ({ userdata }: any) => {
 
   // const { defaultFarmId, handleFarmClick } = useDefaultFarmId(data?.data);
 
+  // console.log(data?.data);
+
   return (
     <nav className="bg-white w-full lg:h-[10vh] h-[8vh] flex items-center justify-center">
       <AddFarmModal open={open} setOpen={setOpen} />
@@ -83,15 +85,16 @@ const NavHeader = ({ userdata }: any) => {
                 <IoIosArrowDown className="text-[--primary] " />
               </MenubarTrigger>
               <MenubarContent className="p-4">
-                {/* {data?.data?.map((farm: any, index: any) => (
+                {data?.data?.map((farm: any, index: any) => (
                   <MenubarItem
                     key={farm?.id}
-                    onClick={() => handleFarmClick(farm.id)}
-                    className={farm?.id === defaultFarmId ? `bg-gray-200` : ``}>
+                    // onClick={() => handleFarmClick(farm.id)}
+                    // className={farm?.id === defaultFarmId ? `bg-gray-200` : ``}
+                  >
                     <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />
                     Farm {index + 1}
                   </MenubarItem>
-                ))} */}
+                ))}
                 <MenubarSeparator />
                 <MenubarItem onClick={() => setOpen(true)}>
                   <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />

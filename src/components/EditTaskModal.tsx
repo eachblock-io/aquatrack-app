@@ -30,20 +30,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const AddTaskModal = ({ open, setOpen }: any) => {
+const EditTaskModal = ({ open, setOpen, editdata }: any) => {
   const cancelButtonRef = useRef(null);
   const [createTask] = useCreateTaskMutation();
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
-  const [des, setDes] = useState("");
+  const [des, setDes] = useState(editdata?.attributes?.description || "");
   const [reminder, setReminder] = useState("");
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(editdata?.attributes?.title || "");
   const [errors, setErrors] = useState({
     title: "",
     description: "",
     set_reminder: "",
   });
+
+  console.log(editdata);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     const strDate = taskDate(startDate);
@@ -133,7 +135,7 @@ const AddTaskModal = ({ open, setOpen }: any) => {
                       <Dialog.Title
                         as="h3"
                         className="text-2xl font-semibold leading-6 text-[--primary] ">
-                        Add Task
+                        Edit Task
                       </Dialog.Title>
                     </div>
                   </div>
@@ -295,4 +297,4 @@ const AddTaskModal = ({ open, setOpen }: any) => {
   );
 };
 
-export default AddTaskModal;
+export default EditTaskModal;
