@@ -3,15 +3,19 @@ import React from "react";
 import chartImg from "@/public/charts.png";
 import farmImg from "@/public/Figpie.png";
 import { GoDotFill } from "react-icons/go";
+import MortalityChart from "./MortalityChart";
+import FarmChart from "./FarmChart";
 
-const MortalityChat = () => {
+const MortalityChat = ({ data }: any) => {
+  // console.log(data?.farm_details);
   return (
     <div className="lg:w-[60%] w-full">
       <h2 className="text-[--primary] font-bold lg:text-2xl text-lg mb-4 ">
         Mortality Rate
       </h2>
-      <div className="bg-white rounded-xl p-6">
-        <Image src={chartImg} alt="chart" width="600" height="400" />
+      <div className="bg-white rounded-xl p-4 h-[30rem]">
+        {/* <Image src={chartImg} alt="chart" width="600" height="400" /> */}
+        <MortalityChart data={data?.graph_data} />
       </div>
 
       <div className="chart mt-8">
@@ -19,20 +23,9 @@ const MortalityChat = () => {
           Farm Details
         </h2>
         <div className="grid lg:grid-cols-2 grid-cols-2 items-center bg-white p-6 rounded-xl">
-          <Image
-            src={farmImg}
-            alt="chart"
-            width="300"
-            height="300"
-            className="lg:flex hidden"
-          />
-          <Image
-            src={farmImg}
-            alt="chart"
-            width="150"
-            height="150"
-            className="lg:hidden flex mx-auto mb-8"
-          />
+          <div className="chat">
+            {/* <FarmChart data={data?.farm_details} /> */}
+          </div>
           <div className="flex flex-col space-y-4 mx-auto ">
             <div className="flex items-center">
               <GoDotFill className="text-[--primary] lg:h-6 lg:w-6 h-4 w-4" />{" "}

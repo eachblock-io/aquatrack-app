@@ -1,7 +1,12 @@
+"use client";
 import PondDetails from "@/components/PondDetails";
 import QuickAction from "@/components/QuickAction";
+import { useGetAllFarmsQuery } from "@/redux/services/farmApiSlice";
 
 const PoundsPage = () => {
+  const { isFetching, data, error, refetch } = useGetAllFarmsQuery(null);
+
+  console.log(data);
   return (
     <main className="w-full">
       <QuickAction />
