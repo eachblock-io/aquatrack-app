@@ -14,24 +14,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCreatePondMutation } from "@/redux/services/pondsApiSlice";
+import { useEditPondMutation } from "@/redux/services/pondsApiSlice";
 import toast from "react-hot-toast";
 import { useGetAllBatchsDataQuery } from "@/redux/services/batchApiSlice";
 
-const AddPondModal = ({ open, setOpen, farmId }: any) => {
+const EditPondModal = ({ open, setOpen, farmId, pondData }: any) => {
   const cancelButtonRef = useRef(null);
-  const [createPond] = useCreatePondMutation();
+  const [editPond] = useEditPondMutation();
   const [loading, setLoading] = useState(false);
-  const [type, setType] = useState<String>("");
+  const [type, setType] = useState<String>(pondData?.attributes?.name || "");
   const [batchID, setBatchID] = useState<String>("");
   const [formData, setFormData] = useState({
-    name: "",
+    name: pondData?.attributes?.name,
     type: "",
-    holding_capacity: "",
-    unit: "",
-    size: "",
-    feed_size: "",
-    mortality_rate: "",
+    holding_capacity: pondData?.attributes?.holding_capacity || "",
+    unit: pondData?.attributes?.unit || "",
+    size: pondData?.attributes?.size || "",
+    feed_size: pondData?.attributes?.feed_size || "",
+    mortality_rate: pondData?.attributes?.mortality_rate || "",
     batch_id: "",
     farm_id: "",
   });
@@ -46,6 +46,8 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
     batch_id: "",
     farm_id: "",
   });
+
+//   console.log(pondData);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -102,8 +104,8 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
     if (Object.values(newErrors).every((error) => !error)) {
       try {
         setLoading(true);
-        await createPond({ formdata, farmId }).unwrap();
-        toast.success("Pond created ✔️");
+        await editPond({ formdata, farmId, pondId: pondData?.id }).unwrap();
+        toast.success("Edit Pond successful ✔️");
         setOpen(false);
         setLoading(false);
       } catch (error) {
@@ -156,7 +158,7 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                       <Dialog.Title
                         as="h3"
                         className="text-xl font-semibold leading-6 text-[--primary] ">
-                        Add Pond
+                        Edit {pondData?.attributes?.name}
                       </Dialog.Title>
                     </div>
                   </div>
@@ -192,18 +194,7 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                           <SelectContent>
                             <SelectGroup>
                               <SelectLabel>Type</SelectLabel>
-                              <SelectItem value="Tank pond">
-                                Tank (Plastic/Rubber) pond
-                              </SelectItem>
-                              <SelectItem value="Earthen pond">
-                                Earthen pond
-                              </SelectItem>
-                              <SelectItem value="Concrete pond">
-                                Concrete pond
-                              </SelectItem>
-                              <SelectItem value="Tarpaulin pond">
-                                Tarpaulin pond
-                              </SelectItem>
+                              <SelectItem value="tank">Tank</SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
@@ -322,7 +313,7 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                       <Button
                         type="submit"
                         className=" mt-10 outline-none border-none font-normal text-xs bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
-                        {loading ? "Loading..." : " Add Pond"}
+                        {loading ? "Loading..." : " Save Changes"}
                       </Button>
                     </div>
                   </form>
@@ -336,4 +327,4 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
   );
 };
 
-export default AddPondModal;
+export default EditPondModal;

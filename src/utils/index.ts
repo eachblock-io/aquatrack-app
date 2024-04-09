@@ -75,3 +75,38 @@ export function greetUser() {
 
   return greeting;
 }
+
+// Reverse Array
+export function reverseArray(arr: any[]) {
+  return arr?.slice()?.reverse();
+}
+
+// Search Functionality
+
+export function searchTableData(data: any, query: string): any {
+  // Convert the query to lowercase for case-insensitive search
+  const lowercaseQuery = query.toLowerCase();
+
+  return data?.filter((item: any) => {
+    const { date_purchase, name, unit_purchase, fish_type, status } =
+      item?.attributes;
+
+    // Convert each attribute value to lowercase for comparison
+    const lowercaseDatePurchase = date_purchase?.toLowerCase();
+    const lowercaseName = name?.toLowerCase();
+    const lowercaseFishType = fish_type?.toLowerCase();
+    const lowercaseStatus = status?.toLowerCase();
+
+    // Convert unit_purchase to string for comparison
+    const stringUnitPurchase = unit_purchase?.toString()?.toLowerCase();
+
+    // Check if any attribute contains the search query
+    return (
+      lowercaseDatePurchase?.includes(lowercaseQuery) ||
+      lowercaseName?.includes(lowercaseQuery) ||
+      stringUnitPurchase?.includes(lowercaseQuery) ||
+      lowercaseFishType?.includes(lowercaseQuery) ||
+      lowercaseStatus?.includes(lowercaseQuery)
+    );
+  });
+}

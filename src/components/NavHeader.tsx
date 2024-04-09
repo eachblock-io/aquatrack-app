@@ -85,7 +85,7 @@ const NavHeader = ({ userdata }: any) => {
                 <IoIosArrowDown className="text-[--primary] " />
               </MenubarTrigger>
               <MenubarContent className="p-4">
-                {data?.data?.map((farm: any, index: any) => (
+                {/* {data?.data?.map((farm: any, index: any) => (
                   <MenubarItem
                     key={farm?.id}
                     // onClick={() => handleFarmClick(farm.id)}
@@ -94,7 +94,7 @@ const NavHeader = ({ userdata }: any) => {
                     <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />
                     Farm {index + 1}
                   </MenubarItem>
-                ))}
+                ))} */}
                 <MenubarSeparator />
                 <MenubarItem onClick={() => setOpen(true)}>
                   <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />

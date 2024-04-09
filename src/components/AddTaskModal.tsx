@@ -17,18 +17,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { describe } from "node:test";
 import { taskDate } from "@/utils";
 import toast from "react-hot-toast";
 import { useCreateTaskMutation } from "@/redux/services/taskApiSlice";
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 const AddTaskModal = ({ open, setOpen }: any) => {
   const cancelButtonRef = useRef(null);
@@ -37,12 +28,11 @@ const AddTaskModal = ({ open, setOpen }: any) => {
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [des, setDes] = useState("");
-  const [reminder, setReminder] = useState("");
+  const [repeat, setRepeat] = useState(false);
   const [title, setTitle] = useState("");
   const [errors, setErrors] = useState({
     title: "",
     description: "",
-    set_reminder: "",
   });
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
@@ -53,7 +43,6 @@ const AddTaskModal = ({ open, setOpen }: any) => {
     let newErrors = {
       title: "",
       description: "",
-      set_reminder: "",
       startDate: "",
       endDate: "",
     };
@@ -72,7 +61,7 @@ const AddTaskModal = ({ open, setOpen }: any) => {
       description: des,
       start_date: strDate,
       due_date: edDate,
-      set_reminder: reminder,
+      repeat: repeat,
     };
 
     if (Object.values(newErrors).every((error) => !error)) {
@@ -224,34 +213,6 @@ const AddTaskModal = ({ open, setOpen }: any) => {
                       <Label
                         htmlFor="message-2"
                         className="text-[--primary] font-normal mb-2">
-                        Select Reminder
-                      </Label>
-                      <Select
-                        onValueChange={(value) => setReminder(value)}
-                        value={reminder}>
-                        <SelectTrigger className="w-full py-6">
-                          <SelectValue placeholder="Set reminder" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="5 minutes">5 minutes</SelectItem>
-                          <SelectItem value="10  minutes">
-                            10 minutes
-                          </SelectItem>
-                          <SelectItem value="15 minutes">15 minutes</SelectItem>
-                          <SelectItem value="30  minutes">
-                            30 minutes
-                          </SelectItem>
-                          <SelectItem value="1 hour">1 hour</SelectItem>
-                          <SelectItem value="2 hours">2 hours</SelectItem>
-                          <SelectItem value="1 day">1 day</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="form-control">
-                      <Label
-                        htmlFor="message-2"
-                        className="text-[--primary] font-normal mb-2">
                         Describe
                       </Label>
                       <Textarea
@@ -277,11 +238,14 @@ const AddTaskModal = ({ open, setOpen }: any) => {
                         </div>
                         <Switch
                           id="airplane-mode"
+                          onClick={() => setRepeat(!repeat)}
                           className="text-[--primary]"
                         />
                       </div>
                     </div>
-                    <Button className=" mt-10 outline-none border-none font-semibold bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
+                    <Button
+                      disabled={loading}
+                      className=" mt-10 outline-none border-none font-semibold bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
                       {loading ? "Creating..." : "Add Task"}
                     </Button>
                   </form>

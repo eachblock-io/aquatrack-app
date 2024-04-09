@@ -3,20 +3,21 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { IoClose } from "react-icons/io5";
 import { Button } from "./ui/button";
-import { useDeletePondMutation } from "@/redux/services/pondsApiSlice";
 import toast from "react-hot-toast";
+import { useDeleteBatchMutation } from "@/redux/services/batchApiSlice";
 
-const DeleteModal = ({ open, setOpen, openDelID, farmId }: any) => {
+const DeleteBatchModal = ({ open, setOpen, batchID, farmId }: any) => {
   const cancelButtonRef = useRef(null);
-  const [deletePond] = useDeletePondMutation();
+  const [deleteBatch] = useDeleteBatchMutation();
   const [loading, setLoading] = useState(false);
 
-  const handleDeletePond = async () => {
+  const handleDeleteBatch = async () => {
     try {
       setLoading(true);
-      await deletePond({ farmId, pondId: openDelID }).unwrap();
-      toast.success("Pond Deleted ✔️");
+      await deleteBatch({ farmId, batchId: batchID }).unwrap();
+      toast.success("Batch Deleted ✔️");
       setOpen(false);
+      setLoading(false);
     } catch (error) {
       setLoading(false);
     }
@@ -61,7 +62,7 @@ const DeleteModal = ({ open, setOpen, openDelID, farmId }: any) => {
                       <Dialog.Title
                         as="h3"
                         className="text-xl font-semibold leading-6 text-[--primary] ">
-                        Delete Pond
+                        Delete Batch
                       </Dialog.Title>
                     </div>
                   </div>
@@ -76,7 +77,7 @@ const DeleteModal = ({ open, setOpen, openDelID, farmId }: any) => {
                       Cancle
                     </Button>
                     <Button
-                      onClick={handleDeletePond}
+                      onClick={handleDeleteBatch}
                       className=" mt-10 outline-none border-none font-bold text-xs bg-red-500 hover:bg-red-500 w-full h-[53px] text-white">
                       {loading ? "Deleting..." : "Delete"}
                     </Button>
@@ -91,4 +92,4 @@ const DeleteModal = ({ open, setOpen, openDelID, farmId }: any) => {
   );
 };
 
-export default DeleteModal;
+export default DeleteBatchModal;
