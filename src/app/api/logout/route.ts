@@ -1,5 +1,3 @@
-import { NextResponse, NextRequest } from "next/server";
-import axios from "axios";
 import { serialize } from "cookie";
 import { cookies } from "next/headers";
 
@@ -12,9 +10,13 @@ export async function POST() {
     Authorization: `Bearer ${token?.value}`,
     "Content-Type": "application/json",
   };
-  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/auth/access_token`, {
-    headers,
-  });
+await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
+    {
+      method: "POST",
+      headers,
+    }
+  );
 
   const serialized = serialize(`token`, ``, {
     httpOnly: true,

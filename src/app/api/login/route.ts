@@ -28,7 +28,6 @@ export async function POST(req: Request, res: NextRequest) {
     path: `/`,
   });
 
-  console.log(data);
 
   const response = {
     message: "Authenticated!",
