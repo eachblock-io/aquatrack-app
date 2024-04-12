@@ -76,8 +76,6 @@ const AddFarmModal = ({ open, setOpen }: any) => {
       date_established: newDate,
     };
 
-    console.log(formdata);
-
     if (Object.values(newErrors).every((error) => !error)) {
       setLoading(true);
       try {

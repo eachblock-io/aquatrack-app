@@ -25,6 +25,7 @@ import { reverseArray } from "@/utils";
 import { Skeleton } from "./ui/skeleton";
 import DeleteModal from "./DeleteModal";
 import DeleteBatchModal from "./DeleteBatchModal";
+import EditBatchModal from "./EditBatchModal";
 
 interface TableData {
   id: number;
@@ -79,7 +80,6 @@ const BatchTable: React.FC<TableProps> = ({ data, isLoading, farmId }) => {
       setOpenDel(true);
       setBatchID(batchId);
     }
-    console.log(batchId);
   };
 
   const handleEdit = (batchData: any) => {
@@ -87,7 +87,6 @@ const BatchTable: React.FC<TableProps> = ({ data, isLoading, farmId }) => {
       setOpenEd(true);
       setBatchData(batchData);
     }
-    console.log(batchData);
   };
 
   return (
@@ -98,6 +97,14 @@ const BatchTable: React.FC<TableProps> = ({ data, isLoading, farmId }) => {
         batchID={batchID}
         farmId={farmId}
       />
+      {batchData && (
+        <EditBatchModal
+          open={openEd}
+          setOpen={setOpenEd}
+          batchData={batchData}
+          farmId={farmId}
+        />
+      )}
       <Table className="w-full">
         <TableHeader className="">
           <TableRow>

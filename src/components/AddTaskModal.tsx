@@ -21,7 +21,7 @@ import { taskDate } from "@/utils";
 import toast from "react-hot-toast";
 import { useCreateTaskMutation } from "@/redux/services/taskApiSlice";
 
-const AddTaskModal = ({ open, setOpen }: any) => {
+const AddTaskModal = ({ open, setOpen, farmId }: any) => {
   const cancelButtonRef = useRef(null);
   const [createTask] = useCreateTaskMutation();
   const [loading, setLoading] = useState(false);
@@ -66,7 +66,7 @@ const AddTaskModal = ({ open, setOpen }: any) => {
 
     if (Object.values(newErrors).every((error) => !error)) {
       // const farmId = localStorage.getItem("defaultFarmId");
-      const farmId = "9bb9d518-db46-49ee-a41e-e6a87e4003b8";
+      // const farmId = "9bb9d518-db46-49ee-a41e-e6a87e4003b8";
       // console.log(farmId);
       setLoading(true);
       try {

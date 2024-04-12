@@ -45,13 +45,16 @@ const dummyData = [
   // Add more dummy data as needed
 ];
 
-const FeedRecord = () => {
+const FeedRecord = ({ farmId }: any) => {
   const [open, setOpen] = useState(false);
   const [openDel, setOpenDel] = useState(false);
+  // const { isLoading, data: ponds } = useGetAllPondsDataQuery({
+  //   farmId: data?.data?.organizations[0]?.farms[0].id,
+  // });
 
   return (
     <div>
-      <AddPurchaseModal open={open} setOpen={setOpen} />
+      <AddPurchaseModal farmId={farmId} open={open} setOpen={setOpen} />
       <DeleteModal open={openDel} setOpen={setOpenDel} />
       {/* Header section */}
       <Select>

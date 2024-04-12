@@ -27,10 +27,10 @@ import emptyImg from "@/public/empty.png";
 const BatchPage = () => {
   const [open, setOpen] = useState(false);
   const [openDel, setOpenDel] = useState(false);
-  const [filteredValue, setFilteredValue] = useState("");
+  // const [filteredValue, setFilteredValue] = useState("");
   const { data } = useGetCurrentUserQuery(null);
   const { isLoading, data: batch } = useGetAllBatchsDataQuery({
-    farmId: data?.data?.farms[0]?.id,
+    farmId: data?.data?.organizations[0]?.farms[0]?.id,
   });
 
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -46,7 +46,7 @@ const BatchPage = () => {
       <NavHeader userdata={data?.data} />
       <main className="w-11/12 mx-auto mt-8 ">
         <AddBatchModal
-          farmId={data?.data?.farms[0]?.id}
+          farmId={data?.data?.organizations[0]?.farms[0]?.id}
           open={open}
           setOpen={setOpen}
         />
@@ -111,7 +111,7 @@ const BatchPage = () => {
         <div className="table w-full mt-20">
           {batch?.data?.length > 0 ? (
             <BatchTable
-              farmId={data?.data?.farms[0]?.id}
+              farmId={data?.data?.organizations[0]?.farms[0]?.id}
               data={filteredData?.length > 0 ? filteredData : batch?.data}
               isLoading={isLoading}
             />

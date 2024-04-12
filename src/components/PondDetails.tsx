@@ -13,6 +13,7 @@ import {
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import EditPondModal from "./EditPondModal";
+import DeletePondModal from "./DeletePondModal";
 
 const PondDetails = ({ pond, farmId }: any) => {
   const [openDel, setOpenDel] = useState(false);
@@ -22,7 +23,7 @@ const PondDetails = ({ pond, farmId }: any) => {
 
   const openDeleteModal = (pondID: any) => {
     if (pondID) {
-      setOpenEd(true);
+      setOpenDel(true);
       setPondID(pondID);
     }
   };
@@ -36,7 +37,7 @@ const PondDetails = ({ pond, farmId }: any) => {
 
   return (
     <div className="card bg-white rounded-xl p-6">
-      <DeleteModal
+      <DeletePondModal
         farmId={farmId}
         openDelID={pondID}
         open={openDel}
@@ -79,9 +80,9 @@ const PondDetails = ({ pond, farmId }: any) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-2">
         <div className="flex items-center whitespace-nowrap space-x-4">
-          <p className="">
+          <p className="text-sm">
             Units: <span>{pond?.attributes?.unit} units</span>
           </p>
           <div className="w-full">

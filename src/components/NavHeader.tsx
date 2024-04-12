@@ -22,19 +22,38 @@ import {
   MenubarSeparator,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useGetAllFarmsQuery } from "@/redux/services/farmApiSlice";
 import fetchToken from "@/lib/auth";
 // import useDefaultFarmId from "@/hooks/useDefaultFarmId";
+import { GiCirclingFish } from "react-icons/gi";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const NavHeader = ({ userdata }: any) => {
   const { data } = useGetAllFarmsQuery(null);
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [toggle, setToggle] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // const { defaultFarmId, handleFarmClick } = useDefaultFarmId(data?.data);
 
-  // console.log(data?.data);
+  // console.log(data?.data?.organizations);
+
+  const defaultOrgId = data?.data?.organizations[0]?.id;
 
   return (
     <nav className="bg-white w-full lg:h-[10vh] h-[8vh] flex items-center justify-center">
@@ -67,58 +86,117 @@ const NavHeader = ({ userdata }: any) => {
             height="30"
             className="cursor-pointer"
           />
-          <Menubar className="border-none">
-            <MenubarMenu>
-              <MenubarTrigger className="flex items-center space-x-2 outline-none border-none shadow-none">
-                <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  {/* <AvatarFallback>
-                  {firstName[0]} {lastName[0]}
+
+          <div className="relative inline-block text-left">
+            <div>
+              {userdata ? (
+                <button
+                  type="button"
+                  className="flex justify-between items-center space-x-3 w-full rounded-md border border-none p-0 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  id="options-menu"
+                  aria-haspopup="true"
+                  aria-expanded="true"
+                  onClick={() => setToggle(!toggle)}>
+                  <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    {/* <AvatarFallback>
+                  {userdata?.attributes?.first_name[0]} {userdata?.attributes?.last_name[0]}
                 </AvatarFallback> */}
-                </Avatar>
-                <div>
-                  <p className="text-sm font-semibold text-[--primary]">
-                    {userdata?.attributes?.first_name}{" "}
-                    {userdata?.attributes?.last_name}
-                  </p>
+                  </Avatar>
+                  <div>
+                    <p className="text-sm font-semibold text-[--primary] lg:flex hidden ">
+                      {userdata?.attributes?.first_name}{" "}
+                      {userdata?.attributes?.last_name}
+                    </p>
+                    <p className="text-sm font-semibold text-[--primary] lg:hidden flex">
+                      {userdata?.attributes?.first_name}
+                    </p>
+                  </div>
+                  <IoIosArrowDown className="text-[--primary] " />
+                </button>
+              ) : (
+                <div className="flex items-center space-x-4">
+                  <Skeleton className="h-12 w-12 rounded-full bg-gray-200" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-6 w-[150px] bg-gray-200" />
+                  </div>
                 </div>
-                <IoIosArrowDown className="text-[--primary] " />
-              </MenubarTrigger>
-              <MenubarContent className="p-4">
-                {/* {data?.data?.map((farm: any, index: any) => (
-                  <MenubarItem
-                    key={farm?.id}
-                    // onClick={() => handleFarmClick(farm.id)}
-                    // className={farm?.id === defaultFarmId ? `bg-gray-200` : ``}
-                  >
-                    <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />
-                    Farm {index + 1}
-                  </MenubarItem>
-                ))} */}
-                <MenubarSeparator />
-                <MenubarItem onClick={() => setOpen(true)}>
-                  <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />
-                  Add new farm
-                </MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem>
-                  <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />
-                  Community
-                </MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem className="flex w-full items-center justify-start font-bold space-x-2 text-red-500 focus:bg-[#ea1c0115] focus:text-red-500 pl-4  rounded-xl transition-all">
-                  <Image
-                    src={logoutIcon}
-                    alt="Logout"
-                    layout="fixed"
-                    width="25"
-                    height="25"
-                  />
-                  <p>Log Out</p>
-                </MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-          </Menubar>
+              )}
+            </div>
+
+            {toggle && (
+              <div
+                className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none p-2"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="options-menu">
+                <div className="p-2" role="none">
+                  <div className="px-2 pt-3 w-full space-y-2">
+                    <Accordion
+                      type="single"
+                      collapsible
+                      className="w-full border-none underline-none">
+                      {data?.data?.organizations?.map(
+                        (org: any, index: any) => (
+                          <AccordionItem key={org?.id} value={org?.id}>
+                            <AccordionTrigger className="h-2 p-0 py-4 border-none w-full">
+                              <label
+                                // onClick={() => handleFarmClick(org?.id)}
+                                className={`text-sm p-2 mb-4 flex items-center cursor-pointer w-full ${
+                                  org?.id === defaultOrgId
+                                    ? `bg-gray-200 rounded-lg`
+                                    : ``
+                                }`}>
+                                <GiCirclingFish className="text-gray-500 h-4 w-4 mr-2 " />
+                                <span className="text-sm font-normal">
+                                  {org?.attributes?.organization_name}
+                                </span>
+                              </label>
+                            </AccordionTrigger>
+                            {org?.farms?.map((farm: any) => (
+                              <AccordionContent
+                                key={farm?.id}
+                                className="hover:bg-blue-100 rounded-lg px-2 py-2 flex items-center border-none font-medium cursor-pointer">
+                                <FaArrowAltCircleUp className="text-gray-400 h-3 w-3 mr-2 " />
+                                <p className="text-xs">{farm?.name} farm</p>
+                              </AccordionContent>
+                            ))}
+                          </AccordionItem>
+                        )
+                      )}
+                    </Accordion>
+                    {/* <DropdownMenuSeparator /> */}
+                    <label
+                      onClick={() => setOpen(true)}
+                      className="flex items-center font-medium text-sm cursor-pointer ">
+                      <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />
+                      Add new farm
+                    </label>
+                    <DropdownMenuSeparator />
+                    <label className="flex items-center text-sm font-medium cursor-pointer ">
+                      <FaArrowAltCircleUp className="text-gray-500 h-4 w-4 mr-2 " />
+                      Community
+                    </label>
+                    <DropdownMenuSeparator />
+                    <label>
+                      <Button
+                        variant="ghost"
+                        className="flex w-full items-center justify-between font-bold space-x-2 text-red-500 focus:bg-[#ea1c0115] focus:text-red-500  rounded-xl transition-all">
+                        <Image
+                          src={logoutIcon}
+                          alt="Logout"
+                          layout="fixed"
+                          width="20"
+                          height="20"
+                        />
+                        <p>Log Out</p>
+                      </Button>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

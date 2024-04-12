@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
+import { Skeleton } from "./ui/skeleton";
 
 interface TableData {
   id: number;
@@ -21,12 +22,14 @@ interface TableData {
 }
 
 interface TableProps {
-  data: TableData[];
+  data: any[];
 }
 
 const HarvestTable: React.FC<TableProps> = ({ data }) => {
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+
+  console.log(data);
 
   const toggleSelectAll = () => {
     setSelectAll(!selectAll);
@@ -51,11 +54,11 @@ const HarvestTable: React.FC<TableProps> = ({ data }) => {
   };
 
   return (
-    <div className="bg-gray-50 border-collapse border border-gray-300 pt-6 pb-4 rounded-xl">
-      <Table className="lg:w-full w-10/12 overflow-scroll">
+    <div className="bg-gray-50 border-collapse border border-gray-300 lg:pt-6 pt-2 pb-4 rounded-xl">
+      <Table className="lg:w-full w-full overflow-scroll">
         <TableHeader className="">
           <TableRow>
-            <TableHead className="py-4 lg:pl-8 pl-4 text-black ">
+            <TableHead className="py-4 lg:pl-8 pl-4 text-black lg:flex hidden">
               <input
                 type="checkbox"
                 checked={selectAll}
@@ -63,52 +66,91 @@ const HarvestTable: React.FC<TableProps> = ({ data }) => {
                 className="mr-1 w-4 h-4"
               />
             </TableHead>
-            <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+            <TableHead className="py-4 text-black lg:text-left text-center font-semibold lg:text-base text-xs">
               Date
             </TableHead>
-            <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+            <TableHead className="py-4 text-black lg:text-left text-center font-semibold lg:text-base text-xs">
               Name
             </TableHead>
-            <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+            <TableHead className="py-4 text-black lg:text-left text-center font-semibold lg:text-base text-xs">
               Batch
             </TableHead>
-            <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+            <TableHead className="py-4 text-black lg:text-left text-center font-semibold lg:text-base text-xs">
               Total Sales
             </TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody className="bg-white pl-8">
-          {data.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell className="py-4 lg:pl-8 pl-4">
-                <input
-                  type="checkbox"
-                  checked={selectedItems.includes(item.id)}
-                  onChange={() => handleCheckboxChange(item.id)}
-                  className="mr-1 w-4 h-4"
-                />
+        {data ? (
+          <TableBody className="bg-white lg:pl-8 p-0 w-full lg:text-left text-center ">
+            {data?.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell className="py-4 lg:pl-8 pl-4 lg:flex hidden">
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.includes(item.id)}
+                    onChange={() => handleCheckboxChange(item.id)}
+                    className="mr-1 w-4 h-4"
+                  />
+                </TableCell>
+                <TableCell className="py-4 lg:text-base text-xs">
+                  {item?.date}
+                </TableCell>
+                <TableCell className="py-4 lg:text-base text-xs">
+                  {item?.name}
+                </TableCell>
+                <TableCell className="py-4 lg:text-base text-xs">
+                  {item?.batch?.name}
+                </TableCell>
+                <TableCell className="py-4 lg:text-base text-xs">
+                  {item?.total_sales}
+                </TableCell>
+                <TableCell className="py-4 lg:hidden flex">
+                  <Link
+                    href={`/account/harvest/${item.id}`}
+                    className="text-[--primary] text-xs ">
+                    view
+                  </Link>
+                </TableCell>
+                <TableCell className="py-4 lg:flex hidden">
+                  <Link
+                    href={`/account/harvest/${item.id}`}
+                    className="border border-[--primary] text-[--primary] lg:py-2 py-1 lg:px-4 px-2 lg:text-sm text-xs rounded-lg ">
+                    view details
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        ) : (
+          <TableBody className="bg-white pl-8">
+            <TableRow>
+              <TableCell>
+                <Skeleton className="h-4 w-full bg-gray-200" />
+                <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
               </TableCell>
-              <TableCell className="py-4">{item.date}</TableCell>
-              <TableCell className="py-4">{item.name}</TableCell>
-              <TableCell className="py-4">{item.unitPurchased}</TableCell>
-              <TableCell className="py-4">{item.fishType}</TableCell>
-              <TableCell className="py-4 lg:hidden flex">
-                <Link
-                  href={`/account/harvest/${item.id}`}
-                  className="border border-[--primary] text-[--primary] lg:py-2 py-1 lg:px-6 px-2 lg:text-base text-xs rounded-lg ">
-                  view
-                </Link>
+              <TableCell>
+                <Skeleton className="h-4 w-full bg-gray-200" />
+                <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
               </TableCell>
-              <TableCell className="py-4 lg:flex hidden">
-                <Link
-                  href={`/account/harvest/${item.id}`}
-                  className="border border-[--primary] text-[--primary] lg:py-2 py-1 lg:px-6 px-2 lg:text-base text-xs rounded-lg ">
-                  view details
-                </Link>
+              <TableCell>
+                <Skeleton className="h-4 w-full bg-gray-200" />
+                <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-4 w-full bg-gray-200" />
+                <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-4 w-full bg-gray-200" />
+                <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-4 w-full bg-gray-200" />
+                <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
+          </TableBody>
+        )}
       </Table>
     </div>
   );

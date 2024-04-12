@@ -37,16 +37,16 @@ const LoginForm = () => {
 
     if (Object.values(newErrors).every((error) => !error)) {
       setLoading(true);
-      setLoading(true);
       try {
         const res = await axios.post(`/api/login`, formData);
-
-        // console.log(res);
         if (res?.status == 200) {
-          push("/account");
-          toast.success(res?.data?.message);
+          if (res?.data?.data?.user?.attributes?.fully_onboarded) {
+            push("/account");
+          } else {
+            push("/onboarding");
+          }
+          // setLoading(false);
         }
-        // setLoading(false);
       } catch (error) {
         toast.error("Invalid Credentials");
         setLoading(false);

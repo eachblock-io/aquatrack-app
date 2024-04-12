@@ -11,13 +11,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 const PoundsPage = () => {
   const { data } = useGetCurrentUserQuery(null);
   const { isLoading, data: ponds } = useGetAllPondsDataQuery({
-    farmId: data?.data?.farms[0]?.id,
+    farmId: data?.data?.organizations[0]?.farms[0]?.id,
   });
   return (
     <>
       <NavHeader userdata={data?.data} />
       <main className="w-full">
-        <QuickAction farmId={data?.data?.farms[0]?.id} />
+        <QuickAction farmId={data?.data?.organizations[0]?.farms[0]?.id} />
         {ponds?.data?.data?.length == 0 ? (
           <section className="h-[70vh] flex items-center justify-center">
             <div className="relative lg:w-6/12 w-10/12 mx-auto">
@@ -71,7 +71,7 @@ const PoundsPage = () => {
               <section className="lg:w-11/12 w-11/12 mx-auto lg:pb-20 mt-10 pb-20 grid lg:grid-cols-3 gap-8">
                 {ponds?.data?.data?.map((pond: any) => (
                   <PondDetails
-                    farmId={data?.data?.farms[0]?.id}
+                    farmId={data?.data?.organizations[0]?.farms[0]?.id}
                     key={pond?.id}
                     pond={pond}
                   />

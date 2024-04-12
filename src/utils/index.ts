@@ -110,3 +110,28 @@ export function searchTableData(data: any, query: string): any {
     );
   });
 }
+
+export function searchHarvestTableData(data: any, query: string): any {
+  // Convert the query to lowercase for case-insensitive search
+  const lowercaseQuery = query.toLowerCase();
+
+  return data?.filter((item: any) => {
+    const { name, batch, date, total_sales } = item;
+
+    // console.log(item);// Convert unit_purchase to string for comparison
+    const stringTotal_sales = total_sales?.toString()?.toLowerCase();
+
+    // Convert each attribute value to lowercase for comparison
+    const lowercaseName = name?.toLowerCase();
+    const lowercaseBatch = batch?.name?.toLowerCase();
+    const lowercaseDate = date?.toLowerCase();
+
+    // Check if any attribute contains the search query
+    return (
+      lowercaseName?.includes(lowercaseQuery) ||
+      lowercaseBatch?.includes(lowercaseQuery) ||
+      lowercaseDate?.includes(lowercaseQuery) ||
+      stringTotal_sales?.includes(lowercaseQuery)
+    );
+  });
+}

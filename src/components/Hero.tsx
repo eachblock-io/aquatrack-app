@@ -5,6 +5,7 @@ import heroWorkImg from "@/public/heroImg.png";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { greetUser } from "@/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Hero = ({ data }: any) => {
   // Greeting user function
@@ -18,8 +19,8 @@ const Hero = ({ data }: any) => {
               src={heroImg}
               alt="Greeting Image"
               layout="fixed"
-              width="70"
-              height="70"
+              width="60"
+              height="60"
               className="lg:flex hidden"
             />
             <Image
@@ -32,9 +33,15 @@ const Hero = ({ data }: any) => {
             />
           </div>
           <div className="content w-full">
-            <h2 className="text-[--primary] font-bold lg:text-xl text-lg ">
-              {greeting}, {data?.attributes?.first_name}
-            </h2>
+            {data?.attributes?.first_name ? (
+              <h2 className="text-[--primary] font-bold lg:text-xl text-lg ">
+                {greeting}, {data?.attributes?.first_name}
+              </h2>
+            ) : (
+              <h2 className="text-[--primary] font-bold lg:text-xl text-lg flex items-center ">
+                {greeting}, <Skeleton className="h-6 w-[50px] bg-gray-200" />
+              </h2>
+            )}
             <p className="text-gray-500 lg:text-base text-xs lg:mt-2 mt-1">
               Welcome to your AquaTrack dashboard.{" "}
             </p>
@@ -58,8 +65,8 @@ const Hero = ({ data }: any) => {
           src={heroWorkImg}
           alt="Greeting Image"
           layout="fixed"
-          width="250"
-          height="250"
+          width="230"
+          height="230"
           className="lg:flex hidden"
         />
       </div>

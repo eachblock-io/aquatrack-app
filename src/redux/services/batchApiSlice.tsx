@@ -20,9 +20,9 @@ const batchApi = batchApiConfig.injectEndpoints({
       }),
       invalidatesTags: ["Batchs"],
     }),
-    editTask: builder.mutation({
-      query: ({ formdata, farmId, taskId }) => ({
-        url: `/farmer/${farmId}/task/${taskId}`,
+    editBatch: builder.mutation({
+      query: ({ formdata, farmId, batchId }) => ({
+        url: `/farmer/${farmId}/batch/${batchId}`,
         method: `PATCH`,
         body: formdata,
       }),
@@ -42,6 +42,6 @@ const batchApi = batchApiConfig.injectEndpoints({
 export const {
   useGetAllBatchsDataQuery,
   useCreateBatchMutation,
-  useEditTaskMutation,
+  useEditBatchMutation,
   useDeleteBatchMutation,
 } = batchApi;
