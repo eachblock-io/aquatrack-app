@@ -1,3 +1,4 @@
+"use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FeedRecord from "./@feedsRecord/page";
 import ExpensesRecord from "./expenses/@expensesRecord/page";
@@ -6,7 +7,6 @@ import CustomerRecord from "@/components/customer/CustomerRecord";
 import { useGetCurrentUserQuery } from "@/redux/services/userApiSlice";
 
 const InventoryPage = () => {
-
   const { data } = useGetCurrentUserQuery(null);
   // const { isLoading, data: ponds } = useGetAllPondsDataQuery({
   //   farmId: data?.data?.organizations[0]?.farms[0].id,
