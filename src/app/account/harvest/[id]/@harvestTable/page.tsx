@@ -22,6 +22,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
+import { formatCurrency } from "@/utils";
 
 const invoices = [
   {
@@ -78,7 +79,12 @@ interface TableData {
 }
 
 interface TableProps {
-  data: TableData[];
+  data: {
+    data: any[];
+    total_amount: string;
+    total_size: string;
+    total_pieces: string;
+  };
 }
 
 const HarvestTable: React.FC<TableProps> = ({ data }) => {
@@ -87,7 +93,7 @@ const HarvestTable: React.FC<TableProps> = ({ data }) => {
 
   const toggleSelectAll = () => {
     setSelectAll(!selectAll);
-    setSelectedItems(selectAll ? [] : data.map((item) => item.id));
+    setSelectedItems(selectAll ? [] : data?.data?.map((item) => item.id));
   };
 
   const handleCheckboxChange = (id: number) => {
@@ -104,13 +110,15 @@ const HarvestTable: React.FC<TableProps> = ({ data }) => {
     }
 
     setSelectedItems(newSelectedItems);
-    setSelectAll(newSelectedItems.length === data.length);
+    setSelectAll(newSelectedItems.length === data?.data?.length);
   };
+
+  // console.log(data);
 
   return (
     <div className="overflow-hidden">
       <Table className="w-full overflow-hidden">
-        <TableHeader className="">
+        <TableHeader className="bg-gray-100">
           <TableRow>
             <TableHead className="py-4 pl-8 text-black ">
               <input
@@ -120,18 +128,27 @@ const HarvestTable: React.FC<TableProps> = ({ data }) => {
                 className="mr-1 w-4 h-4"
               />
             </TableHead>
-            <TableHead className="py-4 text-black font-bold">
+            <TableHead className="py-4 text-black text-xs font-semibold">
               Price/unit
             </TableHead>
-            <TableHead className="py-4 text-black font-bold">
+            <TableHead className="py-4 text-black text-xs font-semibold">
               Size (kg)
             </TableHead>
-            <TableHead className="py-4 text-black font-bold"> Amount</TableHead>
-            <TableHead className="py-4 text-black font-bold">Action</TableHead>
+            <TableHead className="py-4 text-black text-xs font-semibold">
+              {" "}
+              Pieces
+            </TableHead>
+            <TableHead className="py-4 text-black text-xs font-semibold">
+              {" "}
+              Amount
+            </TableHead>
+            <TableHead className="py-4 text-black text-xs font-semibold">
+              Action
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="bg-white pl-8">
-          {data?.map((item) => (
+          {data?.data?.map((item) => (
             <TableRow key={item.id}>
               <TableCell className="py-4 pl-8">
                 <input
@@ -141,26 +158,46 @@ const HarvestTable: React.FC<TableProps> = ({ data }) => {
                   className="mr-1 w-4 h-4"
                 />
               </TableCell>
-              <TableCell className="py-4">{item.price}</TableCell>
-              <TableCell className="py-4">{item.size}</TableCell>
-              <TableCell className="py-4">{item.pieces}</TableCell>
-              <TableCell className="py-4">{item.amount}</TableCell>
               <TableCell className="py-4">
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="bg-green-100 rounded-lg px-4 py-2 flex items-center space-x-4">
-                    <p>Paid</p> <IoIosArrowDown />{" "}
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    {item?.action?.map((item: any, index: any) => (
-                      <DropdownMenuItem key={index} className="capitalize">
-                        {item}
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                N {formatCurrency(item?.attributes?.price_per_unit)}
+              </TableCell>
+              <TableCell className="py-4">
+                {item?.attributes?.size} (kg)
+              </TableCell>
+              <TableCell className="py-4">
+                {item?.attributes?.pieces} pcs
+              </TableCell>
+              <TableCell className="py-4">
+                N {formatCurrency(item?.attributes?.amount)}
+              </TableCell>
+
+              <TableCell className="py-4">
+                {item?.attributes?.status == "paid" ? (
+                  <button className="bg-green-100 text-xs text-green-700 rounded-lg px-4 py-1 flex items-center space-x-4">
+                    {item?.attributes?.status}
+                  </button>
+                ) : (
+                  <button className="bg-red-100 text-xs text-red-700 rounded-lg px-4 py-1 flex items-center space-x-4">
+                    {item?.attributes?.status}
+                  </button>
+                )}
               </TableCell>
             </TableRow>
           ))}
+          <TableRow className=" mx-auto pl-8 ">
+            <TableCell className="py-4"></TableCell>
+            <TableCell className="py-4"></TableCell>
+            <TableCell className="py-4 font-semibold">
+              {data?.total_size} (kg)
+            </TableCell>
+            <TableCell className="py-4 font-semibold">
+              {data?.total_pieces} pcs
+            </TableCell>
+            <TableCell className="py-4 font-semibold">
+              NGN {formatCurrency(data?.total_amount)}
+            </TableCell>
+            <TableCell className="py-4"></TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </div>

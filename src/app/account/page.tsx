@@ -7,17 +7,17 @@ import React from "react";
 import NavHeader from "@/components/NavHeader";
 import { useGetCurrentUserQuery } from "@/redux/services/userApiSlice";
 import { useGetFarmDataQuery } from "@/redux/services/farmApiSlice";
+import { Skeleton } from "@/components/ui/skeleton";
 // import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 
 const AccountPage = () => {
   const { data } = useGetCurrentUserQuery(null);
-  // console.log(data?.data);
   // const { defaultFarmId } = useDefaultFarmId(data?.data?.farms[0]?.id);
   const { data: dashboard } = useGetFarmDataQuery({
-    farmId: data?.data?.farms[0]?.id,
+    farmId: data?.data?.organizations[0]?.farms[0]?.id,
   });
 
-  // console.log(data);
+  // console.log(data?.data?.organizations[0]?.farms[0]?.id);
 
   return (
     <>
@@ -27,7 +27,7 @@ const AccountPage = () => {
         <Overview data={dashboard?.data} />
         <section className="flex lg:flex-row flex-col lg:space-x-8 space-y-10 lg:space-y-0 lg:mt-20 mt-10 w-11/12 mx-auto pb-10">
           <Chats data={dashboard?.data} />
-          <AddTask farmID={data?.data?.farms[0]?.id} />
+          <AddTask farmID={data?.data?.organizations[0]?.farms[0]?.id} />
         </section>
       </main>
     </>

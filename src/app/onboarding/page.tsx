@@ -69,7 +69,7 @@ const OnboardingForm = () => {
           Authorization: `Bearer ${token?.data?.token}`,
           "Content-Type": "application/json",
         };
-        await fetch(
+        const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/auth/onboarding/farm-owner`,
           {
             method: "POST",
@@ -77,8 +77,18 @@ const OnboardingForm = () => {
             body: JSON.stringify(reqData),
           }
         );
-        push("/account");
+
+        const resdata = await res.json();
+        if (resdata?.status == true || resdata?.status == 200) {
+          if (resdata?.data?.attributes?.fully_onboarded) {
+            push("/account");
+            toast.success("Account Verified");
+          } else {
+            push("/onboarding");
+          }
+        }
       } catch (error) {
+        setLoading(false);
         toast.error(
           "Something went wrong please try again or check your network connection"
         );

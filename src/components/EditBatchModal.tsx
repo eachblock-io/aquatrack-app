@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import toast from "react-hot-toast";
 import {
-  useCreateBatchMutation,
+  useEditBatchMutation,
   useGetAllBatchsDataQuery,
 } from "@/redux/services/batchApiSlice";
 import { CalendarIcon } from "@radix-ui/react-icons";
@@ -31,21 +31,25 @@ import {
 } from "@/components/ui/popover";
 import { formatDate } from "@/utils";
 
-const AddBatchModal = ({ open, setOpen, farmId }: any) => {
+const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
   const cancelButtonRef = useRef(null);
-  const [createBatch] = useCreateBatchMutation();
+  const [editBatch] = useEditBatchMutation();
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState("");
-  const [type, setType] = useState<String>("");
+  const [status, setStatus] = useState(batchData?.attributes?.status || "");
+  const [type, setType] = useState<String>(
+    batchData?.attributes?.fish_type || ""
+  );
   const [date, setDate] = useState<Date>();
-  const [specie, setSpecie] = useState<String>("");
+  const [specie, setSpecie] = useState<String>(
+    batchData?.attributes?.fish_specie || ""
+  );
   const [formData, setFormData] = useState<any>({
-    name: "",
-    unit_purchase: "",
-    price_per_unit: "",
-    amount_spent: "",
-    vendor: "",
-    status: "",
+    name: batchData?.attributes?.name || "",
+    unit_purchase: batchData?.attributes?.unit_purchase || "",
+    price_per_unit: batchData?.attributes?.price_per_unit || "",
+    amount_spent: batchData?.attributes?.amount_spent || "",
+    vendor: batchData?.attributes?.vendor || "",
+    status: batchData?.attributes?.status || "",
     date_purchased: "",
   });
   const [errors, setErrors] = useState({
@@ -59,6 +63,8 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
     status: "",
     date_purchased: "",
   });
+
+  //   console.log(batchData);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -108,7 +114,7 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
     if (Object.values(newErrors).every((error) => !error)) {
       // setLoading(true);
       try {
-        await createBatch({ formdata, farmId }).unwrap();
+        await editBatch({ formdata, farmId }).unwrap();
         toast.success("Batch created ✔️");
         setOpen(false);
         setFormData("");
@@ -378,4 +384,4 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
   );
 };
 
-export default AddBatchModal;
+export default EditBatchModal;

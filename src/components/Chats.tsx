@@ -18,13 +18,13 @@ const MortalityChat = ({ data }: any) => {
         <MortalityChart data={data?.graph_data} />
       </div>
 
-      <div className="chart mt-8">
+      {/* <div className="chart mt-8">
         <h2 className="text-[--primary] font-bold lg:text-2xl text-lg mb-6 mt-6">
           Farm Details
         </h2>
         <div className="grid lg:grid-cols-2 grid-cols-2 items-center bg-white p-6 rounded-xl">
           <div className="chat">
-            {/* <FarmChart data={data?.farm_details} /> */}
+            <FarmChart data={data?.farm_details} />
           </div>
           <div className="flex flex-col space-y-4 mx-auto ">
             <div className="flex items-center">
@@ -74,7 +74,7 @@ const MortalityChat = ({ data }: any) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

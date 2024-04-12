@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import { useDeletePondMutation } from "@/redux/services/pondsApiSlice";
 import toast from "react-hot-toast";
 
-const DeleteModal = ({ open, setOpen, openDelID, farmId }: any) => {
+const DeleteHarvestModal = ({ open, setOpen, openDelID, farmId }: any) => {
   const cancelButtonRef = useRef(null);
   const [deletePond] = useDeletePondMutation();
   const [loading, setLoading] = useState(false);
@@ -61,7 +61,7 @@ const DeleteModal = ({ open, setOpen, openDelID, farmId }: any) => {
                       <Dialog.Title
                         as="h3"
                         className="text-xl font-semibold leading-6 text-[--primary] ">
-                        Delete Pond
+                        Delete Harvest
                       </Dialog.Title>
                     </div>
                   </div>
@@ -91,4 +91,4 @@ const DeleteModal = ({ open, setOpen, openDelID, farmId }: any) => {
   );
 };
 
-export default DeleteModal;
+export default DeleteHarvestModal;

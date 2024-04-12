@@ -21,14 +21,12 @@ export async function GET() {
     Authorization: `Bearer ${value}`,
     "Content-Type": "application/json",
   };
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/user`,
-    {
-      headers,
-    }
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
+    headers,
+  });
 
   const user = await res.json();
+
 
   return NextResponse.json({ token: value, user });
 }

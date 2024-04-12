@@ -6,20 +6,24 @@ import viewIcon from "@/public/icons/view-stat.png";
 import AddPondModal from "./AddPondModal";
 import FarmStaticsModal from "./FarmStaticsModal";
 
-const QuickAction = () => {
+const QuickAction = ({ farmId }: any) => {
   const [open, setOpen] = useState(false);
   const [openStats, setOpenStats] = useState(false);
   return (
     <section className="lg:w-11/12 w-11/12 mx-auto mt-6">
-      <AddPondModal open={open} setOpen={setOpen} />
-      <FarmStaticsModal open={openStats} setOpen={setOpenStats} />
+      <AddPondModal farmId={farmId} open={open} setOpen={setOpen} />
+      <FarmStaticsModal
+        farmId={farmId}
+        open={openStats}
+        setOpen={setOpenStats}
+      />
       <h2 className="text-[--primary] font-bold lg:text-2xl text-lg">
         Quick Actions
       </h2>
       <div className="lg:w-8/12 grid grid-cols-2 lg:gap-8 gap-6 lg:mt-10 mt-4">
         <div
           onClick={() => setOpen(true)}
-          className="card bg-white rounded-xl p-6 cursor-pointer flex lg:items-center lg:space-x-4 space-x-2">
+          className="card bg-white rounded-xl lg:p-6 p-4 cursor-pointer flex lg:items-center items-center lg:space-x-4 space-x-2">
           <div>
             <Image
               src={addpondIcon}

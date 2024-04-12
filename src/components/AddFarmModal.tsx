@@ -76,31 +76,11 @@ const AddFarmModal = ({ open, setOpen }: any) => {
       date_established: newDate,
     };
 
-    console.log(formdata);
-
     if (Object.values(newErrors).every((error) => !error)) {
       setLoading(true);
       try {
         await createFarm({ formdata }).unwrap();
-        // const token = await fetchToken();
-        // const myHeaders = new Headers();
-        // // myHeaders.append("Connection", "keep-alive");
-        // myHeaders.append("Accept", "application/json");
-        // myHeaders.append("Content-Type", "application/json");
-        // myHeaders.append("Authorization", `Bearer ${token?.data?.token}`);
-        // const res = await fetch(
-        //   `${process.env.NEXT_PUBLIC_API_URL}/farmer/farms`,
-        //   {
-        //     method: "POST",
-        //     headers: myHeaders,
-        //     body: JSON.stringify(formdata),
-        //     redirect: "follow",
-        //   }
-        // );
-        // const resData = await res.json();
-        // refetch();
         toast.success("Farm created ✔️");
-        // console.log(resData);
         setOpen(false);
         setLoading(false);
       } catch (error) {

@@ -17,36 +17,36 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { describe } from "node:test";
 import { taskDate } from "@/utils";
 import toast from "react-hot-toast";
-import { useCreateTaskMutation } from "@/redux/services/taskApiSlice";
-
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  useEditTaskMutation,
+  useDeleteTaskMutation,
+} from "@/redux/services/taskApiSlice";
+import { MdDelete } from "react-icons/md";
 
-const EditTaskModal = ({ open, setOpen, editdata }: any) => {
+const EditTaskModal = ({ open, setOpen, editdata, farmId }: any) => {
   const cancelButtonRef = useRef(null);
-  const [createTask] = useCreateTaskMutation();
+  const [editTask] = useEditTaskMutation();
+  const [deleteTask] = useDeleteTaskMutation();
   const [loading, setLoading] = useState(false);
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
+  const [openDel, setOpenDel] = useState(false);
+  const [isDel, setIsDel] = useState(false);
+  const [startDate, setStartDate] = useState<any>(
+    editdata?.attributes?.start_date || ""
+  );
+  const [endDate, setEndDate] = useState<any>(
+    editdata?.attributes?.end_date || ""
+  );
   const [des, setDes] = useState(editdata?.attributes?.description || "");
-  const [reminder, setReminder] = useState("");
   const [title, setTitle] = useState(editdata?.attributes?.title || "");
+  const [repeat, setRepeat] = useState(editdata?.attributes?.repeat || "");
   const [errors, setErrors] = useState({
     title: "",
     description: "",
-    set_reminder: "",
   });
 
-  console.log(editdata);
-
+  // Save edit task
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     const strDate = taskDate(startDate);
     const edDate = taskDate(endDate);
@@ -55,13 +55,12 @@ const EditTaskModal = ({ open, setOpen, editdata }: any) => {
     let newErrors = {
       title: "",
       description: "",
-      set_reminder: "",
       startDate: "",
       endDate: "",
     };
 
     if (!title) {
-      newErrors.title = "Name is required";
+      newErrors.title = "Title is required";
     }
     if (!startDate) {
       newErrors.startDate = "Start date is required";
@@ -74,17 +73,14 @@ const EditTaskModal = ({ open, setOpen, editdata }: any) => {
       description: des,
       start_date: strDate,
       due_date: edDate,
-      set_reminder: reminder,
+      repeat: repeat,
     };
 
     if (Object.values(newErrors).every((error) => !error)) {
-      // const farmId = localStorage.getItem("defaultFarmId");
-      const farmId = "9bb9d518-db46-49ee-a41e-e6a87e4003b8";
-      // console.log(farmId);
       setLoading(true);
       try {
-        await createTask({ formdata, farmId }).unwrap();
-        toast.success("Task created ✔️");
+        await editTask({ formdata, farmId, taskId: editdata?.id }).unwrap();
+        toast.success("Task Edited ✔️");
         setOpen(false);
         setLoading(false);
       } catch (error) {
@@ -96,204 +92,226 @@ const EditTaskModal = ({ open, setOpen, editdata }: any) => {
     }
   };
 
+  // Delete task
+  const handleDelete = async () => {
+    setIsDel(true);
+    try {
+      await deleteTask({ farmId, taskId: editdata?.id }).unwrap();
+      toast.success("Task Deleted ✔️");
+      setOpen(false);
+      setOpenDel(false);
+      setIsDel(false);
+    } catch (error) {
+      toast.error(
+        "Something went wrong please try again or check your network connection"
+      );
+      setIsDel(false);
+    }
+  };
+
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-10"
-        initialFocus={cancelButtonRef}
-        onClose={setOpen}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0">
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-        </Transition.Child>
+    <>
+      <Transition.Root show={open} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          initialFocus={cancelButtonRef}
+          onClose={setOpen}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0">
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          </Transition.Child>
 
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-11/12 lg:max-w-lg">
-                <IoClose
-                  onClick={() => setOpen(false)}
-                  className="absolute top-4 right-4 h-6 w-6 text-gray-500 "
-                />
-                <div className="bg-white lg:py-10 lg:px-14 p-10">
-                  <div className="text-center">
-                    <div className="mt-3 text-center sm:ml-4 sm:mt-0">
-                      <Dialog.Title
-                        as="h3"
-                        className="text-2xl font-semibold leading-6 text-[--primary] ">
-                        Edit Task
-                      </Dialog.Title>
-                    </div>
-                  </div>
-                  <form onSubmit={handleSubmit} className="space-y-6 mt-8">
-                    <div className="form-control">
-                      <Label
-                        htmlFor="message-2"
-                        className="text-[--primary] font-normal mb-2">
-                        Title
-                      </Label>
-                      <Input
-                        type="text"
-                        name="title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Task title"
-                        className=" focus-visible:outline-none py-6 "
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-x-4">
-                      <div className="form-control">
-                        <Label
-                          htmlFor="message-2"
-                          className="text-[--primary] font-normal mb-2">
-                          Start date
-                        </Label>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full py-6 justify-start text-left font-normal",
-                                !startDate && "text-muted-foreground"
-                              )}>
-                              <CalendarIcon className="mr-2 h-4 w-4" />
-                              {startDate ? (
-                                format(startDate, "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                              mode="single"
-                              selected={startDate}
-                              onSelect={setStartDate}
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
-                      </div>
-                      <div className="form-control">
-                        <Label
-                          htmlFor="message-2"
-                          className="text-[--primary] font-normal mb-2">
-                          End date
-                        </Label>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full py-6 justify-start text-left font-normal",
-                                !endDate && "text-muted-foreground"
-                              )}>
-                              <CalendarIcon className="mr-2 h-4 w-4" />
-                              {endDate ? (
-                                format(endDate, "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                              mode="single"
-                              selected={endDate}
-                              onSelect={setEndDate}
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
-                      </div>
-                    </div>
-
-                    <div className="form-control">
-                      <Label
-                        htmlFor="message-2"
-                        className="text-[--primary] font-normal mb-2">
-                        Select Reminder
-                      </Label>
-                      <Select
-                        onValueChange={(value) => setReminder(value)}
-                        value={reminder}>
-                        <SelectTrigger className="w-full py-6">
-                          <SelectValue placeholder="Set reminder" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="5 minutes">5 minutes</SelectItem>
-                          <SelectItem value="10  minutes">
-                            10 minutes
-                          </SelectItem>
-                          <SelectItem value="15 minutes">15 minutes</SelectItem>
-                          <SelectItem value="30  minutes">
-                            30 minutes
-                          </SelectItem>
-                          <SelectItem value="1 hour">1 hour</SelectItem>
-                          <SelectItem value="2 hours">2 hours</SelectItem>
-                          <SelectItem value="1 day">1 day</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="form-control">
-                      <Label
-                        htmlFor="message-2"
-                        className="text-[--primary] font-normal mb-2">
-                        Describe
-                      </Label>
-                      <Textarea
-                        placeholder="Type your task Description here."
-                        rows={4}
-                        name="description"
-                        value={des}
-                        onChange={(e) => setDes(e.target.value)}
-                        className="resize-none"
-                        id="message-2"
-                      />
-                    </div>
-                    <div className="form-control">
-                      <p className="text-[--primary] mb-2">Repeat</p>
-                      <div className="flex items-center justify-between space-x-2">
-                        <div className="flex space-x-2">
-                          <MdAccessTime className="text-[--primary]" />
-                          <Label
-                            htmlFor="airplane-mode"
-                            className="text-[--primary] font-normal">
-                            Everyday
-                          </Label>
+          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                enterTo="opacity-100 translate-y-0 sm:scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-11/12 lg:max-w-lg">
+                  <IoClose
+                    onClick={() => setOpen(false)}
+                    className="absolute top-4 right-4 h-6 w-6 text-gray-500 cursor-pointer"
+                  />
+                  <MdDelete
+                    onClick={() => setOpenDel(true)}
+                    className="absolute top-6 left-6 h-6 w-6 text-red-500 cursor-pointer "
+                  />
+                  {openDel && (
+                    <div className="bg-gray-100 w-full absolute bottom-0 left-0 right-0 shadow-lg p-8 rounded-t-4xl z-10 h-[40vh] flex items-center justify-center">
+                      <div className="text-center">
+                        <h1 className="font-semibold text-black-600 text-base">
+                          Are you sure you want to delete this task?
+                        </h1>
+                        <div className="flex items-center justify-between mt-20">
+                          <button
+                            onClick={() => setOpenDel(false)}
+                            className="bg-gray-100 px-4 py-2 rounded-full">
+                            Continue
+                          </button>
+                          <button
+                            onClick={handleDelete}
+                            className="font-semibold text-sm text-red-600 bg-red-200 px-6 py-3 rounded-full">
+                            {isDel ? "Deleting..." : "Yes delete"}
+                          </button>
                         </div>
-                        <Switch
-                          id="airplane-mode"
-                          className="text-[--primary]"
+                      </div>
+                    </div>
+                  )}
+                  <div className="bg-white lg:py-10 lg:px-14 p-10">
+                    <div className="text-center">
+                      <div className="mt-3 text-center sm:ml-4 sm:mt-0">
+                        <Dialog.Title
+                          as="h3"
+                          className="text-2xl font-semibold leading-6 text-[--primary] ">
+                          Edit Task
+                        </Dialog.Title>
+                      </div>
+                    </div>
+                    <form onSubmit={handleSubmit} className="space-y-6 mt-8">
+                      <div className="form-control">
+                        <Label
+                          htmlFor="message-2"
+                          className="text-[--primary] font-normal mb-2">
+                          Title
+                        </Label>
+                        <Input
+                          type="text"
+                          name="title"
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                          placeholder="Task title"
+                          className=" focus-visible:outline-none py-6 "
                         />
                       </div>
-                    </div>
-                    <Button className=" mt-10 outline-none border-none font-semibold bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
-                      {loading ? "Creating..." : "Add Task"}
-                    </Button>
-                  </form>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
+                      <div className="grid grid-cols-2 gap-x-4">
+                        <div className="form-control">
+                          <Label
+                            htmlFor="message-2"
+                            className="text-[--primary] font-normal mb-2">
+                            Start date
+                          </Label>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant={"outline"}
+                                className={cn(
+                                  "w-full py-6 justify-start text-left font-normal",
+                                  !startDate && "text-muted-foreground"
+                                )}>
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                {startDate ? (
+                                  format(startDate, "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start">
+                              <Calendar
+                                mode="single"
+                                selected={startDate}
+                                onSelect={setStartDate}
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                        </div>
+                        <div className="form-control">
+                          <Label
+                            htmlFor="message-2"
+                            className="text-[--primary] font-normal mb-2">
+                            End date
+                          </Label>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant={"outline"}
+                                className={cn(
+                                  "w-full py-6 justify-start text-left font-normal",
+                                  !endDate && "text-muted-foreground"
+                                )}>
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                {endDate ? (
+                                  format(endDate, "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start">
+                              <Calendar
+                                mode="single"
+                                selected={endDate}
+                                onSelect={setEndDate}
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                        </div>
+                      </div>
+
+                      <div className="form-control">
+                        <Label
+                          htmlFor="message-2"
+                          className="text-[--primary] font-normal mb-2">
+                          Describe
+                        </Label>
+                        <Textarea
+                          placeholder="Type your task Description here."
+                          rows={4}
+                          name="description"
+                          value={des}
+                          onChange={(e) => setDes(e.target.value)}
+                          className="resize-none"
+                          id="message-2"
+                        />
+                      </div>
+                      <div className="form-control">
+                        <p className="text-[--primary] mb-2">Repeat</p>
+                        <div className="flex items-center justify-between space-x-2">
+                          <div className="flex space-x-2">
+                            <MdAccessTime className="text-[--primary]" />
+                            <Label
+                              htmlFor="airplane-mode"
+                              className="text-[--primary] font-normal">
+                              Everyday
+                            </Label>
+                          </div>
+                          <Switch
+                            id="airplane-mode"
+                            checked={repeat}
+                            onCheckedChange={(value) => setRepeat(value)}
+                            className="text-[--primary]"
+                          />
+                        </div>
+                      </div>
+                      <Button className=" mt-10 outline-none border-none font-semibold bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
+                        {loading ? "Saving..." : "Save Changes"}
+                      </Button>
+                    </form>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
           </div>
-        </div>
-      </Dialog>
-    </Transition.Root>
+        </Dialog>
+      </Transition.Root>
+    </>
   );
 };
 

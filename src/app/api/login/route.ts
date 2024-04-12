@@ -28,8 +28,11 @@ export async function POST(req: Request, res: NextRequest) {
     path: `/`,
   });
 
+  console.log(data);
+
   const response = {
     message: "Authenticated!",
+    data: data?.data,
   };
 
   return new Response(JSON.stringify(response), {

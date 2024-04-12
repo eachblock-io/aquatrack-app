@@ -1,10 +1,16 @@
+"use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FeedRecord from "./@feedsRecord/page";
 import ExpensesRecord from "./expenses/@expensesRecord/page";
 import EmployeeRecord from "@/components/employee/EmployeeRecord";
 import CustomerRecord from "@/components/customer/CustomerRecord";
+import { useGetCurrentUserQuery } from "@/redux/services/userApiSlice";
 
 const InventoryPage = () => {
+  const { data } = useGetCurrentUserQuery(null);
+  // const { isLoading, data: ponds } = useGetAllPondsDataQuery({
+  //   farmId: data?.data?.organizations[0]?.farms[0].id,
+  // });
 
   return (
     <main className="w-11/12 mx-auto mt-8 ">
@@ -32,7 +38,7 @@ const InventoryPage = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="feeds" className="pt-8">
-          <FeedRecord />
+          <FeedRecord farmId={data?.data?.organizations[0]?.farms[0].id} />
         </TabsContent>
         <TabsContent value="expenses">
           <ExpensesRecord />

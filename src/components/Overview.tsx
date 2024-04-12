@@ -5,8 +5,10 @@ import capitalIcon from "@/public/icons/capital-icon.png";
 import profitIcon from "@/public/icons/profit.png";
 import expensesIcon from "@/public/icons/expenses.png";
 import { useGetFarmDataQuery } from "@/redux/services/farmApiSlice";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Overview = ({ data }: any) => {
+  console.log(data);
   return (
     <section className="lg:w-11/12 w-11/12 mx-auto lg:mt-4">
       <h2 className="text-[--primary] font-bold lg:text-2xl text-lg mt-6">
@@ -36,10 +38,14 @@ const Overview = ({ data }: any) => {
           </div>
           <div className="stat">
             <p className="text-gray-400 lg:text-sm text-xs">Capital</p>
-            <h2 className="font-bold text-[--primary] lg:text-lg text-base">
-              N {data?.overview?.capital}
-            </h2>
-            <p className="text-xs text-green-400">2.5%</p>
+            {data ? (
+              <h2 className="font-bold text-[--primary] lg:text-lg text-base">
+                N {data?.overview?.capital}
+              </h2>
+            ) : (
+              <Skeleton className="h-6 w-[50px] bg-gray-200" />
+            )}
+            {/* <p className="text-xs text-green-400">2.5%</p> */}
           </div>
         </div>
         <div className="card bg-white p-6 rounded-xl flex lg:items-center lg:space-x-4 space-x-2">
@@ -65,10 +71,14 @@ const Overview = ({ data }: any) => {
           </div>
           <div className="stat">
             <p className="text-gray-400 lg:text-sm text-xs">Net Profit</p>
-            <h2 className="font-bold text-[--primary] lg:text-lg text-base">
-              N {data?.overview?.net_profit}
-            </h2>
-            <p className="text-xs text-green-400">2.5%</p>
+            {data ? (
+              <h2 className="font-bold text-[--primary] lg:text-lg text-base">
+                N {data?.overview?.net_profit}
+              </h2>
+            ) : (
+              <Skeleton className="h-6 w-[50px] bg-gray-200" />
+            )}
+            {/* <p className="text-xs text-green-400">2.5%</p> */}
           </div>
         </div>
         <div className="card bg-white p-6 rounded-xl hidden lg:flex lg:items-center lg:space-x-4 space-x-2">
@@ -94,10 +104,14 @@ const Overview = ({ data }: any) => {
           </div>
           <div className="stat">
             <p className="text-gray-400 lg:text-sm text-xs">Total Expenses</p>
-            <h2 className="font-bold text-[--primary] lg:text-lg text-base">
-              N {data?.overview?.total_expense}
-            </h2>
-            <p className="text-xs text-green-400">2.5%</p>
+            {data ? (
+              <h2 className="font-bold text-[--primary] lg:text-lg text-base">
+                N {data?.overview?.total_expense}
+              </h2>
+            ) : (
+              <Skeleton className="h-6 w-[50px] bg-gray-200" />
+            )}
+            {/* <p className="text-xs text-green-400">2.5%</p> */}
           </div>
         </div>
       </div>
@@ -124,10 +138,14 @@ const Overview = ({ data }: any) => {
         </div>
         <div className="stat">
           <p className="text-gray-400 lg:text-sm text-xs">Total Expenses</p>
-          <h2 className="font-bold text-[--primary] lg:text-lg text-base">
-            N {data?.overview?.total_expense}
-          </h2>
-          <p className="text-xs text-green-400">2.5%</p>
+          {data ? (
+            <h2 className="font-bold text-[--primary] lg:text-lg text-base">
+              N {data?.overview?.total_expense}
+            </h2>
+          ) : (
+            <Skeleton className="h-6 w-[50px] bg-gray-200" />
+          )}
+          {/* <p className="text-xs text-green-400">2.5%</p> */}
         </div>
       </div>
     </section>

@@ -2,61 +2,54 @@
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { IoClose } from "react-icons/io5";
-import { Button } from "./ui/button";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCreatePondMutation } from "@/redux/services/pondsApiSlice";
 import toast from "react-hot-toast";
-import { useGetAllBatchsDataQuery } from "@/redux/services/batchApiSlice";
+import { useCreatePurchaseMutation } from "@/redux/services/inventoryApiSlice";
 
-const AddPondModal = ({ open, setOpen, farmId }: any) => {
+const InsertRowModal = ({
+  open,
+  setOpen,
+  farmId,
+  harvestId,
+  customerId,
+}: any) => {
   const cancelButtonRef = useRef(null);
-  const [createPond] = useCreatePondMutation();
+  const [createPurchase] = useCreatePurchaseMutation();
   const [loading, setLoading] = useState(false);
-  const [type, setType] = useState<String>("");
-  const [batchID, setBatchID] = useState<String>("");
-  const [formData, setFormData] = useState({
-    name: "",
-    type: "",
-    holding_capacity: "",
-    unit: "",
+  const [status, setStatus] = useState("");
+  const [formData, setFormData] = useState<any>({
+    quantity: "",
+    pieces: "",
+    price_per_unit: "",
+    amount: "",
     size: "",
-    feed_size: "",
-    mortality_rate: "",
-    batch_id: "",
-    farm_id: "",
   });
   const [errors, setErrors] = useState({
-    name: "",
-    type: "",
-    holding_capacity: "",
-    unit: "",
+    harvest_customer_id: "",
+    quantity: "",
+    pieces: "",
+    price_per_unit: "",
+    amount: "",
+    status: "",
     size: "",
-    feed_size: "",
-    mortality_rate: "",
-    batch_id: "",
-    farm_id: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const parsedValue =
-      [
-        "holding_capacity",
-        "unit",
-        "size",
-        "feed_size",
-        "mortality_rate",
-      ].includes(name) && !isNaN(parseFloat(value))
+      ["quantity", "pieces", "amount", "price_per_unit", "size"].includes(
+        name
+      ) && !isNaN(parseFloat(value))
         ? parseFloat(value)
         : value;
     setFormData({ ...formData, [name]: parsedValue });
@@ -64,47 +57,40 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
   };
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
-    setLoading(true);
     e.preventDefault();
     let newErrors = {
-      name: "",
-      type: "",
-      holding_capacity: "",
-      unit: "",
+      harvest_customer_id: "",
+      quantity: "",
+      pieces: "",
+      price_per_unit: "",
+      amount: "",
+      status: "",
       size: "",
-      feed_size: "",
-      mortality_rate: "",
-      batch_id: "",
-      farm_id: "",
     };
 
-    if (!formData.name) {
-      newErrors.name = "Name is required";
-    }
-    if (!type) {
-      newErrors.type = "Type of ponds is required";
-    }
+    // if (!formData.name) {
+    //   newErrors.name = "Name is required";
+    // }
 
     setErrors(newErrors);
 
     const formdata = {
-      name: formData?.name,
-      type: type,
-      holding_capacity: formData?.holding_capacity,
-      unit: formData?.unit,
+      harvest_customer_id: customerId,
+      quantity: formData?.quantity,
+      pieces: formData?.pieces,
+      price_per_unit: formData?.price_per_unit,
+      amount: formData?.amount,
+      status: status,
       size: formData?.size,
-      feed_size: formData?.feed_size,
-      mortality_rate: formData?.mortality_rate,
-      batch_id: batchID,
-      farm_id: farmId,
     };
 
     if (Object.values(newErrors).every((error) => !error)) {
+      setLoading(true);
       try {
-        setLoading(true);
-        await createPond({ formdata, farmId }).unwrap();
-        toast.success("Pond created ✔️");
+        await createPurchase({ formdata, farmId, harvestId }).unwrap();
+        toast.success("Purchase created ✔️");
         setOpen(false);
+        setFormData("");
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -114,8 +100,6 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
       }
     }
   };
-
-  const { data } = useGetAllBatchsDataQuery({ farmId });
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -150,13 +134,13 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                   onClick={() => setOpen(false)}
                   className="absolute top-4 right-4 h-6 w-6 text-gray-500 "
                 />
-                <div className="bg-white lg:py-10 p-10">
+                <div className="bg-white lg:py-10 lg:px-14 py-10 px-6">
                   <div className="text-center">
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0">
                       <Dialog.Title
                         as="h3"
                         className="text-xl font-semibold leading-6 text-[--primary] ">
-                        Add Pond
+                        Create New Purchase
                       </Dialog.Title>
                     </div>
                   </div>
@@ -166,14 +150,14 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                         <Label
                           htmlFor="message-2"
                           className=" text-gray-500 font-normal mb-3">
-                          Pond name
+                          Quantity
                         </Label>
                         <Input
                           type="text"
-                          name="name"
-                          value={formData?.name}
+                          name="quantity"
+                          value={formData?.quantity}
                           onChange={handleInputChange}
-                          placeholder="Pond name"
+                          placeholder="599"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
                       </div>
@@ -181,32 +165,16 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                         <Label
                           htmlFor="message-2"
                           className=" text-gray-500 font-normal mb-3">
-                          Pond type
+                          Pieces
                         </Label>
-                        <Select
-                          name="type"
-                          onValueChange={(value) => setType(value)}>
-                          <SelectTrigger className="w-full h-12 border-gray-400">
-                            <SelectValue placeholder="Pond type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              <SelectLabel>Type</SelectLabel>
-                              <SelectItem value="Tank pond">
-                                Tank (Plastic/Rubber) pond
-                              </SelectItem>
-                              <SelectItem value="Earthen pond">
-                                Earthen pond
-                              </SelectItem>
-                              <SelectItem value="Concrete pond">
-                                Concrete pond
-                              </SelectItem>
-                              <SelectItem value="Tarpaulin pond">
-                                Tarpaulin pond
-                              </SelectItem>
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
+                        <Input
+                          type="text"
+                          name="pieces"
+                          value={formData?.pieces}
+                          onChange={handleInputChange}
+                          placeholder="20"
+                          className="border-gray-400 focus-visible:outline-none py-6 "
+                        />
                       </div>
                     </div>
                     <div className="grid lg:grid-cols-2 lg:gap-x-4 gap-y-2">
@@ -214,12 +182,12 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                         <Label
                           htmlFor="message-2"
                           className=" text-gray-500 font-normal mb-3">
-                          Fish holding capacity
+                          Price per Unit
                         </Label>
                         <Input
                           type="text"
-                          name="holding_capacity"
-                          value={formData?.holding_capacity}
+                          name="price_per_unit"
+                          value={formData?.price_per_unit}
                           onChange={handleInputChange}
                           placeholder="500"
                           className="border-gray-400 focus-visible:outline-none py-6 "
@@ -229,12 +197,12 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                         <Label
                           htmlFor="message-2"
                           className=" text-gray-500 font-normal mb-3">
-                          Unit
+                          Amount
                         </Label>
                         <Input
                           type="text"
-                          name="unit"
-                          value={formData?.unit}
+                          name="amount"
+                          value={formData?.amount}
                           onChange={handleInputChange}
                           placeholder="300"
                           className="border-gray-400 focus-visible:outline-none py-6 "
@@ -253,66 +221,35 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                           name="size"
                           value={formData?.size}
                           onChange={handleInputChange}
-                          placeholder="0 - 0.5g"
+                          placeholder="Vendor name"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
                       </div>
-                      <div className="form-control">
+                      <div className="form-control flex items-center space-x-2 mt-3">
                         <Label
                           htmlFor="message-2"
-                          className=" text-gray-500 font-normal mb-3">
-                          Feed size
-                        </Label>
-                        <Input
-                          type="text"
-                          name="feed_size"
-                          value={formData?.feed_size}
-                          onChange={handleInputChange}
-                          placeholder="6mm"
-                          className="border-gray-400 focus-visible:outline-none py-6 "
-                        />
-                      </div>
-                    </div>
-                    <div className="grid lg:grid-cols-2 lg:gap-x-4 gap-y-2">
-                      <div className="form-control">
-                        <Label
-                          htmlFor="message-2"
-                          className=" text-gray-500 font-normal mb-3">
-                          Mortality rate
-                        </Label>
-                        <Input
-                          type="text"
-                          name="mortality_rate"
-                          value={formData?.mortality_rate}
-                          onChange={handleInputChange}
-                          placeholder="30 units"
-                          className="border-gray-400 focus-visible:outline-none py-6 "
-                        />
-                      </div>
-                      <div className="form-control">
-                        <Label
-                          htmlFor="message-2"
-                          className=" text-gray-500 font-normal mb-3">
-                          Batch
+                          className=" text-gray-500 font-normal">
+                          Status
                         </Label>
                         <Select
-                          name="batch_id"
-                          onValueChange={(value) => setBatchID(value)}>
-                          <SelectTrigger className="w-full h-12 border-gray-400">
-                            <SelectValue placeholder="Batch" />
+                          name="status"
+                          onValueChange={(value) => setStatus(value)}>
+                          <SelectTrigger
+                            className={`w-full h-10 ${
+                              status === `sold out`
+                                ? ` bg-red-100 text-red-400`
+                                : `bg-[#A3EED8] `
+                            } border-none rounded-full`}>
+                            <SelectValue placeholder="Status" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              <SelectLabel>
-                                {data?.data.length === 0
-                                  ? "Create Batch before creating ponds"
-                                  : "Batch"}
-                              </SelectLabel>
-                              {data?.data?.map((task: any) => (
-                                <SelectItem value={task?.id} key={task?.id}>
-                                  {task?.attributes?.name}
-                                </SelectItem>
-                              ))}
+                              <SelectItem value="paid">Paid</SelectItem>
+                              <SelectItem
+                                value="pending"
+                                className="bg-red-100 text-red-500">
+                                Pending
+                              </SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
@@ -320,9 +257,9 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                     </div>
                     <div className="flex items-center justify-between space-x-6">
                       <Button
-                        type="submit"
-                        className=" mt-10 outline-none border-none font-normal text-xs bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
-                        {loading ? "Loading..." : " Add Pond"}
+                        disabled={loading}
+                        className=" mt-10 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
+                        {loading ? "Creating purchase..." : "Create purchase"}
                       </Button>
                     </div>
                   </form>
@@ -336,4 +273,4 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
   );
 };
 
-export default AddPondModal;
+export default InsertRowModal;

@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import { useDeletePondMutation } from "@/redux/services/pondsApiSlice";
 import toast from "react-hot-toast";
 
-const DeleteModal = ({ open, setOpen, openDelID, farmId }: any) => {
+const DeletePondModal = ({ open, setOpen, openDelID, farmId }: any) => {
   const cancelButtonRef = useRef(null);
   const [deletePond] = useDeletePondMutation();
   const [loading, setLoading] = useState(false);
@@ -91,4 +91,4 @@ const DeleteModal = ({ open, setOpen, openDelID, farmId }: any) => {
   );
 };
 
-export default DeleteModal;
+export default DeletePondModal;

@@ -4,9 +4,13 @@ import { Dialog, Transition } from "@headlessui/react";
 import { IoClose } from "react-icons/io5";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { useGetAllPondsStatQuery } from "@/redux/services/pondsApiSlice";
 
-const FarmStaticsModal = ({ open, setOpen }: any) => {
+const FarmStaticsModal = ({ open, setOpen, farmId }: any) => {
   const cancelButtonRef = useRef(null);
+  const { data } = useGetAllPondsStatQuery({ farmId });
+
+  // console.log(data?.data);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -61,6 +65,7 @@ const FarmStaticsModal = ({ open, setOpen }: any) => {
                         </Label>
                         <Input
                           type="text"
+                          value={data?.data?.total_ponds}
                           placeholder="Six (6)"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
@@ -73,6 +78,7 @@ const FarmStaticsModal = ({ open, setOpen }: any) => {
                         </Label>
                         <Input
                           type="text"
+                          value={data?.data?.total_stocked}
                           placeholder="3000 units"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
@@ -87,6 +93,7 @@ const FarmStaticsModal = ({ open, setOpen }: any) => {
                         </Label>
                         <Input
                           type="text"
+                          value={data?.data?.total_mortality}
                           placeholder="200 Units"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
@@ -99,6 +106,7 @@ const FarmStaticsModal = ({ open, setOpen }: any) => {
                         </Label>
                         <Input
                           type="text"
+                          value={data?.data?.total_feed_size}
                           placeholder="50 bags"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />

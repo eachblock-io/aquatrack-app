@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { IoCameraOutline } from "react-icons/io5";
+import { FaCamera } from "react-icons/fa6";
 
 const SettingsForm = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -30,25 +31,27 @@ const SettingsForm = () => {
   return (
     <div className="w-6/12">
       <div className="flex items-center justify-center mt-10 mb-20 ">
-        <div className="lg:w-24 lg:h-24 w-20 h-20 relative">
-          <Avatar className="p-0 m-0 lg:w-[8rem] lg:h-[8rwm] w-20 h-20 border border-gray-600">
+        <div className="lg:w-40 lg:h-40 w-20 h-20 relative">
+          <Avatar className="p-0 m-0 lg:w-40 lg:h-40 w-20 h-20 border border-gray-600">
             <AvatarImage
               src={previewSrc ? previewSrc : "https://github.com/shadcn.png"}
             />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <label
-            htmlFor="fileInput"
-            className="flex justify-center items-center absolute bottom-[0rem] right-[-1rem] h-10 w-10 bg-[#F9A21B] rounded-full p-2 cursor-pointer">
-            <IoCameraOutline className="text-4xl text-gray-800" />
-            <input
-              type="file"
-              id="fileInput"
-              accept="image/*"
-              className="hidden"
-              onChange={handleFileChange}
-            />
-          </label>
+          <div className="absolute bottom-0 right-0 left-0 h-full rounded-full w-full flex items-center justify-center bg-gray-600/50">
+            <label
+              htmlFor="fileInput"
+              className="flex justify-center items-center h-20 w-20 rounded-full p-2 cursor-pointer">
+              <FaCamera className="lg:w-14 lg:h-14 text-white" />
+              <input
+                type="file"
+                id="fileInput"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+            </label>
+          </div>
         </div>
       </div>
       <form className="space-y-4 my-8">
