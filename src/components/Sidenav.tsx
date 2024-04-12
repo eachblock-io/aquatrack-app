@@ -6,16 +6,20 @@ import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 import { links } from "@/contants";
 import logoutIcon from "@/public/icons/logout.png";
+import LogoutModal from "./LogoutModal";
+import { useState } from "react";
 
 export function Sidenav() {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
 
   return (
     <div
       className={`lg:h-screen lg:w-[18rem] bg-white  shadow-sm transform translate-x-[-100%] lg:translate-x-0 lg:relative absolute left-0 transition ease-in-out duration-100`}>
       <div className="p-6">
-        <Image src={Logo} width="180" alt="Logo" className="" />
+        <Image src={Logo} width="140" alt="Logo" className="" />
       </div>
+      <LogoutModal open={open} setOpen={setOpen} />
 
       <nav className="mt-8 space-y-2">
         {links?.map((data) => (
@@ -39,6 +43,7 @@ export function Sidenav() {
         ))}
         <Button
           variant="ghost"
+          onClick={() => setOpen(true)}
           className="flex w-full items-center justify-start font-bold space-x-2 text-red-500 hover:bg-[#ea1c0115] hover:text-red-500 py-8 pl-4  rounded-xl transition-all">
           <Image
             src={logoutIcon}
