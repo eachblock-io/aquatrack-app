@@ -64,7 +64,7 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
     date_purchased: "",
   });
 
-  //   console.log(batchData);
+  console.log(batchData);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -114,20 +114,19 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
     if (Object.values(newErrors).every((error) => !error)) {
       // setLoading(true);
       try {
-        await editBatch({ formdata, farmId }).unwrap();
+        await editBatch({ formdata, farmId, batchId: batchData?.id }).unwrap();
         toast.success("Batch created ✔️");
         setOpen(false);
         setFormData("");
         setLoading(false);
       } catch (error) {
+        setLoading(false);
         toast.error(
           "Something went wrong please try again or check your network connection"
         );
       }
     }
   };
-
-  //  const { data } = useGetAllBatchsDataQuery({ farmId });
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -168,7 +167,7 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
                       <Dialog.Title
                         as="h3"
                         className="text-xl font-semibold leading-6 text-[--primary] ">
-                        Create New Batch
+                        Edit Batch
                       </Dialog.Title>
                     </div>
                   </div>
@@ -370,7 +369,7 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
                       <Button
                         disabled={loading}
                         className=" mt-10 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
-                        {loading ? "Creating batch..." : "Create Batch"}
+                        {loading ? "Saving..." : "Save Changes"}
                       </Button>
                     </div>
                   </form>

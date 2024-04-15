@@ -53,6 +53,8 @@ const BatchTable: React.FC<TableProps> = ({ data, isLoading, farmId }) => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const reversedArray = reverseArray(data);
 
+  console.log(data);
+
   const toggleSelectAll = () => {
     setSelectAll(!selectAll);
     setSelectedItems(selectAll ? [] : data?.map((item: any) => item?.id));
