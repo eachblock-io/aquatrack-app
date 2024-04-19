@@ -65,8 +65,8 @@ const HarvestList = ({ data, harvestId, farmId }: any) => {
           collapsible
           className="w-full mx-auto ">
           <AccordionItem value={customer?.id} className="w-full">
-            <div className="flex items-center pr-4">
-              <div className="sec-header flex items-center justify-between px-6 w-full ">
+            <div className="flex items-center pr-4 relative">
+              <div className="sec-header flex items-center justify-between px-6 w-full relative">
                 <div className="flex items-center lg:space-x-4 space-x-1">
                   {/* <Checkbox
                   id="terms"
@@ -81,7 +81,7 @@ const HarvestList = ({ data, harvestId, farmId }: any) => {
                     <span className="lg:flex hidden">Payment</span> Pending
                   </p>
                 </div> */}
-                <div className="flex items-center lg:space-x-6 space-x-4">
+                {/* <div className="flex items-center lg:space-x-6 space-x-4">
                   <div>
                     <FaStar className="text-[#F3C531] lg:h-6 lg:w-6 h-5 w-5" />
                   </div>
@@ -109,7 +109,7 @@ const HarvestList = ({ data, harvestId, farmId }: any) => {
                       </MenubarContent>
                     </MenubarMenu>
                   </Menubar>
-                </div>
+                </div> */}
               </div>
               <AccordionTrigger className="w-full mx-auto transition-all [&[data-state=open]>svg]:rotate-180">
                 <IoIosArrowUp
@@ -121,7 +121,12 @@ const HarvestList = ({ data, harvestId, farmId }: any) => {
               </AccordionTrigger>
             </div>
             <AccordionContent className="">
-              <HarvestTable data={customer?.relationships?.purchases} />
+              <HarvestTable
+                customerId={customer?.id}
+                harvestId={harvestId}
+                farmId={farmId}
+                data={customer?.relationships?.purchases}
+              />
             </AccordionContent>
           </AccordionItem>
         </Accordion>

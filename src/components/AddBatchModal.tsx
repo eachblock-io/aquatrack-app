@@ -81,7 +81,7 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
         newFormData = {
           ...newFormData,
           amount_spent: (unitPurchase * pricePerUnit)
-            .toFixed(2)
+            .toFixed()
             .replace(/\B(?=(\d{3})+(?!\d))/g, ","),
         };
       }

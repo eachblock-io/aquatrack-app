@@ -20,6 +20,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const data = await resData.json();
   const token = data?.data?.token;
 
+  console.log(data?.data?.token);
+
   const serialized = serialize(`token`, token, {
     httpOnly: true,
     secure: process.env.NEXT_PUBLIC_NODE_ENV !== `development`,

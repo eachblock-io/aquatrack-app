@@ -88,25 +88,57 @@ export function searchTableData(data: any, query: string): any {
   const lowercaseQuery = query.toLowerCase();
 
   return data?.filter((item: any) => {
-    const { date_purchase, name, unit_purchase, fish_type, status } =
-      item?.attributes;
+    const {
+      date_purchase,
+      name,
+      first_name,
+      last_name,
+      unit_purchase,
+      total_amount,
+      description,
+      size,
+      quantity,
+      fish_type,
+      phone_number,
+      email,
+      role,
+      status,
+    } = item?.attributes;
 
     // Convert each attribute value to lowercase for comparison
     const lowercaseDatePurchase = date_purchase?.toLowerCase();
     const lowercaseName = name?.toLowerCase();
     const lowercaseFishType = fish_type?.toLowerCase();
     const lowercaseStatus = status?.toLowerCase();
+    const lowercaseDescription = description?.toLowerCase();
+    const lowercasePhone_number = phone_number?.toLowerCase();
+    const lowercaseEmail = email?.toLowerCase();
+    const lowercaseRole = role?.toLowerCase();
+    const lowercaseFirstName = first_name?.toLowerCase();
+    const lowercaseLastName = last_name?.toLowerCase();
 
     // Convert unit_purchase to string for comparison
     const stringUnitPurchase = unit_purchase?.toString()?.toLowerCase();
+    const stringSize = size?.toString()?.toLowerCase();
+    const stringQuantity = quantity?.toString()?.toLowerCase();
+    const stringTotal_amount = total_amount?.toString()?.toLowerCase();
 
     // Check if any attribute contains the search query
     return (
       lowercaseDatePurchase?.includes(lowercaseQuery) ||
       lowercaseName?.includes(lowercaseQuery) ||
+      lowercaseFirstName?.includes(lowercaseQuery) ||
+      lowercaseLastName?.includes(lowercaseQuery) ||
       stringUnitPurchase?.includes(lowercaseQuery) ||
       lowercaseFishType?.includes(lowercaseQuery) ||
-      lowercaseStatus?.includes(lowercaseQuery)
+      stringSize?.includes(lowercaseQuery) ||
+      stringQuantity?.includes(lowercaseQuery) ||
+      lowercaseStatus?.includes(lowercaseQuery) ||
+      lowercaseDescription?.includes(lowercaseQuery) ||
+      stringTotal_amount?.includes(lowercaseQuery) ||
+      lowercasePhone_number?.includes(lowercaseQuery) ||
+      lowercaseEmail?.includes(lowercaseQuery) ||
+      lowercaseRole?.includes(lowercaseQuery)
     );
   });
 }

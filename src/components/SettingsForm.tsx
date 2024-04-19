@@ -21,8 +21,7 @@ const SettingsForm = ({ refetch, data }: any) => {
     first_name: data?.attributes?.first_name || "",
     last_name: data?.attributes?.last_name || "",
     email: data?.attributes?.email || "",
-    location: "",
-    phone: "",
+    phone_number: data?.attributes?.phone_number || "",
   });
 
   const handleFileChange = async (e: any) => {
@@ -46,7 +45,6 @@ const SettingsForm = ({ refetch, data }: any) => {
     setIsSaving(true);
     try {
       if (selectedFile) {
-        console.log(selectedFile);
         const formdata = new FormData();
         formdata.append("profile_picture", selectedFile);
         const token = await fetchToken();
@@ -86,8 +84,7 @@ const SettingsForm = ({ refetch, data }: any) => {
     const formdata = {
       first_name: formData?.first_name,
       last_name: formData?.last_name,
-      location: formData?.location,
-      phone: formData?.phone,
+      phone_number: formData?.phone_number,
       email: formData?.email,
     };
 
@@ -173,21 +170,7 @@ const SettingsForm = ({ refetch, data }: any) => {
         </div>
 
         <div className="grid lg:grid-cols-1 lg:gap-x-4 gap-y-4">
-          <div className="form-control">
-            <Label
-              htmlFor="message-2"
-              className=" text-gray-500 font-normal mb-3">
-              Location
-            </Label>
-            <Input
-              type="text"
-              name="location"
-              value={formData?.location}
-              onChange={handleInputChange}
-              placeholder="Port Harcourt, Rivers State. Nigeria"
-              className="border-gray-400 focus-visible:outline-none py-6 "
-            />
-          </div>
+          
           <div className="form-control">
             <Label
               htmlFor="message-2"
@@ -196,8 +179,8 @@ const SettingsForm = ({ refetch, data }: any) => {
             </Label>
             <Input
               type="text"
-              name="phone"
-              value={formData?.phone}
+              name="phone_number"
+              value={formData?.phone_number}
               onChange={handleInputChange}
               placeholder="+234 xxx xxx xxxx"
               className="border-gray-400 focus-visible:outline-none py-6 "

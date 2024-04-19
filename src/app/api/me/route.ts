@@ -27,6 +27,5 @@ export async function GET() {
 
   const user = await res.json();
 
-
   return NextResponse.json({ token: value, user });
 }

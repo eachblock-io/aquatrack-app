@@ -79,6 +79,7 @@ const OnboardingForm = () => {
         );
 
         const resdata = await res.json();
+        console.log(resdata);
         if (resdata?.status == true || resdata?.status == 200) {
           if (resdata?.data?.attributes?.fully_onboarded) {
             push("/account");
@@ -88,6 +89,7 @@ const OnboardingForm = () => {
           }
         }
       } catch (error) {
+        console.log(error);
         setLoading(false);
         toast.error(
           "Something went wrong please try again or check your network connection"

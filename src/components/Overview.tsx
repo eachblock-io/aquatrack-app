@@ -8,7 +8,7 @@ import { useGetFarmDataQuery } from "@/redux/services/farmApiSlice";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const Overview = ({ data }: any) => {
-  console.log(data);
+  // console.log(data);
   return (
     <section className="lg:w-11/12 w-11/12 mx-auto lg:mt-4">
       <h2 className="text-[--primary] font-bold lg:text-2xl text-lg mt-6">

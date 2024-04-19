@@ -21,6 +21,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
+import { dateFormaterAndTime } from "@/utils";
 // import EditModal from "../@editModal/page";
 // import DeleteModal from "../@deleteModal/page";
 
@@ -34,53 +35,18 @@ interface TableData {
 }
 
 interface TableProps {
-  data: TableData[];
+  data: any[];
 }
 
 const CustomerTable: React.FC<TableProps> = ({ data }) => {
-  const [open, setOpen] = useState(false);
-  const [openDel, setOpenDel] = useState(false);
-  const [selectAll, setSelectAll] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
-  const toggleSelectAll = () => {
-    setSelectAll(!selectAll);
-    setSelectedItems(selectAll ? [] : data.map((item) => item.id));
-  };
-
-  const handleCheckboxChange = (id: number) => {
-    const selectedIndex = selectedItems.indexOf(id);
-    let newSelectedItems: number[] = [];
-
-    if (selectedIndex === -1) {
-      newSelectedItems = [...selectedItems, id];
-    } else {
-      newSelectedItems = [
-        ...selectedItems.slice(0, selectedIndex),
-        ...selectedItems.slice(selectedIndex + 1),
-      ];
-    }
-
-    setSelectedItems(newSelectedItems);
-    setSelectAll(newSelectedItems.length === data.length);
-  };
 
   return (
     <div className="bg-gray-50 border-collapse border border-gray-300 pt-6 pb-4 rounded-xl">
-      {/* <EditModal open={open} setOpen={setOpen} />
-      <DeleteModal open={openDel} setOpen={setOpenDel} /> */}
       <Table className="w-full">
         <TableHeader className="">
           <TableRow>
-            <TableHead className="py-4 pl-8 text-black ">
-              <input
-                type="checkbox"
-                checked={selectAll}
-                onChange={toggleSelectAll}
-                className="mr-1 w-4 h-4"
-              />
-            </TableHead>
-            <TableHead className="py-4 text-black font-bold">
+            <TableHead className="py-4 pl-8 text-black font-bold">
               Date Added
             </TableHead>
             <TableHead className="py-4 text-black font-bold">Name</TableHead>
@@ -93,41 +59,18 @@ const CustomerTable: React.FC<TableProps> = ({ data }) => {
           </TableRow>
         </TableHeader>
         <TableBody className="bg-white pl-8">
-          {data.map((item) => (
+          {data?.map((item) => (
             <TableRow key={item.id}>
-              <TableCell className="py-4 pl-8 w-10">
-                <input
-                  type="checkbox"
-                  checked={selectedItems.includes(item.id)}
-                  onChange={() => handleCheckboxChange(item.id)}
-                  className="mr-1 w-4 h-4"
-                />
+              <TableCell className="py-4 pl-8">
+                {dateFormaterAndTime(item?.attributes?.created_at)}
               </TableCell>
-              <TableCell className="py-4">{item.date}</TableCell>
-              <TableCell className="py-4">{item.name}</TableCell>
-              <TableCell className="py-4">{item.name}</TableCell>
-              <TableCell className="py-4">{item.name}</TableCell>
+              <TableCell className="py-4">{item?.attributes?.name}</TableCell>
+              <TableCell className="py-4">{item?.attributes?.email}</TableCell>
               <TableCell className="py-4">
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <HiOutlineDotsVertical />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem
-                      onClick={() => setOpen(true)}
-                      className="space-x-4 text-blue-600 font-bold">
-                      <MdEdit className="text-blue-600 text-xl" />{" "}
-                      <span>Edit</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={() => setOpenDel(true)}
-                      className="space-x-4 text-red-600 font-bold">
-                      <MdDelete className="text-red-600 text-xl" />
-                      <span>Delete</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                {item?.attributes?.phone_number}
+              </TableCell>
+              <TableCell className="py-4">
+                {item?.attributes?.purchases_made}
               </TableCell>
             </TableRow>
           ))}

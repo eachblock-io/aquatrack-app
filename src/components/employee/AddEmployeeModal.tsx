@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { IoClose } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
@@ -14,9 +14,53 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import toast from "react-hot-toast";
+import { useCreateEmployeeMutation } from "@/redux/services/employeeApiSlice";
 
-const AddEmployeeModal = ({ open, setOpen }: any) => {
+const AddEmployeeModal = ({ open, setOpen, farmId }: any) => {
   const cancelButtonRef = useRef(null);
+  const [createEmployee] = useCreateEmployeeMutation();
+  const [role, setRole] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState<any>({
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone_number: "",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+
+      const formdata = {
+        first_name: formData?.first_name,
+        last_name: formData?.last_name,
+        email: formData?.email,
+        phone_number: formData?.phone_number,
+        role: role,
+      };
+      await createEmployee({ formdata, farmId }).unwrap();
+      toast.success("Employee created ✔️");
+      setOpen(false);
+      setFormData("");
+      setRole("");
+      setLoading(false);
+    } catch (error: any) {
+      setLoading(false);
+      toast.error(error?.data?.message);
+    }
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -61,7 +105,7 @@ const AddEmployeeModal = ({ open, setOpen }: any) => {
                       </Dialog.Title>
                     </div>
                   </div>
-                  <form className="space-y-4 mt-8">
+                  <form onSubmit={handleSubmit} className="space-y-4 mt-8">
                     <div className="grid lg:grid-cols-2 lg:gap-x-4 gap-y-2">
                       <div className="form-control">
                         <Label
@@ -71,6 +115,9 @@ const AddEmployeeModal = ({ open, setOpen }: any) => {
                         </Label>
                         <Input
                           type="text"
+                          name="first_name"
+                          value={formData.first_name}
+                          onChange={handleChange}
                           placeholder="John deo"
                           className="bg-gray-100 focus-visible:outline-none py-6 "
                         />
@@ -83,6 +130,9 @@ const AddEmployeeModal = ({ open, setOpen }: any) => {
                         </Label>
                         <Input
                           type="text"
+                          name="last_name"
+                          value={formData.last_name}
+                          onChange={handleChange}
                           placeholder="Deo"
                           className="bg-gray-100 focus-visible:outline-none py-6 "
                         />
@@ -97,6 +147,9 @@ const AddEmployeeModal = ({ open, setOpen }: any) => {
                         </Label>
                         <Input
                           type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
                           placeholder="500"
                           className="bg-gray-100 focus-visible:outline-none py-6 "
                         />
@@ -109,6 +162,9 @@ const AddEmployeeModal = ({ open, setOpen }: any) => {
                         </Label>
                         <Input
                           type="text"
+                          name="phone_number"
+                          value={formData.phone_number}
+                          onChange={handleChange}
                           placeholder="090 9898 0978"
                           className="border-none bg-gray-100 focus-visible:outline-none py-6 "
                         />
@@ -121,27 +177,28 @@ const AddEmployeeModal = ({ open, setOpen }: any) => {
                           className=" text-gray-500 font-normal mb-3">
                           Role
                         </Label>
-                        <Select>
+                        <Select
+                          value={role}
+                          onValueChange={(value) => setRole(value)}>
                           <SelectTrigger className="w-full h-12 bg-gray-100">
                             <SelectValue placeholder="Role" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              <SelectLabel>Admin</SelectLabel>
-                              <SelectItem value="apple">User</SelectItem>
+                              <SelectItem value="Farm Employee">
+                                Farm Employee
+                              </SelectItem>
+                              <SelectItem value="Farm Admin">
+                                Farm Admin
+                              </SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
                       </div>
                     </div>
                     <div className="flex items-center justify-end space-x-6">
-                      {/* <Button
-                        onClick={() => setOpen(false)}
-                        className=" mt-10 border border-[--secondary] bg-white hover:bg-white w-full h-[53px] text-[--secondary] text-xs font-normal ">
-                        Cancle
-                      </Button> */}
                       <Button className="px-8 mt-10 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-auto h-[53px] text-white">
-                        Add employee
+                        {loading ? "Adding..." : "Add employee"}
                       </Button>
                     </div>
                   </form>

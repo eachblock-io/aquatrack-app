@@ -11,11 +11,10 @@ const customerApi = customerApiConfig.injectEndpoints({
         `/farmer/${farmId}/harvest/${harvestId}/customer`,
       providesTags: ["Customer"],
     }),
-    // getCustomer: builder.query({
-    //   query: ({ farmId, customerId }) =>
-    //     `/farmer/${farmId}/customer/${customerId}`,
-    //   providesTags: ["Customer"],
-    // }),
+    getAllCustomers: builder.query({
+      query: ({ farmId }) => `/farmer/${farmId}/customers`,
+      providesTags: ["Customer"],
+    }),
     createCustomer: builder.mutation({
       query: ({ formdata, farmId, harvestId }) => ({
         url: `/farmer/${farmId}/harvest/${harvestId}/customer`,
@@ -28,6 +27,22 @@ const customerApi = customerApiConfig.injectEndpoints({
       query: ({ formdata, farmId, harvestId }) => ({
         url: `/farmer/${farmId}/harvest/${harvestId}/purchase`,
         method: `POST`,
+        body: formdata,
+      }),
+      invalidatesTags: ["Customer"],
+    }),
+    editPurchase: builder.mutation({
+      query: ({ formdata, farmId, harvestId }) => ({
+        url: `/farmer/${farmId}/harvest/${harvestId}/purchase`,
+        method: `POST`,
+        body: formdata,
+      }),
+      invalidatesTags: ["Customer"],
+    }),
+    deletePurchase: builder.mutation({
+      query: ({ formdata, farmId, harvestId, purchaseId }) => ({
+        url: `/farmer/${farmId}/harvest/${harvestId}/purchase/${purchaseId}`,
+        method: `DELETE`,
         body: formdata,
       }),
       invalidatesTags: ["Customer"],
@@ -53,7 +68,10 @@ const customerApi = customerApiConfig.injectEndpoints({
 
 export const {
   useGetCustomersQuery,
+  useGetAllCustomersQuery,
   useCreatePurchaseMutation,
+  useEditPurchaseMutation,
+  useDeletePurchaseMutation,
   useCreateCustomerMutation,
   useEditCustomerMutation,
   useDeleteCustomerMutation,

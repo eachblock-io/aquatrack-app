@@ -41,13 +41,13 @@ const InventoryPage = () => {
           <FeedRecord farmId={data?.data?.organizations[0]?.farms[0].id} />
         </TabsContent>
         <TabsContent value="expenses">
-          <ExpensesRecord />
+          <ExpensesRecord farmId={data?.data?.organizations[0]?.farms[0].id} />
         </TabsContent>
         <TabsContent value="employees">
-          <EmployeeRecord />
+          <EmployeeRecord farmId={data?.data?.organizations[0]?.farms[0].id} />
         </TabsContent>
         <TabsContent value="customers">
-          <CustomerRecord />
+          <CustomerRecord farmId={data?.data?.organizations[0]?.farms[0].id} />
         </TabsContent>
       </Tabs>
     </main>
