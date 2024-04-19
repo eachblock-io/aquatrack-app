@@ -7,7 +7,7 @@ import expensesIcon from "@/public/icons/expenses.png";
 import { useGetFarmDataQuery } from "@/redux/services/farmApiSlice";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const Overview = ({ data }: any) => {
+const Overview = ({ data, isLoading }: any) => {
   // console.log(data);
   return (
     <section className="lg:w-11/12 w-11/12 mx-auto lg:mt-4">
@@ -38,12 +38,12 @@ const Overview = ({ data }: any) => {
           </div>
           <div className="stat">
             <p className="text-gray-400 lg:text-sm text-xs">Capital</p>
-            {data ? (
+            {isLoading ? (
+              <Skeleton className="h-6 w-[50px] bg-gray-200" />
+            ) : (
               <h2 className="font-bold text-[--primary] lg:text-lg text-base">
                 N {data?.overview?.capital}
               </h2>
-            ) : (
-              <Skeleton className="h-6 w-[50px] bg-gray-200" />
             )}
             {/* <p className="text-xs text-green-400">2.5%</p> */}
           </div>
@@ -71,12 +71,12 @@ const Overview = ({ data }: any) => {
           </div>
           <div className="stat">
             <p className="text-gray-400 lg:text-sm text-xs">Net Profit</p>
-            {data ? (
+            {isLoading ? (
+              <Skeleton className="h-6 w-[50px] bg-gray-200" />
+            ) : (
               <h2 className="font-bold text-[--primary] lg:text-lg text-base">
                 N {data?.overview?.net_profit}
               </h2>
-            ) : (
-              <Skeleton className="h-6 w-[50px] bg-gray-200" />
             )}
             {/* <p className="text-xs text-green-400">2.5%</p> */}
           </div>
@@ -104,12 +104,12 @@ const Overview = ({ data }: any) => {
           </div>
           <div className="stat">
             <p className="text-gray-400 lg:text-sm text-xs">Total Expenses</p>
-            {data ? (
+            {isLoading ? (
+              <Skeleton className="h-6 w-[50px] bg-gray-200" />
+            ) : (
               <h2 className="font-bold text-[--primary] lg:text-lg text-base">
                 N {data?.overview?.total_expense}
               </h2>
-            ) : (
-              <Skeleton className="h-6 w-[50px] bg-gray-200" />
             )}
             {/* <p className="text-xs text-green-400">2.5%</p> */}
           </div>
