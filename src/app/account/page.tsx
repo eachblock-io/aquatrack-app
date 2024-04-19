@@ -13,7 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const AccountPage = () => {
   const { data } = useGetCurrentUserQuery(null);
   // const { defaultFarmId } = useDefaultFarmId();
-  const { data: dashboard } = useGetFarmDataQuery({
+  const { isLoading, data: dashboard } = useGetFarmDataQuery({
     farmId: data?.data?.organizations[0]?.farms[0]?.id,
   });
 
@@ -22,7 +22,7 @@ const AccountPage = () => {
       <NavHeader userdata={data?.data} />
       <main className="w-full  mt-4">
         <Hero data={data?.data} />
-        <Overview data={dashboard?.data} />
+        <Overview data={dashboard?.data} isLoading={isLoading} />
         <section className="flex lg:flex-row flex-col lg:space-x-8 space-y-10 lg:space-y-0 lg:mt-20 mt-10 w-11/12 mx-auto pb-10">
           <Chats data={dashboard?.data} />
           <AddTask farmID={data?.data?.organizations[0]?.farms[0]?.id} />
