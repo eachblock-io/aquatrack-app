@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useGetAllFarmsQuery } from "@/redux/services/farmApiSlice";
 import fetchToken from "@/lib/auth";
-import useDefaultFarmId from "@/hooks/useDefaultFarmId";
+// import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 import { GiCirclingFish } from "react-icons/gi";
 import {
   Accordion,
@@ -49,7 +49,7 @@ const NavHeader = ({ userdata }: any) => {
   const [toggle, setToggle] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const { handleFarmClick } = useDefaultFarmId();
+  // const { handleFarmClick } = useDefaultFarmId();
 
   const defaultOrgId = data?.data?.organizations[0]?.id;
 
@@ -140,7 +140,7 @@ const NavHeader = ({ userdata }: any) => {
                           <AccordionItem key={org?.id} value={org?.id}>
                             <AccordionTrigger className="h-2 p-0 py-4 border-none w-full">
                               <label
-                                onClick={() => handleFarmClick(org?.id)}
+                                // onClick={() => handleFarmClick(org?.id)}
                                 className={`text-sm p-2 mb-4 flex items-center cursor-pointer w-full ${
                                   org?.id === defaultOrgId
                                     ? `bg-gray-200 rounded-lg`
