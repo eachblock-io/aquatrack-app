@@ -23,11 +23,13 @@ import AddHarvestModal from "@/components/AddHarvestModal";
 import { useGetAllHarvestQuery } from "@/redux/services/harvestApiSlice";
 import { searchHarvestTableData } from "@/utils";
 import DeleteHarvestModal from "@/components/DeleteHarvestModal";
+import Image from "next/image";
+import emptyImg from "@/public/empty.png";
 
 
 const HarvestPage = () => {
   const { data } = useGetCurrentUserQuery(null);
-  const { data: harvestData } = useGetAllHarvestQuery({
+  const { isLoading, data: harvestData } = useGetAllHarvestQuery({
     farmId: data?.data?.organizations[0]?.farms[0]?.id,
   });
   const [open, setOpen] = useState(false);
@@ -52,7 +54,7 @@ const HarvestPage = () => {
           setOpen={setOpen}
         />
         <DeleteHarvestModal open={openDel} setOpen={setOpenDel} />
-        <HarvestStats data={harvestData?.data} />
+        <HarvestStats data={harvestData?.data} isLoading={isLoading} />
         {/* Header section */}
         <section className="grid lg:grid-cols-2 grid-cols-1 gap-8 mt-8">
           <div className="flex items-center space-x-6">
@@ -113,13 +115,36 @@ const HarvestPage = () => {
           <h2 className="text-[--primary] font-bold lg:text-xl text-lg mb-4">
             Harvest History
           </h2>
-          <HarvestTable
-            data={
-              filteredData?.length > 0
-                ? filteredData
-                : harvestData?.data?.harvests?.data
-            }
-          />
+
+          {harvestData?.data?.harvests?.data?.length > 0 ? (
+            <HarvestTable
+              data={
+                filteredData?.length > 0
+                  ? filteredData
+                  : harvestData?.data?.harvests?.data
+              }
+            />
+          ) : (
+            <section className="h-[70vh] flex items-center justify-center">
+              <div className="relative lg:w-6/12 w-10/12 mx-auto">
+                <div className="text absolute top-14 w-full text-center">
+                  <h2 className="font-bold text-2xl mb-2">No Batch Added</h2>
+                  <p>
+                    There are no batch here yet. However, once there are any,
+                    they will be displayed here.
+                  </p>
+                </div>
+                <Image
+                  src={emptyImg}
+                  alt="empty"
+                  height={300}
+                  width={200}
+                  layout="fixed"
+                  className="mx-auto"
+                />
+              </div>
+            </section>
+          )}
         </div>
       </main>
     </>
