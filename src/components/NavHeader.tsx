@@ -49,9 +49,7 @@ const NavHeader = ({ userdata }: any) => {
   const [toggle, setToggle] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // const { defaultFarmId, handleFarmClick } = useDefaultFarmId(data?.data);
-
-  // console.log(data?.data?.organizations);
+  // const { handleFarmClick } = useDefaultFarmId();
 
   const defaultOrgId = data?.data?.organizations[0]?.id;
 
@@ -98,10 +96,11 @@ const NavHeader = ({ userdata }: any) => {
                   aria-expanded="true"
                   onClick={() => setToggle(!toggle)}>
                   <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    {/* <AvatarFallback>
-                  {userdata?.attributes?.first_name[0]} {userdata?.attributes?.last_name[0]}
-                </AvatarFallback> */}
+                    <AvatarImage src={userdata?.attributes?.profile_photo} />
+                    <AvatarFallback>
+                      {userdata?.attributes?.first_name[0]}{" "}
+                      {userdata?.attributes?.last_name[0]}
+                    </AvatarFallback>
                   </Avatar>
                   <div>
                     <p className="text-sm font-semibold text-[--primary] lg:flex hidden ">

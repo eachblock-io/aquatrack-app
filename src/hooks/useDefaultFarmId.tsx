@@ -1,8 +1,11 @@
 // import { useGetFarmDataQuery } from "@/redux/services/farmApiSlice";
+// import { useGetCurrentUserQuery } from "@/redux/services/userApiSlice";
 // import { useState, useEffect } from "react";
 
 // // Custom hook to manage default farm ID and update it
-// const useDefaultFarmId = (farms: { id: any }[]) => {
+// const useDefaultFarmId = () => {
+//   const { data } = useGetCurrentUserQuery(null);
+//   console.log(data?.data?.organizations[0]?.farms[0]?.id);
 //   // Initialize state for default farm ID
 //   const [defaultFarmId, setDefaultFarmId] = useState(() => {
 //     // Retrieve default farm ID from local storage or use the first farm ID from the array
@@ -10,7 +13,7 @@
 //       typeof window === "undefined"
 //         ? localStorage.getItem("defaultFarmId")
 //         : null;
-//     return storedFarmId || farms[0]?.id;
+//     return storedFarmId || data?.data?.organizations[0]?.farms[0]?.id;
 //   });
 
 //   const { refetch } = useGetFarmDataQuery({

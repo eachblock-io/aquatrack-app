@@ -9,8 +9,16 @@ const userApi = userApiConfig.injectEndpoints({
       providesTags: ["User"],
       keepUnusedDataFor: 5,
     }),
+    editProfile: builder.mutation({
+      query: ({ formdata }) => ({
+        url: `/update-profile`,
+        method: `POST`,
+        body: formdata,
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useGetCurrentUserQuery } = userApi;
+export const { useGetCurrentUserQuery, useEditProfileMutation } = userApi;

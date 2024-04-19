@@ -17,12 +17,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { IoIosArrowDown } from "react-icons/io";
-import { HiOutlineDotsVertical } from "react-icons/hi";
-import { MdEdit } from "react-icons/md";
-import { MdDelete } from "react-icons/md";
-// import EditModal from "../@editModal/page";
-// import DeleteModal from "../@deleteModal/page";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+import { Skeleton } from "@/components/ui/skeleton";
+import Image from "next/image";
+import emptyImg from "@/public/empty.png";
+import { dateFormaterAndTime } from "@/utils";
+import DeleteEmployeeModal from "./DeleteEmployeeModal";
+import EditEmployeeModal from "./EditEmployeeModal";
 
 interface TableData {
   id: number;
@@ -34,12 +35,15 @@ interface TableData {
 }
 
 interface TableProps {
-  data: TableData[];
+  data: any[];
+  farmId: string;
 }
 
-const EmployeeTable: React.FC<TableProps> = ({ data }) => {
+const EmployeeTable: React.FC<TableProps> = ({ data, farmId }) => {
   const [open, setOpen] = useState(false);
   const [openDel, setOpenDel] = useState(false);
+  const [editData, setEditData] = useState({});
+  const [employeeId, seteEmployeeId] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
@@ -65,70 +69,159 @@ const EmployeeTable: React.FC<TableProps> = ({ data }) => {
     setSelectAll(newSelectedItems.length === data.length);
   };
 
+  const handleEdit = (value: any) => {
+    setEditData(value);
+    setOpen(true);
+  };
+
+  const handleDelete = (id: any) => {
+    if (id) {
+      seteEmployeeId(id);
+      setOpenDel(true);
+    }
+  };
+
   return (
     <div className="bg-gray-50 border-collapse border border-gray-300 pt-6 pb-4 rounded-xl">
-      {/* <EditModal open={open} setOpen={setOpen} />
-      <DeleteModal open={openDel} setOpen={setOpenDel} /> */}
-      <Table className="w-full">
-        <TableHeader className="">
-          <TableRow>
-            <TableHead className="py-4 pl-8 text-black ">
-              <input
-                type="checkbox"
-                checked={selectAll}
-                onChange={toggleSelectAll}
-                className="mr-1 w-4 h-4"
-              />
-            </TableHead>
-            <TableHead className="py-4 text-black font-bold">Name</TableHead>
-            <TableHead className="py-4 text-black font-bold">Email</TableHead>
-            <TableHead className="py-4 text-black font-bold">
-              Phone Number
-            </TableHead>
-            <TableHead className="py-4 text-black font-bold">Role</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody className="bg-white pl-8">
-          {data.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell className="py-4 pl-8 w-10">
+      {editData && (
+        <EditEmployeeModal
+          open={open}
+          setOpen={setOpen}
+          farmId={farmId}
+          editData={editData}
+        />
+      )}
+      <DeleteEmployeeModal
+        open={openDel}
+        setOpen={setOpenDel}
+        employeeId={employeeId}
+        farmId={farmId}
+      />
+      {data?.length > 0 ? (
+        <Table className="w-full">
+          <TableHeader className="">
+            <TableRow>
+              <TableHead className="py-4 pl-8 text-black ">
                 <input
                   type="checkbox"
-                  checked={selectedItems.includes(item.id)}
-                  onChange={() => handleCheckboxChange(item.id)}
+                  checked={selectAll}
+                  onChange={toggleSelectAll}
                   className="mr-1 w-4 h-4"
                 />
-              </TableCell>
-              <TableCell className="py-4">{item.date}</TableCell>
-              <TableCell className="py-4">{item.name}</TableCell>
-              <TableCell className="py-4">{item.name}</TableCell>
-              <TableCell className="py-4">{item.name}</TableCell>
-              <TableCell className="py-4">
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <HiOutlineDotsVertical />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem
-                      onClick={() => setOpen(true)}
-                      className="space-x-4 text-blue-600 font-bold">
-                      <MdEdit className="text-blue-600 text-xl" />{" "}
-                      <span>Edit</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={() => setOpenDel(true)}
-                      className="space-x-4 text-red-600 font-bold">
-                      <MdDelete className="text-red-600 text-xl" />
-                      <span>Delete</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
+              </TableHead>
+              <TableHead className="py-4 text-black font-bold">Name</TableHead>
+              <TableHead className="py-4 text-black font-bold">Email</TableHead>
+              <TableHead className="py-4 text-black font-bold">
+                Phone Number
+              </TableHead>
+              <TableHead className="py-4 text-black font-bold">Role</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          {data ? (
+            <TableBody className="bg-white pl-8">
+              {data?.map((item: any) => (
+                <TableRow key={item.id}>
+                  <TableCell className="py-4 pl-8 w-6">
+                    <input
+                      type="checkbox"
+                      checked={selectedItems.includes(item.id)}
+                      onChange={() => handleCheckboxChange(item.id)}
+                      className="mr-1 w-4 h-4"
+                    />
+                  </TableCell>
+                  <TableCell className="py-4">
+                    {item?.attributes?.first_name} {item?.attributes?.last_name}
+                  </TableCell>
+                  <TableCell className="py-4">
+                    {item?.attributes?.email}
+                  </TableCell>
+                  <TableCell className="py-4">
+                    {item?.attributes?.phone_number}
+                  </TableCell>
+                  <TableCell className="py-4 lowercase">
+                    {item?.attributes?.role}
+                  </TableCell>
+                  <TableCell className="py-4 flex items-center space-x-4">
+                    <span
+                      className={`${
+                        item?.attributes?.status === "in stock"
+                          ? `bg-blue-100 text-blue-400`
+                          : `bg-red-100 text-red-400`
+                      } rounded-full py-2 px-3 text-xs font-semibold`}>
+                      {item?.attributes?.status}
+                    </span>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="text-xl">
+                        <BiDotsVerticalRounded />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem onClick={() => handleEdit(item)}>
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() => handleDelete(item?.id)}
+                          className="text-red-400">
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          ) : (
+            <TableBody className="bg-white pl-8">
+              <TableRow>
+                <TableCell>
+                  <Skeleton className="h-4 w-full bg-gray-200" />
+                  <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-full bg-gray-200" />
+                  <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-full bg-gray-200" />
+                  <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-full bg-gray-200" />
+                  <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-full bg-gray-200" />
+                  <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-full bg-gray-200" />
+                  <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          )}
+        </Table>
+      ) : (
+        <section className="h-[70vh] flex items-center justify-center">
+          <div className="relative lg:w-6/12 w-10/12 mx-auto">
+            <div className="text absolute top-14 w-full text-center">
+              <h2 className="font-bold text-2xl mb-2">No Feed Added</h2>
+              <p>
+                There are no feed data yet. However, once there are any, they
+                will be displayed here.
+              </p>
+            </div>
+            <Image
+              src={emptyImg}
+              alt="empty"
+              height={300}
+              width={200}
+              layout="fixed"
+              className="mx-auto"
+            />
+          </div>
+        </section>
+      )}
     </div>
   );
 };

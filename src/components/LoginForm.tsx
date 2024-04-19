@@ -45,10 +45,10 @@ const LoginForm = () => {
           } else {
             push("/onboarding");
           }
-          // setLoading(false);
         }
-      } catch (error) {
-        toast.error("Invalid Credentials");
+      } catch (error: any) {
+        console.log(error?.response?.data?.message);
+        toast.error(error?.response?.data?.message || "Invalid Credentials");
         setLoading(false);
       }
     }

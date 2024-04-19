@@ -2,25 +2,29 @@
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { IoClose } from "react-icons/io5";
-import { Button } from "@/components/ui/button";
-import { useDeleteFeedMutation } from "@/redux/services/feedRecordApiSlice";
+import { Button } from "./ui/button";
+import { useDeletePondMutation } from "@/redux/services/pondsApiSlice";
 import toast from "react-hot-toast";
 
-const DeleteModal = ({ open, setOpen, feedId, farmId }: any) => {
+const DeleteTeamMemberModal = ({
+  open,
+  setOpen,
+  openDelID,
+  farmId,
+  userID,
+}: any) => {
   const cancelButtonRef = useRef(null);
-  const [deleteFeed] = useDeleteFeedMutation();
+  const [deletePond] = useDeletePondMutation();
   const [loading, setLoading] = useState(false);
 
-  const handleDelete = async () => {
+  const handleDeletePond = async () => {
     try {
       setLoading(true);
-      await deleteFeed({ farmId, feedId }).unwrap();
-      toast.success("Deleted ✔️");
+      await deletePond({ farmId, pondId: openDelID }).unwrap();
+      toast.success("Pond Deleted ✔️");
       setOpen(false);
     } catch (error) {
       setLoading(false);
-      console.log(error);
-      toast.error("Error");
     }
   };
 
@@ -63,13 +67,13 @@ const DeleteModal = ({ open, setOpen, feedId, farmId }: any) => {
                       <Dialog.Title
                         as="h3"
                         className="text-xl font-semibold leading-6 text-[--primary] ">
-                        Delete Feed
+                        Delete
                       </Dialog.Title>
                     </div>
                   </div>
                   <p className="text-center text-gray-500 mt-6">
-                    You are about to delete this feed record forever. Are you
-                    really sure about this?
+                    You are about to delete this user. Are you really sure about
+                    this?
                   </p>
                   <div className="flex items-center justify-between space-x-6">
                     <Button
@@ -78,7 +82,7 @@ const DeleteModal = ({ open, setOpen, feedId, farmId }: any) => {
                       Cancle
                     </Button>
                     <Button
-                      onClick={handleDelete}
+                      onClick={handleDeletePond}
                       className=" mt-10 outline-none border-none font-bold text-xs bg-red-500 hover:bg-red-500 w-full h-[53px] text-white">
                       {loading ? "Deleting..." : "Delete"}
                     </Button>
@@ -93,4 +97,4 @@ const DeleteModal = ({ open, setOpen, feedId, farmId }: any) => {
   );
 };
 
-export default DeleteModal;
+export default DeleteTeamMemberModal;

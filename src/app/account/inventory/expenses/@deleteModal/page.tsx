@@ -1,11 +1,26 @@
 "use client";
-import { Fragment, useRef } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { IoClose } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
+import { useDeleteExpenseMutation } from "@/redux/services/expenseRecordApiSlice";
 
-const DeleteModal = ({ open, setOpen }: any) => {
+const DeleteModal = ({ open, setOpen, expenseId, farmId }: any) => {
   const cancelButtonRef = useRef(null);
+  const [deleteExpense] = useDeleteExpenseMutation();
+  const [loading, setLoading] = useState(false);
+
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+      await deleteExpense({ farmId, expenseId }).unwrap();
+      toast.success("Expense Deleted ✔️");
+      setOpen(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -46,13 +61,13 @@ const DeleteModal = ({ open, setOpen }: any) => {
                       <Dialog.Title
                         as="h3"
                         className="text-xl font-semibold leading-6 text-[--primary] ">
-                        Delete Feed
+                        Delete Expense
                       </Dialog.Title>
                     </div>
                   </div>
                   <p className="text-center text-gray-500 mt-6">
-                    You are about to delete this feed record forever. Are you
-                    really sure about this?
+                    You are about to delete this expense forever. Are you really
+                    sure about this?
                   </p>
                   <div className="flex items-center justify-between space-x-6">
                     <Button
@@ -60,8 +75,10 @@ const DeleteModal = ({ open, setOpen }: any) => {
                       className=" mt-10 border border-red-500 bg-white hover:bg-white w-full h-[53px] text-red-500 text-xs font-normal ">
                       Cancle
                     </Button>
-                    <Button className=" mt-10 outline-none border-none font-bold text-xs bg-red-500 hover:bg-[--secondary] w-full h-[53px] text-white">
-                      Delete
+                    <Button
+                      onClick={handleDelete}
+                      className=" mt-10 outline-none border-none font-bold text-xs bg-red-500 hover:bg-red-500 w-full h-[53px] text-white">
+                      {loading ? "Deleting..." : "Delete"}
                     </Button>
                   </div>
                 </div>

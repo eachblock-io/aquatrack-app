@@ -5,18 +5,68 @@ import { IoClose } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { useGetAllBatchsDataQuery } from "@/redux/services/batchApiSlice";
+import { useCreateExpenseMutation } from "@/redux/services/expenseRecordApiSlice";
+import toast from "react-hot-toast";
 
-const AddExpensesModal = ({ open, setOpen }: any) => {
+const AddExpensesModal = ({ open, setOpen, farmId }: any) => {
   const cancelButtonRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const { data } = useGetAllBatchsDataQuery({ farmId });
+  const [createExpense] = useCreateExpenseMutation();
+
+  const [description, setDescription] = useState("");
+  const [total, setTotal] = useState("");
+  const [inputs, setInputs] = useState<
+    Array<{ batch_id: string; amount: string }>
+  >([]);
+
+  const handleInputChange = (
+    index: number,
+    fieldName: string,
+    value: string
+  ) => {
+    const newInputs = [...inputs];
+    newInputs[index] = { ...newInputs[index], [fieldName]: value };
+    setInputs(newInputs);
+
+    // Calculate total
+    const newTotal = newInputs.reduce(
+      (acc, curr) => acc + parseFloat(curr.amount || "0"),
+      0
+    );
+    setTotal(newTotal.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  };
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const splitted_for_batch = inputs.map((input) => ({
+        batch_id: data?.data?.[inputs.indexOf(input)].id, // Retrieve batch_id based on index
+        amount: parseFloat(input.amount), // Convert amount to number if needed
+      }));
+
+      // Convert total to number
+      const total_amount = parseFloat(total.replace(/,/g, ""));
+
+      const formdata = {
+        description: description,
+        total_amount: isNaN(total_amount) ? null : total_amount,
+        splitted_for_batch: splitted_for_batch,
+      };
+
+      await createExpense({ formdata, farmId }).unwrap();
+      toast.success("Expenses created ✔️");
+      setLoading(false);
+      setOpen(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error creating expenses:", error);
+      toast.success("An error occur");
+    }
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -61,7 +111,7 @@ const AddExpensesModal = ({ open, setOpen }: any) => {
                       </Dialog.Title>
                     </div>
                   </div>
-                  <form className="space-y-4 mt-8">
+                  <form onSubmit={handleSubmit} className="space-y-4 mt-8">
                     <div className="">
                       <div className="form-control">
                         <Label
@@ -72,6 +122,8 @@ const AddExpensesModal = ({ open, setOpen }: any) => {
                         <textarea
                           placeholder="Type here..."
                           rows={3}
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
                           className="border-gray-400 w-full bg-gray-100 resize-none focus-visible:outline-none p-4 rounded-lg "
                         />
                       </div>
@@ -85,36 +137,34 @@ const AddExpensesModal = ({ open, setOpen }: any) => {
                           Assign expenses to each batch as you wish
                         </p>
                         <div className="grid grid-cols-3 mt-4 gap-4">
-                          <div className="input-batch flex items-center bg-gray-100 rounded-lg">
-                            <p className="h-12 text-xs flex items-center justify-center rounded-l-lg px-2 text-nowrap bg-[#C9D5ED] border ">
-                              Batch 1
-                            </p>
-                            <Input
-                              type="text"
-                              placeholder="20 bags"
-                              className="border-none outline-none focus-visible:ring-0 focus-visible:outline-none py-6 rounded-none"
-                            />
-                          </div>
-                          <div className="input-batch flex items-center bg-gray-100 rounded-lg">
-                            <p className="h-12 text-xs flex items-center justify-center rounded-l-lg px-2 text-nowrap bg-[#C9D5ED] border ">
-                              Batch 2
-                            </p>
-                            <Input
-                              type="text"
-                              placeholder="20 bags"
-                              className="border-none outline-none focus-visible:ring-0 focus-visible:outline-none py-6 rounded-none"
-                            />
-                          </div>
-                          <div className="input-batch flex items-center bg-gray-100 rounded-lg">
-                            <p className="h-12 text-xs flex items-center justify-center rounded-l-lg px-2 text-nowrap bg-[#C9D5ED] border ">
-                              Batch 3
-                            </p>
-                            <Input
-                              type="text"
-                              placeholder="20 bags"
-                              className="border-none outline-none focus-visible:ring-0 focus-visible:outline-none py-6 rounded-none"
-                            />
-                          </div>
+                          {data?.data?.map((item: any, index: any) => (
+                            <div
+                              key={index}
+                              className="input-batch flex items-center bg-gray-100 rounded-lg">
+                              <p className="h-12 text-xs flex items-center justify-center rounded-l-lg px-2 text-nowrap bg-[#C9D5ED] border ">
+                                {`Batch ${index + 1}`}
+                              </p>
+                              <Input
+                                type="text"
+                                name="amount"
+                                value={inputs[index]?.amount || ""}
+                                onChange={(e) =>
+                                  handleInputChange(
+                                    index,
+                                    "amount",
+                                    e.target.value
+                                  )
+                                }
+                                placeholder="20 bags"
+                                className="border-none outline-none focus-visible:ring-0 focus-visible:outline-none py-6 rounded-none"
+                              />
+                              <input
+                                type="hidden"
+                                name="batch_id"
+                                value={item?.id} // Set the batch_id as hidden input value
+                              />
+                            </div>
+                          ))}
                         </div>
 
                         <div className="form-control mt-6">
@@ -125,19 +175,17 @@ const AddExpensesModal = ({ open, setOpen }: any) => {
                           </Label>
                           <Input
                             type="text"
+                            name="total"
+                            value={total}
+                            onChange={(e) => setTotal(e.target.value)}
                             className="border-none mt-2 h-12 bg-gray-100 outline-none focus-visible:ring-0 focus-visible:outline-none py-6 rounded-lg"
                           />
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center justify-between space-x-6">
-                      {/* <Button
-                        onClick={() => setOpen(false)}
-                        className=" mt-10 border border-[--secondary] bg-white hover:bg-white w-full h-[53px] text-[--secondary] text-xs font-normal ">
-                        Cancle
-                      </Button> */}
-                      <Button className=" mt-10 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
-                        Add new expense
+                      <Button className="mt-4 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
+                        {loading ? "Sending..." : "Add new expense"}
                       </Button>
                     </div>
                   </form>

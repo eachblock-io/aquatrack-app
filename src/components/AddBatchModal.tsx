@@ -62,12 +62,32 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue =
-      ["unit_purchase", "price_per_unit", "amount_spent"].includes(name) &&
-      !isNaN(parseFloat(value))
-        ? parseFloat(value)
-        : value;
-    setFormData({ ...formData, [name]: parsedValue });
+
+    let parsedValue = value;
+
+    // Check if the input is numeric for unit_purchase and price_per_unit fields
+    if (["unit_purchase", "price_per_unit"].includes(name)) {
+      parsedValue = /^\d*\.?\d*$/.test(value) ? value : formData[name];
+    }
+
+    let newFormData = { ...formData, [name]: parsedValue };
+
+    if (["unit_purchase", "price_per_unit"].includes(name)) {
+      const unitPurchase = parseFloat(newFormData.unit_purchase);
+      const pricePerUnit = parseFloat(newFormData.price_per_unit);
+
+      if (!isNaN(unitPurchase) && !isNaN(pricePerUnit)) {
+        // Calculate the amount spent and update the formData
+        newFormData = {
+          ...newFormData,
+          amount_spent: (unitPurchase * pricePerUnit)
+            .toFixed()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+        };
+      }
+    }
+
+    setFormData(newFormData);
     setErrors({ ...errors, [name]: "" });
   };
 
@@ -93,17 +113,26 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
 
     setErrors(newErrors);
 
+    // Convert unit_purchase, price_per_unit, and amount_spent to numbers
+    const unit_purchase = parseFloat(formData.unit_purchase.replace(/,/g, ""));
+    const price_per_unit = parseFloat(
+      formData.price_per_unit.replace(/,/g, "")
+    );
+    const amount_spent = parseFloat(formData.amount_spent.replace(/,/g, ""));
+
     const formdata = {
       name: formData?.name,
-      unit_purchase: formData?.unit_purchase,
-      price_per_unit: formData?.price_per_unit,
-      amount_spent: formData?.amount_spent,
+      unit_purchase: isNaN(unit_purchase) ? null : unit_purchase,
+      price_per_unit: isNaN(price_per_unit) ? null : price_per_unit,
+      amount_spent: isNaN(amount_spent) ? null : amount_spent,
       fish_specie: specie,
       fish_type: type,
       vendor: formData?.vendor,
       status: status,
       date_purchased: date_purchased,
     };
+
+    // console.log(formdata);
 
     if (Object.values(newErrors).every((error) => !error)) {
       // setLoading(true);
@@ -114,6 +143,7 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
         setFormData("");
         setLoading(false);
       } catch (error) {
+        setLoading(false);
         toast.error(
           "Something went wrong please try again or check your network connection"
         );

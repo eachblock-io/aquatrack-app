@@ -15,6 +15,9 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa6";
 import EmployeeTable from "./EmployeeTable";
 import AddEmployeeModal from "./AddEmployeeModal";
+import { useGetEmployeesQuery } from "@/redux/services/employeeApiSlice";
+import { searchTableData } from "@/utils";
+import { Skeleton } from "../ui/skeleton";
 // import ExpensesTable from "../@expensesTable/page";
 // import AddExpensesModal from "../@addExpensesModal/page";
 // import DeleteModal from "../@deleteModal/page";
@@ -47,21 +50,32 @@ const dummyData = [
   // Add more dummy data as needed
 ];
 
-const EmployeeRecord = () => {
+const EmployeeRecord = ({ farmId }: any) => {
   const [open, setOpen] = useState(false);
   const [openDel, setOpenDel] = useState(false);
+  const { data, isLoading } = useGetEmployeesQuery({ farmId });
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filteredData, setFilteredData] = useState<any[]>([]);
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    setFilteredData(searchTableData(data?.data?.data, query));
+  };
 
   return (
     <div>
-      <AddEmployeeModal open={open} setOpen={setOpen} />
+      <AddEmployeeModal open={open} setOpen={setOpen} farmId={farmId} />
       {/* <DeleteModal open={openDel} setOpen={setOpenDel} /> */}
       {/* Header section */}
-      <section className="grid lg:grid-cols-2 grid-cols-1 gap-8 mt-8">
+      <section className="grid lg:grid-cols-2 grid-cols-1 gap-8 mt-10">
         <div className="flex items-center space-x-6">
           <div className="flex items-center bg-white py-2 px-4 rounded-lg w-full">
             <IoMdSearch className="w-6 h-6 text-gray-500" />
             <Input
               type="search"
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
               placeholder="Search"
               className="border-none bg-transparent outline-none shadow-none"
             />
@@ -80,7 +94,7 @@ const EmployeeRecord = () => {
           </div>
         </div>
         <div className="flex lg:items-center items-start lg:justify-around">
-          <div className="flex items-center space-x-6">
+          {/* <div className="flex items-center space-x-6">
             <p className="text-nowrap text-gray-500">Filter by</p>
             <Select>
               <SelectTrigger className=" h-10 border-gray-400 bg-white lg:w-[100px] w-[150px]">
@@ -93,7 +107,7 @@ const EmployeeRecord = () => {
                 </SelectGroup>
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
           <div className="btns space-x-6 hidden lg:flex">
             <Button
               onClick={() => setOpen(true)}
@@ -110,7 +124,21 @@ const EmployeeRecord = () => {
       </section>
 
       <div className="table w-full mt-20">
-        <EmployeeTable data={dummyData} />
+        {isLoading ? (
+          <section className="mt-10 w-full mx-auto">
+            <div className="space-y-2 bg-white p-6 rounded-xl">
+              <Skeleton className="h-4 w-full bg-gray-200" />
+              <Skeleton className="h-4 w-full bg-gray-200" />
+              <Skeleton className="h-4 w-full bg-gray-200" />
+              <Skeleton className="h-4 w-full bg-gray-200" />
+            </div>
+          </section>
+        ) : (
+          <EmployeeTable
+            farmId={farmId}
+            data={filteredData?.length > 0 ? filteredData : data?.data?.data}
+          />
+        )}
       </div>
     </div>
   );

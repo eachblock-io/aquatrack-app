@@ -3,24 +3,23 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { IoClose } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
-import { useDeleteFeedMutation } from "@/redux/services/feedRecordApiSlice";
 import toast from "react-hot-toast";
+import { useDeleteEmployeeMutation } from "@/redux/services/employeeApiSlice";
 
-const DeleteModal = ({ open, setOpen, feedId, farmId }: any) => {
+const DeleteEmployeeModal = ({ open, setOpen, employeeId, farmId }: any) => {
   const cancelButtonRef = useRef(null);
-  const [deleteFeed] = useDeleteFeedMutation();
+  const [deleteEmployee] = useDeleteEmployeeMutation();
   const [loading, setLoading] = useState(false);
 
-  const handleDelete = async () => {
+  const handleDeletePond = async () => {
     try {
       setLoading(true);
-      await deleteFeed({ farmId, feedId }).unwrap();
+      await deleteEmployee({ farmId, employeeId }).unwrap();
       toast.success("Deleted ✔️");
       setOpen(false);
+      setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error);
-      toast.error("Error");
     }
   };
 
@@ -63,12 +62,12 @@ const DeleteModal = ({ open, setOpen, feedId, farmId }: any) => {
                       <Dialog.Title
                         as="h3"
                         className="text-xl font-semibold leading-6 text-[--primary] ">
-                        Delete Feed
+                        Delete Employee
                       </Dialog.Title>
                     </div>
                   </div>
                   <p className="text-center text-gray-500 mt-6">
-                    You are about to delete this feed record forever. Are you
+                    You are about to delete this employee forever. Are you
                     really sure about this?
                   </p>
                   <div className="flex items-center justify-between space-x-6">
@@ -78,7 +77,7 @@ const DeleteModal = ({ open, setOpen, feedId, farmId }: any) => {
                       Cancle
                     </Button>
                     <Button
-                      onClick={handleDelete}
+                      onClick={handleDeletePond}
                       className=" mt-10 outline-none border-none font-bold text-xs bg-red-500 hover:bg-red-500 w-full h-[53px] text-white">
                       {loading ? "Deleting..." : "Delete"}
                     </Button>
@@ -93,4 +92,4 @@ const DeleteModal = ({ open, setOpen, feedId, farmId }: any) => {
   );
 };
 
-export default DeleteModal;
+export default DeleteEmployeeModal;

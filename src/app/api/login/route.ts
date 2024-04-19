@@ -28,14 +28,21 @@ export async function POST(req: Request, res: NextRequest) {
     path: `/`,
   });
 
-
-  const response = {
-    message: "Authenticated!",
-    data: data?.data,
-  };
-
-  return new Response(JSON.stringify(response), {
-    status: 200,
-    headers: { "Set-cookie": serialized },
-  });
+  if (data?.status == true) {
+    const response = {
+      message: data?.message,
+      data: data?.data,
+    };
+    return new Response(JSON.stringify(response), {
+      status: 200,
+      headers: { "Set-cookie": serialized },
+    });
+  } else {
+    const response = {
+      message: data?.message,
+    };
+    return new Response(JSON.stringify(response), {
+      status: 400,
+    });
+  }
 }

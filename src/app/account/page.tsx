@@ -12,12 +12,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const AccountPage = () => {
   const { data } = useGetCurrentUserQuery(null);
-  // const { defaultFarmId } = useDefaultFarmId(data?.data?.farms[0]?.id);
+  // const { defaultFarmId } = useDefaultFarmId();
   const { data: dashboard } = useGetFarmDataQuery({
     farmId: data?.data?.organizations[0]?.farms[0]?.id,
   });
-
-  // console.log(data?.data?.organizations[0]?.farms[0]?.id);
 
   return (
     <>
