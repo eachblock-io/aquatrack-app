@@ -76,6 +76,7 @@ const OnboardingForm = () => {
           }
         }
       } catch (error) {
+        console.log(error)
         setLoading(false);
         toast.error(
           "Something went wrong please try again or check your network connection"

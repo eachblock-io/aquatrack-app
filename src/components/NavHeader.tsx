@@ -251,6 +251,7 @@ const NavHeader = ({ userdata }: any) => {
                   </Link>
                 ))}
                 <Button
+                onClick={() => setOpenLog(true)}
                   variant="ghost"
                   className="flex w-full items-center justify-start font-bold space-x-2 text-red-500 hover:bg-[#ea1c0115] hover:text-red-500 py-8 pl-4  rounded-xl transition-all">
                   <Image

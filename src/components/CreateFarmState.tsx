@@ -4,10 +4,13 @@ import Image from "next/image";
 import emptyImg from "@/public/empty.png";
 import { Button } from "@/components/ui/button";
 
-const CreateFarmState = () => {
+const CreateFarmState = ({ vheight }: any) => {
   const [open, setOpen] = useState(false);
   return (
-    <section className="h-[30vh] flex items-center justify-center">
+    <section
+      className={`h-[${
+        vheight ? vheight : `30vh`
+      }] flex items-center justify-center`}>
       <AddFarmModal open={open} setOpen={setOpen} />
       <div className="relative lg:w-6/12 w-10/12 mx-auto">
         <div className="text absolute top-14 w-full text-center">
