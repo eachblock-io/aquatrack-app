@@ -21,7 +21,7 @@ export function Sidenav() {
       </div>
       <LogoutModal open={open} setOpen={setOpen} />
 
-      <nav className="mt-8 space-y-2">
+      <nav className="mt-8 space-y-2 pb-8">
         {links?.map((data) => (
           <Link
             key={data?.id}
@@ -44,7 +44,7 @@ export function Sidenav() {
         <Button
           variant="ghost"
           onClick={() => setOpen(true)}
-          className="flex w-full items-center justify-start font-bold space-x-2 text-red-500 hover:bg-[#ea1c0115] hover:text-red-500 py-8 pl-4  rounded-xl transition-all">
+          className="flex w-full items-center justify-start font-bold space-x-2 text-red-500 hover:bg-[#ea1c0115] hover:text-red-500 py-6 pl-4  rounded-non transition-all">
           <Image
             src={logoutIcon}
             alt="Logout"

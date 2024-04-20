@@ -10,11 +10,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 const Overview = ({ data, isLoading }: any) => {
   // console.log(data);
   return (
-    <section className="lg:w-11/12 w-11/12 mx-auto lg:mt-4">
-      <h2 className="text-[--primary] font-bold lg:text-2xl text-lg mt-6">
+    <section className="lg:w-11/12 w-11/12 mx-auto">
+      <h2 className="text-[--primary] font-bold lg:text-2xl text-lg">
         Overview
       </h2>
-      <div className="grid lg:grid-cols-3 grid-cols-2 lg:gap-8 gap-4 gap-y-6 lg:mt-4 mt-4">
+      <div className="grid lg:grid-cols-3 grid-cols-2 lg:gap-8 gap-4 gap-y-6 lg:mt-4 mt-2">
         <div className="card bg-white p-6 rounded-xl flex lg:items-center lg:space-x-4 space-x-2">
           <div>
             <Image
@@ -42,7 +42,7 @@ const Overview = ({ data, isLoading }: any) => {
               <Skeleton className="h-6 w-[50px] bg-gray-200" />
             ) : (
               <h2 className="font-bold text-[--primary] lg:text-lg text-base">
-                N {data?.overview?.capital}
+                N {data?.overview?.capital ? data?.overview?.capital : "0.00"}
               </h2>
             )}
             {/* <p className="text-xs text-green-400">2.5%</p> */}
@@ -75,7 +75,10 @@ const Overview = ({ data, isLoading }: any) => {
               <Skeleton className="h-6 w-[50px] bg-gray-200" />
             ) : (
               <h2 className="font-bold text-[--primary] lg:text-lg text-base">
-                N {data?.overview?.net_profit}
+                N{" "}
+                {data?.overview?.net_profit
+                  ? data?.overview?.net_profit
+                  : "0.00"}
               </h2>
             )}
             {/* <p className="text-xs text-green-400">2.5%</p> */}
@@ -108,7 +111,10 @@ const Overview = ({ data, isLoading }: any) => {
               <Skeleton className="h-6 w-[50px] bg-gray-200" />
             ) : (
               <h2 className="font-bold text-[--primary] lg:text-lg text-base">
-                N {data?.overview?.total_expense}
+                N{" "}
+                {data?.overview?.total_expense
+                  ? data?.overview?.total_expense
+                  : "0.00"}
               </h2>
             )}
             {/* <p className="text-xs text-green-400">2.5%</p> */}
@@ -138,12 +144,15 @@ const Overview = ({ data, isLoading }: any) => {
         </div>
         <div className="stat">
           <p className="text-gray-400 lg:text-sm text-xs">Total Expenses</p>
-          {data ? (
-            <h2 className="font-bold text-[--primary] lg:text-lg text-base">
-              N {data?.overview?.total_expense}
-            </h2>
-          ) : (
+          {isLoading ? (
             <Skeleton className="h-6 w-[50px] bg-gray-200" />
+          ) : (
+            <h2 className="font-bold text-[--primary] lg:text-lg text-base">
+              N{" "}
+              {data?.overview?.total_expense
+                ? data?.overview?.total_expense
+                : "0.00"}
+            </h2>
           )}
           {/* <p className="text-xs text-green-400">2.5%</p> */}
         </div>

@@ -41,11 +41,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
+import LogoutModal from "./LogoutModal";
 
 const NavHeader = ({ userdata }: any) => {
   const { data } = useGetAllFarmsQuery(null);
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [openLog, setOpenLog] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -56,6 +58,7 @@ const NavHeader = ({ userdata }: any) => {
   return (
     <nav className="bg-white w-full lg:h-[10vh] h-[8vh] flex items-center justify-center">
       <AddFarmModal open={open} setOpen={setOpen} />
+      <LogoutModal open={openLog} setOpen={setOpenLog} />
       <div className="flex items-center justify-between w-11/12 mx-auto">
         <IoIosMenu
           className="text-[--primary] h-8 w-8 lg:hidden"
@@ -179,8 +182,9 @@ const NavHeader = ({ userdata }: any) => {
                     <DropdownMenuSeparator />
                     <label>
                       <Button
+                        onClick={() => setOpenLog(true)}
                         variant="ghost"
-                        className="flex w-full items-center justify-between font-bold space-x-2 text-red-500 focus:bg-[#ea1c0115] focus:text-red-500  rounded-xl transition-all">
+                        className="flex w-full items-center justify-between font-bold space-x-2 text-red-500 hover:text-red-500 focus:bg-[#ea1c0115] focus:text-red-500  rounded-xl transition-all">
                         <Image
                           src={logoutIcon}
                           alt="Logout"

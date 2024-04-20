@@ -11,9 +11,9 @@ const Hero = ({ data }: any) => {
   // Greeting user function
   const greeting = greetUser();
   return (
-    <section className="lg:w-11/12 w-11/12 mx-auto  ">
+    <section className="lg:w-11/12 w-11/12 mx-auto">
       <div className="flex items-center justify-between lg:mt-0 mt-4">
-        <div className="left-side flex lg:space-x-6 space-x-4 bg-white rounded-xl px-8 py-8 lg:w-9/12 w-full">
+        <div className="left-side flex lg:space-x-6 space-x-4 bg-white rounded-xl lg:px-8 lg:py-8 p-6 lg:w-9/12 w-full">
           <div>
             <Image
               src={heroImg}
