@@ -35,12 +35,15 @@ const AddTask = ({ farmID }: any) => {
       status: "complete",
     };
     try {
-      await editTask({
+      const res = await editTask({
         formdata,
         farmId: farmID,
         taskId: taskData?.id,
       }).unwrap();
+
+      console.log(res);
     } catch (error) {
+      console.log(error);
       toast.error(
         "Something went wrong please try again or check your network connection"
       );

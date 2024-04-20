@@ -30,6 +30,7 @@ const AddTaskModal = ({ open, setOpen, farmId }: any) => {
   const [des, setDes] = useState("");
   const [repeat, setRepeat] = useState(false);
   const [title, setTitle] = useState("");
+  const [resError, setResError] = useState("");
   const [errors, setErrors] = useState({
     title: "",
     description: "",
@@ -65,18 +66,17 @@ const AddTaskModal = ({ open, setOpen, farmId }: any) => {
     };
 
     if (Object.values(newErrors).every((error) => !error)) {
-      // const farmId = localStorage.getItem("defaultFarmId");
-      // const farmId = "9bb9d518-db46-49ee-a41e-e6a87e4003b8";
-      // console.log(farmId);
       setLoading(true);
       try {
         await createTask({ formdata, farmId }).unwrap();
         toast.success("Task created ✔️");
         setOpen(false);
         setLoading(false);
-      } catch (error) {
+      } catch (error: any) {
+        setResError(error?.data?.message);
         toast.error(
-          "Something went wrong please try again or check your network connection"
+          error?.data?.message ||
+            "Something went wrong please try again or check your network connection"
         );
         setLoading(false);
       }
@@ -142,71 +142,78 @@ const AddTaskModal = ({ open, setOpen, farmId }: any) => {
                         className=" focus-visible:outline-none py-6 "
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-x-4">
-                      <div className="form-control">
-                        <Label
-                          htmlFor="message-2"
-                          className="text-[--primary] font-normal mb-2">
-                          Start date
-                        </Label>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full py-6 justify-start text-left font-normal",
-                                !startDate && "text-muted-foreground"
-                              )}>
-                              <CalendarIcon className="mr-2 h-4 w-4" />
-                              {startDate ? (
-                                format(startDate, "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                              mode="single"
-                              selected={startDate}
-                              onSelect={setStartDate}
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
+                    <div>
+                      <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-4">
+                        <div className="form-control">
+                          <Label
+                            htmlFor="message-2"
+                            className="text-[--primary] font-normal mb-2">
+                            Start date
+                          </Label>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant={"outline"}
+                                className={cn(
+                                  "w-full py-6 justify-start text-left font-normal",
+                                  !startDate && "text-muted-foreground"
+                                )}>
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                {startDate ? (
+                                  format(startDate, "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start">
+                              <Calendar
+                                mode="single"
+                                selected={startDate}
+                                onSelect={setStartDate}
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                        </div>
+                        <div className="form-control">
+                          <Label
+                            htmlFor="message-2"
+                            className="text-[--primary] font-normal mb-2">
+                            End date
+                          </Label>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant={"outline"}
+                                className={cn(
+                                  "w-full py-6 justify-start text-left font-normal",
+                                  !endDate && "text-muted-foreground"
+                                )}>
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                {endDate ? (
+                                  format(endDate, "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start">
+                              <Calendar
+                                mode="single"
+                                selected={endDate}
+                                onSelect={setEndDate}
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                        </div>
                       </div>
-                      <div className="form-control">
-                        <Label
-                          htmlFor="message-2"
-                          className="text-[--primary] font-normal mb-2">
-                          End date
-                        </Label>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full py-6 justify-start text-left font-normal",
-                                !endDate && "text-muted-foreground"
-                              )}>
-                              <CalendarIcon className="mr-2 h-4 w-4" />
-                              {endDate ? (
-                                format(endDate, "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                              mode="single"
-                              selected={endDate}
-                              onSelect={setEndDate}
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
-                      </div>
+                      <span className="text-xs text-red-400">{resError}</span>
                     </div>
 
                     <div className="form-control">
