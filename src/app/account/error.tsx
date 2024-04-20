@@ -13,12 +13,11 @@ export default function ErrorBoundary({
 }) {
   return (
     <div className="h-screen flex items-center justify-center bg-orange-50">
-      <Header />
       <div className="text-center w-10/12 mx-auto space-y-8">
         {error?.message == "fetch failed" ? (
           <p className="font-semibold">Network Error</p>
         ) : (
-          <p className="font-semibold">There was a problem</p>
+          <p className="font-semibold text-xl">There was a problem</p>
         )}
         <p>Please try again or contact support if the problem persists.</p>
         <div className="space-x-8">
