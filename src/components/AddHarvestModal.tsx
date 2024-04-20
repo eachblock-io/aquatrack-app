@@ -133,7 +133,7 @@ const AddHarvestModal = ({ open, setOpen, farmId }: any) => {
                         name="name"
                         value={formData?.name}
                         onChange={handleInputChange}
-                        placeholder="Batch Name"
+                        placeholder="Harvest Name"
                         className="border-gray-400 focus-visible:outline-none py-6 "
                       />
                     </div>
@@ -184,7 +184,7 @@ const AddHarvestModal = ({ open, setOpen, farmId }: any) => {
                       <Button
                         disabled={loading}
                         className=" mt-10 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
-                        {loading ? "Creating batch..." : "Create Batch"}
+                        {loading ? "Creating harvest..." : "Create Harvest"}
                       </Button>
                     </div>
                   </form>

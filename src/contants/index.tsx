@@ -38,27 +38,27 @@ export const links: LinkItem[] = [
   },
   {
     id: 2,
-    title: "Ponds",
-    icon: pondsIcon,
-    link: "/account/ponds",
-  },
-  {
-    id: 3,
     title: "Batch",
     icon: batchIcon,
     link: "/account/batch",
   },
   {
-    id: 4,
-    title: "Harvest",
-    icon: harvestIcon,
-    link: "/account/harvest",
+    id: 3,
+    title: "Ponds",
+    icon: pondsIcon,
+    link: "/account/ponds",
   },
   {
-    id: 5,
+    id: 4,
     title: "Inventory",
     icon: inventoryIcon,
     link: "/account/inventory",
+  },
+  {
+    id: 5,
+    title: "Harvest",
+    icon: harvestIcon,
+    link: "/account/harvest",
   },
   {
     id: 6,

@@ -5,23 +5,17 @@ import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import fetchToken from "@/lib/auth";
-import { ReactMultiEmail } from "react-multi-email";
-import "react-multi-email/dist/style.css";
 
 const OnboardingForm = () => {
   const { push } = useRouter();
   const [loading, setLoading] = useState(false);
-  const [emails, setEmails] = useState<string[]>([]);
-  const [focused, setFocused] = useState(false);
   const [formData, setFormData] = useState({
     organization_name: "",
     no_of_farms_owned: "",
-    capital: "",
   });
   const [errors, setErrors] = useState({
     organization_name: "",
     no_of_farms_owned: "",
-    capital: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +33,6 @@ const OnboardingForm = () => {
     let newErrors = {
       organization_name: "",
       no_of_farms_owned: "",
-      capital: "",
     };
 
     if (!formData.organization_name) {
@@ -48,17 +41,12 @@ const OnboardingForm = () => {
     if (!formData.no_of_farms_owned) {
       newErrors.no_of_farms_owned = "Farms is required";
     }
-    if (!formData.capital) {
-      newErrors.capital = "Capital is required";
-    }
 
     setErrors(newErrors);
 
     const reqData = {
       organization_name: formData.organization_name,
       no_of_farms_owned: formData.no_of_farms_owned,
-      capital: formData.capital,
-      team_members: emails,
     };
 
     if (Object.values(newErrors).every((error) => !error)) {
@@ -79,7 +67,6 @@ const OnboardingForm = () => {
         );
 
         const resdata = await res.json();
-        console.log(resdata);
         if (resdata?.status == true || resdata?.status == 200) {
           if (resdata?.data?.attributes?.fully_onboarded) {
             push("/account");
@@ -89,7 +76,7 @@ const OnboardingForm = () => {
           }
         }
       } catch (error) {
-        console.log(error);
+        console.log(error)
         setLoading(false);
         toast.error(
           "Something went wrong please try again or check your network connection"
@@ -142,56 +129,6 @@ const OnboardingForm = () => {
                 </p>
               )}
             </div>
-          </div>
-          <div className="form-control mt-4">
-            <label htmlFor="email" className="text-sm">
-              Enter starting capital
-            </label>
-            <Input
-              type="text"
-              placeholder="Enter farm value"
-              className="h-[60px] mt-1 px-6 bg-transparent outline-none border-gray-500"
-              name="capital"
-              value={formData.capital}
-              onChange={handleInputChange}
-            />
-            {errors.capital && (
-              <p className="text-red-500 text-xs">{errors.capital}</p>
-            )}
-          </div>
-          <div className="form-control mt-4">
-            <label htmlFor="email" className="text-sm">
-              Invite team members
-            </label>
-            <ReactMultiEmail
-              style={{
-                border: "1px solid #333",
-                height: "auto",
-                paddingTop: "10px",
-                paddingBottom: "10px",
-              }}
-              placeholder="Input your email"
-              emails={emails}
-              onChange={(_emails: string[]) => {
-                setEmails(_emails);
-              }}
-              autoFocus={true}
-              onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
-              getLabel={(email, index, removeEmail) => {
-                return (
-                  <div
-                    data-tag
-                    key={index}
-                    style={{ background: "#fafafa", fontWeight: "200" }}>
-                    <div data-tag-item>{email}</div>
-                    <span data-tag-handle onClick={() => removeEmail(index)}>
-                      ×
-                    </span>
-                  </div>
-                );
-              }}
-            />
           </div>
           <Button className=" mt-8 font-semibold bg-[--primary] hover:bg-blue-500 w-full h-[53px] text-white">
             {loading ? "Loading..." : "Complete my profile"}

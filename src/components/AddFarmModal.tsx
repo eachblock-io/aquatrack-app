@@ -24,10 +24,11 @@ import {
   useGetAllFarmsQuery,
 } from "@/redux/services/farmApiSlice";
 import fetchToken from "@/lib/auth";
+import { useGetCurrentUserQuery } from "@/redux/services/userApiSlice";
 
 const AddFarmModal = ({ open, setOpen }: any) => {
   const cancelButtonRef = useRef(null);
-  const { refetch } = useGetAllFarmsQuery(null);
+  const { refetch } = useGetCurrentUserQuery(null);
   const [createFarm] = useCreateFarmMutation();
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState<Date>();
@@ -83,6 +84,7 @@ const AddFarmModal = ({ open, setOpen }: any) => {
         toast.success("Farm created ✔️");
         setOpen(false);
         setLoading(false);
+        refetch();
       } catch (error) {
         toast.error(
           "Something went wrong please try again or check your network connection"
