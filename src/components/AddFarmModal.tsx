@@ -86,6 +86,7 @@ const AddFarmModal = ({ open, setOpen }: any) => {
         setLoading(false);
         refetch();
       } catch (error) {
+        setLoading(false);
         toast.error(
           "Something went wrong please try again or check your network connection"
         );

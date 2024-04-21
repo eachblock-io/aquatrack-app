@@ -93,7 +93,6 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     const date_purchased = formatDate(date);
-    setLoading(true);
     e.preventDefault();
     let newErrors = {
       name: "",
@@ -109,6 +108,30 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
 
     if (!formData.name) {
       newErrors.name = "Name is required";
+    }
+    if (!status) {
+      newErrors.status = "Status is required";
+    }
+    if (!formData.unit_purchase) {
+      newErrors.unit_purchase = "Unit purchase is required";
+    }
+    if (!date) {
+      newErrors.date_purchased = "Date is required";
+    }
+    if (!formData?.amount_spent) {
+      newErrors.amount_spent = "Amount is required";
+    }
+    if (!formData?.vendor) {
+      newErrors.vendor = "Vendor is required";
+    }
+    if (!type) {
+      newErrors.fish_type = "Type is required";
+    }
+    if (!specie) {
+      newErrors.fish_specie = "Specie is required";
+    }
+    if (!formData.price_per_unit) {
+      newErrors.price_per_unit = "Price per unit is required";
     }
 
     setErrors(newErrors);
@@ -212,6 +235,9 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
                           placeholder="Batch Name"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
+                        {errors.name && (
+                          <p className="text-red-500 text-xs">{errors.name}</p>
+                        )}
                       </div>
                       <div className="form-control">
                         <Label
@@ -227,6 +253,11 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
                           placeholder="Units Purchased"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
+                        {errors.unit_purchase && (
+                          <p className="text-red-500 text-xs">
+                            {errors.unit_purchase}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="grid lg:grid-cols-2 lg:gap-x-4 gap-y-2">
@@ -244,6 +275,11 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
                           placeholder="500"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
+                        {errors.price_per_unit && (
+                          <p className="text-red-500 text-xs">
+                            {errors.price_per_unit}
+                          </p>
+                        )}
                       </div>
                       <div className="form-control">
                         <Label
@@ -259,6 +295,11 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
                           placeholder="300"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
+                        {errors.amount_spent && (
+                          <p className="text-red-500 text-xs">
+                            {errors.amount_spent}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="grid lg:grid-cols-2 lg:gap-x-4 gap-y-2">
@@ -282,6 +323,11 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
                             </SelectGroup>
                           </SelectContent>
                         </Select>
+                        {errors.fish_specie && (
+                          <p className="text-red-500 text-xs">
+                            {errors.fish_specie}
+                          </p>
+                        )}
                       </div>
                       <div className="form-control">
                         <Label
@@ -305,6 +351,11 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
                             </SelectGroup>
                           </SelectContent>
                         </Select>
+                        {errors.fish_type && (
+                          <p className="text-red-500 text-xs">
+                            {errors.fish_type}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="grid lg:grid-cols-2 lg:gap-x-4 gap-y-2">
@@ -322,68 +373,89 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
                           placeholder="Vendor name"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
+                        {errors.vendor && (
+                          <p className="text-red-500 text-xs">
+                            {errors.vendor}
+                          </p>
+                        )}
                       </div>
-                      <div className="form-control flex items-center space-x-2 mt-3">
-                        <Label
-                          htmlFor="message-2"
-                          className=" text-gray-500 font-normal">
-                          Status
-                        </Label>
-                        <Select
-                          name="status"
-                          onValueChange={(value) => setStatus(value)}>
-                          <SelectTrigger
-                            className={`w-full h-10 ${
-                              status === `sold out`
-                                ? ` bg-red-100 text-red-400`
-                                : `bg-[#A3EED8] `
-                            } border-none rounded-full`}>
-                            <SelectValue placeholder="Status" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              <SelectItem value="in stock">In Stock</SelectItem>
-                              <SelectItem
-                                value="sold out"
-                                className="bg-red-100 text-red-500">
-                                Sold out
-                              </SelectItem>
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
+                      <div>
+                        <div className="form-control flex items-center space-x-2 mt-3">
+                          <Label
+                            htmlFor="message-2"
+                            className=" text-gray-500 font-normal">
+                            Status
+                          </Label>
+                          <Select
+                            name="status"
+                            onValueChange={(value) => setStatus(value)}>
+                            <SelectTrigger
+                              className={`w-full h-10 ${
+                                status === `sold out`
+                                  ? ` bg-red-100 text-red-400`
+                                  : `bg-[#A3EED8] `
+                              } border-none rounded-full`}>
+                              <SelectValue placeholder="Status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectItem value="in stock">
+                                  In Stock
+                                </SelectItem>
+                                <SelectItem
+                                  value="sold out"
+                                  className="bg-red-100 text-red-500">
+                                  Sold out
+                                </SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        {errors.status && (
+                          <p className="text-red-500 text-xs">
+                            {errors.status}
+                          </p>
+                        )}
                       </div>
                     </div>
-                    <div className="form-control flex flex-col mt-4">
-                      <Label
-                        htmlFor="date_established"
-                        className=" text-gray-500 font-normal mb-2">
-                        Date established
-                      </Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-full py-6 justify-start text-left font-normal",
-                              !date && "text-muted-foreground"
-                            )}>
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {date ? (
-                              format(date, "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={date}
-                            onSelect={setDate}
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
+                    <div>
+                      <div className="form-control flex flex-col mt-4">
+                        <Label
+                          htmlFor="date_purchased"
+                          className=" text-gray-500 font-normal mb-2">
+                          Date established
+                        </Label>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full py-6 justify-start text-left font-normal",
+                                !date && "text-muted-foreground"
+                              )}>
+                              <CalendarIcon className="mr-2 h-4 w-4" />
+                              {date ? (
+                                format(date, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={date}
+                              onSelect={setDate}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                      {errors.date_purchased && (
+                        <p className="text-red-500 text-xs">
+                          {errors.date_purchased}
+                        </p>
+                      )}
                     </div>
                     <div className="flex items-center justify-between space-x-6">
                       {/* <Button

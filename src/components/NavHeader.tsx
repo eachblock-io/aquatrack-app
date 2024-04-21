@@ -55,6 +55,8 @@ const NavHeader = ({ userdata }: any) => {
 
   const defaultOrgId = data?.data?.organizations[0]?.id;
 
+  console.log(userdata?.attributes?.profile_photo);
+
   return (
     <nav className="bg-white w-full lg:h-[10vh] h-[8vh] flex items-center justify-center">
       <AddFarmModal open={open} setOpen={setOpen} />
