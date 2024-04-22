@@ -62,6 +62,7 @@ const SettingsForm = ({ refetch, data }: any) => {
         );
         setIsSaving(false);
         const resdata = await res.json();
+        console.log(resdata);
         setSelectedFile(null);
         refetch();
       }
@@ -94,6 +95,8 @@ const SettingsForm = ({ refetch, data }: any) => {
       setFormData("");
       setLoading(false);
     } catch (error) {
+      setLoading(false);
+      console.log(error);
       toast.error(
         "Something went wrong please try again or check your network connection"
       );
@@ -103,7 +106,7 @@ const SettingsForm = ({ refetch, data }: any) => {
   return (
     <div className="lg:w-6/12 w-11/12 mx-auto mb-20">
       <div className="text-center">
-        <div className="flex items-center justify-center mt-10 lg:mb-20 ">
+        <div className="flex items-center justify-center mt-10 ">
           <div className="lg:w-40 lg:h-40 w-28 h-28 relative">
             <Avatar className="p-0 m-0 lg:w-40 lg:h-40 w-28 h-28 border-2 border-[#02579E]">
               <AvatarImage
@@ -170,7 +173,6 @@ const SettingsForm = ({ refetch, data }: any) => {
         </div>
 
         <div className="grid lg:grid-cols-1 lg:gap-x-4 gap-y-4">
-          
           <div className="form-control">
             <Label
               htmlFor="message-2"

@@ -64,7 +64,7 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
   };
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
-    setLoading(true);
+    // setLoading(true);
     e.preventDefault();
     let newErrors = {
       name: "",
@@ -82,7 +82,28 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
       newErrors.name = "Name is required";
     }
     if (!type) {
-      newErrors.type = "Type of ponds is required";
+      newErrors.type = "Type of pond is required";
+    }
+    if (!formData.holding_capacity) {
+      newErrors.holding_capacity = "Holding capacity is required";
+    }
+    if (!formData.unit) {
+      newErrors.unit = "Unit is required";
+    }
+    if (!formData.size) {
+      newErrors.size = "Size is required";
+    }
+    if (!formData.feed_size) {
+      newErrors.feed_size = "Feed size is required";
+    }
+    if (!formData.mortality_rate) {
+      newErrors.mortality_rate = "Mortality rate is required";
+    }
+    if (!batchID) {
+      newErrors.batch_id = "Batch is required";
+    }
+    if (!farmId) {
+      newErrors.farm_id = "Farm ID is required";
     }
 
     setErrors(newErrors);
@@ -100,8 +121,8 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
     };
 
     if (Object.values(newErrors).every((error) => !error)) {
+      setLoading(true);
       try {
-        setLoading(true);
         await createPond({ formdata, farmId }).unwrap();
         toast.success("Pond created ✔️");
         setOpen(false);
@@ -165,7 +186,7 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                       <div className="form-control">
                         <Label
                           htmlFor="message-2"
-                          className=" text-gray-500 font-normal mb-3">
+                          className="text-gray-500 font-normal mb-3">
                           Pond name
                         </Label>
                         <Input
@@ -176,11 +197,14 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                           placeholder="Pond name"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
+                        {errors.name && (
+                          <p className="text-red-500 text-xs">{errors.name}</p>
+                        )}
                       </div>
                       <div className="form-control">
                         <Label
                           htmlFor="message-2"
-                          className=" text-gray-500 font-normal mb-3">
+                          className="text-gray-500 font-normal mb-3">
                           Pond type
                         </Label>
                         <Select
@@ -207,13 +231,16 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                             </SelectGroup>
                           </SelectContent>
                         </Select>
+                        {errors.type && (
+                          <p className="text-red-500 text-xs">{errors.type}</p>
+                        )}
                       </div>
                     </div>
                     <div className="grid lg:grid-cols-2 lg:gap-x-4 gap-y-2">
                       <div className="form-control">
                         <Label
                           htmlFor="message-2"
-                          className=" text-gray-500 font-normal mb-3">
+                          className="text-gray-500 font-normal mb-3">
                           Fish holding capacity
                         </Label>
                         <Input
@@ -224,11 +251,16 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                           placeholder="500"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
+                        {errors.holding_capacity && (
+                          <p className="text-red-500 text-xs">
+                            {errors.holding_capacity}
+                          </p>
+                        )}
                       </div>
                       <div className="form-control">
                         <Label
                           htmlFor="message-2"
-                          className=" text-gray-500 font-normal mb-3">
+                          className="text-gray-500 font-normal mb-3">
                           Unit
                         </Label>
                         <Input
@@ -239,13 +271,16 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                           placeholder="300"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
+                        {errors.unit && (
+                          <p className="text-red-500 text-xs">{errors.unit}</p>
+                        )}
                       </div>
                     </div>
                     <div className="grid lg:grid-cols-2 lg:gap-x-4 gap-y-2">
                       <div className="form-control">
                         <Label
                           htmlFor="message-2"
-                          className=" text-gray-500 font-normal mb-3">
+                          className="text-gray-500 font-normal mb-3">
                           Size
                         </Label>
                         <Input
@@ -256,11 +291,14 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                           placeholder="0 - 0.5g"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
+                        {errors.size && (
+                          <p className="text-red-500 text-xs">{errors.size}</p>
+                        )}
                       </div>
                       <div className="form-control">
                         <Label
                           htmlFor="message-2"
-                          className=" text-gray-500 font-normal mb-3">
+                          className="text-gray-500 font-normal mb-3">
                           Feed size
                         </Label>
                         <Input
@@ -271,13 +309,18 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                           placeholder="6mm"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
+                        {errors.feed_size && (
+                          <p className="text-red-500 text-xs">
+                            {errors.feed_size}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="grid lg:grid-cols-2 lg:gap-x-4 gap-y-2">
                       <div className="form-control">
                         <Label
                           htmlFor="message-2"
-                          className=" text-gray-500 font-normal mb-3">
+                          className="text-gray-500 font-normal mb-3">
                           Mortality rate
                         </Label>
                         <Input
@@ -288,11 +331,16 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                           placeholder="30 units"
                           className="border-gray-400 focus-visible:outline-none py-6 "
                         />
+                        {errors.mortality_rate && (
+                          <p className="text-red-500 text-xs">
+                            {errors.mortality_rate}
+                          </p>
+                        )}
                       </div>
                       <div className="form-control">
                         <Label
                           htmlFor="message-2"
-                          className=" text-gray-500 font-normal mb-3">
+                          className="text-gray-500 font-normal mb-3">
                           Batch
                         </Label>
                         <Select
@@ -316,12 +364,18 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                             </SelectGroup>
                           </SelectContent>
                         </Select>
+                        {errors.batch_id && (
+                          <p className="text-red-500 text-xs">
+                            {errors.batch_id}
+                          </p>
+                        )}
                       </div>
                     </div>
+
                     <div className="flex items-center justify-between space-x-6">
                       <Button
                         type="submit"
-                        className=" mt-10 outline-none border-none font-normal text-xs bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
+                        className=" mt-10 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
                         {loading ? "Loading..." : " Add Pond"}
                       </Button>
                     </div>
