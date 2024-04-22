@@ -6,6 +6,7 @@ import profitIcon from "@/public/icons/profit.png";
 import expensesIcon from "@/public/icons/expenses.png";
 import { useGetFarmDataQuery } from "@/redux/services/farmApiSlice";
 import { Skeleton } from "@/components/ui/skeleton";
+import { formatCurrency } from "@/utils";
 
 const Overview = ({ data, isLoading }: any) => {
   // console.log(data);
@@ -42,7 +43,10 @@ const Overview = ({ data, isLoading }: any) => {
               <Skeleton className="h-6 w-[50px] bg-gray-200" />
             ) : (
               <h2 className="font-bold text-[--primary] lg:text-lg text-base">
-                N {data?.overview?.capital ? data?.overview?.capital : "0.00"}
+                N{" "}
+                {data?.overview?.capital
+                  ? formatCurrency(data?.overview?.capital)
+                  : "0.00"}
               </h2>
             )}
             {/* <p className="text-xs text-green-400">2.5%</p> */}
@@ -77,7 +81,7 @@ const Overview = ({ data, isLoading }: any) => {
               <h2 className="font-bold text-[--primary] lg:text-lg text-base">
                 N{" "}
                 {data?.overview?.net_profit
-                  ? data?.overview?.net_profit
+                  ? formatCurrency(data?.overview?.net_profit)
                   : "0.00"}
               </h2>
             )}
@@ -113,7 +117,7 @@ const Overview = ({ data, isLoading }: any) => {
               <h2 className="font-bold text-[--primary] lg:text-lg text-base">
                 N{" "}
                 {data?.overview?.total_expense
-                  ? data?.overview?.total_expense
+                  ? formatCurrency(data?.overview?.total_expense)
                   : "0.00"}
               </h2>
             )}
@@ -150,7 +154,7 @@ const Overview = ({ data, isLoading }: any) => {
             <h2 className="font-bold text-[--primary] lg:text-lg text-base">
               N{" "}
               {data?.overview?.total_expense
-                ? data?.overview?.total_expense
+                ? formatCurrency(data?.overview?.total_expense)
                 : "0.00"}
             </h2>
           )}

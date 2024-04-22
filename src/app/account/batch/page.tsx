@@ -48,6 +48,7 @@ const BatchPage = () => {
   return (
     <>
       <NavHeader userdata={data?.data} />
+
       <main className="w-11/12 mx-auto mt-8 ">
         {loading ? (
           <div className="mt-10 lg:w-11/12 w-10/12 mx-auto flex items-center gap-x-8">
