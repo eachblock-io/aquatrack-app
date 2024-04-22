@@ -89,11 +89,10 @@ const AddTaskModal = ({ open, setOpen, farmId }: any) => {
       <div className="bg-white lg:py-10 lg:px-14 p-10">
         <div className="text-center">
           <div className="mt-3 text-center sm:ml-4 sm:mt-0">
-            <Dialog.Title
-              as="h3"
+            <h3
               className="text-2xl font-semibold leading-6 text-[--primary] ">
               Add Task
-            </Dialog.Title>
+            </h3>
           </div>
         </div>
         <form onSubmit={handleSubmit} className="space-y-6 mt-8">
