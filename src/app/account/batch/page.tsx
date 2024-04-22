@@ -25,14 +25,16 @@ import Image from "next/image";
 import emptyImg from "@/public/empty.png";
 import { Skeleton } from "@/components/ui/skeleton";
 import CreateFarmState from "@/components/CreateFarmState";
+import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 
 const BatchPage = () => {
   const [open, setOpen] = useState(false);
   const [openDel, setOpenDel] = useState(false);
   // const [filteredValue, setFilteredValue] = useState("");
+  const { defaultFarmId } = useDefaultFarmId();
   const { isLoading: loading, data } = useGetCurrentUserQuery(null);
   const { isLoading, data: batch } = useGetAllBatchsDataQuery({
-    farmId: data?.data?.organizations[0]?.farms[0]?.id,
+    farmId: defaultFarmId,
   });
 
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -72,10 +74,10 @@ const BatchPage = () => {
           </div>
         ) : (
           <>
-            {data?.data?.organizations[0]?.farms[0]?.id ? (
+            {defaultFarmId ? (
               <>
                 <AddBatchModal
-                  farmId={data?.data?.organizations[0]?.farms[0]?.id}
+                  farmId={defaultFarmId}
                   open={open}
                   setOpen={setOpen}
                 />
@@ -140,7 +142,7 @@ const BatchPage = () => {
                 <div className="table w-full mt-20">
                   {batch?.data?.length > 0 ? (
                     <BatchTable
-                      farmId={data?.data?.organizations[0]?.farms[0]?.id}
+                      farmId={defaultFarmId}
                       data={
                         filteredData?.length > 0 ? filteredData : batch?.data
                       }

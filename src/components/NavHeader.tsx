@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useGetAllFarmsQuery } from "@/redux/services/farmApiSlice";
 import fetchToken from "@/lib/auth";
-// import useDefaultFarmId from "@/hooks/useDefaultFarmId";
+import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 import { GiCirclingFish } from "react-icons/gi";
 import {
   Accordion,
@@ -50,12 +50,7 @@ const NavHeader = ({ userdata }: any) => {
   const [openLog, setOpenLog] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  // const { handleFarmClick } = useDefaultFarmId();
-
-  const defaultOrgId = data?.data?.organizations[0]?.id;
-
-  console.log(userdata?.attributes?.profile_photo);
+  const { handleFarmClick, defaultFarmId } = useDefaultFarmId();
 
   return (
     <nav className="bg-white w-full lg:h-[10vh] h-[8vh] flex items-center justify-center">
@@ -145,12 +140,7 @@ const NavHeader = ({ userdata }: any) => {
                           <AccordionItem key={org?.id} value={org?.id}>
                             <AccordionTrigger className="h-2 p-0 py-4 border-none w-full">
                               <label
-                                // onClick={() => handleFarmClick(org?.id)}
-                                className={`text-sm p-2 mb-4 flex items-center cursor-pointer w-full ${
-                                  org?.id === defaultOrgId
-                                    ? `bg-gray-200 rounded-lg`
-                                    : ``
-                                }`}>
+                                className={`text-sm p-2 mb-4 flex items-center cursor-pointer w-full `}>
                                 <GiCirclingFish className="text-gray-500 h-4 w-4 mr-2 " />
                                 <span className="text-sm font-normal">
                                   {org?.attributes?.organization_name}
@@ -159,8 +149,11 @@ const NavHeader = ({ userdata }: any) => {
                             </AccordionTrigger>
                             {org?.farms?.map((farm: any) => (
                               <AccordionContent
+                                onClick={() => handleFarmClick(farm?.id)}
                                 key={farm?.id}
-                                className="hover:bg-blue-100 rounded-lg px-2 py-2 flex items-center border-none font-medium cursor-pointer">
+                                className={` ${
+                                  defaultFarmId === farm?.id && `bg-blue-100`
+                                } hover:bg-blue-100 rounded-lg px-2 py-2 flex items-center border-none font-medium cursor-pointer`}>
                                 <FaArrowAltCircleUp className="text-gray-400 h-3 w-3 mr-2 " />
                                 <p className="text-xs">{farm?.name} farm</p>
                               </AccordionContent>
@@ -253,7 +246,7 @@ const NavHeader = ({ userdata }: any) => {
                   </Link>
                 ))}
                 <Button
-                onClick={() => setOpenLog(true)}
+                  onClick={() => setOpenLog(true)}
                   variant="ghost"
                   className="flex w-full items-center justify-start font-bold space-x-2 text-red-500 hover:bg-[#ea1c0115] hover:text-red-500 py-8 pl-4  rounded-xl transition-all">
                   <Image

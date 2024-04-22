@@ -8,12 +8,13 @@ import { useGetCurrentUserQuery } from "@/redux/services/userApiSlice";
 import { useGetFarmDataQuery } from "@/redux/services/farmApiSlice";
 import CreateFarmState from "@/components/CreateFarmState";
 import { Skeleton } from "@/components/ui/skeleton";
+import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 
 const AccountPage = () => {
   const { isLoading: loading, data } = useGetCurrentUserQuery(null);
-  // const { defaultFarmId } = useDefaultFarmId();
+  const { defaultFarmId } = useDefaultFarmId();
   const { isLoading, data: dashboard } = useGetFarmDataQuery({
-    farmId: data?.data?.organizations[0]?.farms[0]?.id,
+    farmId: defaultFarmId,
   });
 
   return (

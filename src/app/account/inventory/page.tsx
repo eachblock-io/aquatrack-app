@@ -10,9 +10,11 @@ import emptyImg from "@/public/empty.png";
 import NavHeader from "@/components/NavHeader";
 import CreateFarmState from "@/components/CreateFarmState";
 import { Skeleton } from "@/components/ui/skeleton";
+import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 
 const InventoryPage = () => {
   const { isLoading, data } = useGetCurrentUserQuery(null);
+  const { defaultFarmId } = useDefaultFarmId();
 
   return (
     <>
@@ -43,7 +45,7 @@ const InventoryPage = () => {
           </div>
         ) : (
           <>
-            {data?.data?.organizations[0]?.farms[0]?.id ? (
+            {defaultFarmId ? (
               <>
                 <Tabs defaultValue="feeds" className="w-full">
                   <TabsList className="grid w-full grid-cols-4 gap-x-6 lg:w-5/12">
@@ -69,9 +71,9 @@ const InventoryPage = () => {
                     </TabsTrigger>
                   </TabsList>
                   <TabsContent value="feeds" className="pt-8">
-                    {data?.data?.organizations[0]?.farms[0]?.id ? (
+                    {defaultFarmId ? (
                       <FeedRecord
-                        farmId={data?.data?.organizations[0]?.farms[0]?.id}
+                        farmId={defaultFarmId}
                       />
                     ) : (
                       <section className="h-[70vh] flex items-center justify-center">
@@ -95,9 +97,9 @@ const InventoryPage = () => {
                     )}
                   </TabsContent>
                   <TabsContent value="expenses">
-                    {data?.data?.organizations[0]?.farms[0]?.id ? (
+                    {defaultFarmId ? (
                       <ExpensesRecord
-                        farmId={data?.data?.organizations[0]?.farms[0]?.id}
+                        farmId={defaultFarmId}
                       />
                     ) : (
                       <section className="h-[70vh] flex items-center justify-center">
@@ -123,7 +125,7 @@ const InventoryPage = () => {
                     )}
                   </TabsContent>
                   <TabsContent value="employees">
-                    {data?.data?.organizations[0]?.farms[0]?.id ? (
+                    {defaultFarmId ? (
                       <EmployeeRecord
                         farmId={data?.data?.organizations[0]?.farms[0].id}
                       />
@@ -149,9 +151,9 @@ const InventoryPage = () => {
                     )}
                   </TabsContent>
                   <TabsContent value="customers">
-                    {data?.data?.organizations[0]?.farms[0]?.id ? (
+                    {defaultFarmId ? (
                       <CustomerRecord
-                        farmId={data?.data?.organizations[0]?.farms[0]?.id}
+                        farmId={defaultFarmId}
                       />
                     ) : (
                       <section className="h-[70vh] flex items-center justify-center">

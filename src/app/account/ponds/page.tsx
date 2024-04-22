@@ -8,11 +8,13 @@ import emptyImg from "@/public/empty.png";
 import NavHeader from "@/components/NavHeader";
 import { Skeleton } from "@/components/ui/skeleton";
 import CreateFarmState from "@/components/CreateFarmState";
+import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 
 const PoundsPage = () => {
   const { isLoading: loading, data } = useGetCurrentUserQuery(null);
+  const { defaultFarmId } = useDefaultFarmId();
   const { isLoading, data: ponds } = useGetAllPondsDataQuery({
-    farmId: data?.data?.organizations[0]?.farms[0]?.id,
+    farmId: defaultFarmId,
   });
   return (
     <>
