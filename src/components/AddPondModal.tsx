@@ -96,7 +96,7 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
     if (!formData.feed_size) {
       newErrors.feed_size = "Feed size is required";
     }
-    if (!formData.mortality_rate) {
+    if (formData.mortality_rate === undefined) {
       newErrors.mortality_rate = "Mortality rate is required";
     }
     if (!batchID) {

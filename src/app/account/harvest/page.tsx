@@ -27,12 +27,14 @@ import Image from "next/image";
 import emptyImg from "@/public/empty.png";
 import { Skeleton } from "@/components/ui/skeleton";
 import CreateFarmState from "@/components/CreateFarmState";
+import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 
 
 const HarvestPage = () => {
   const { isLoading: loading, data } = useGetCurrentUserQuery(null);
+  const { defaultFarmId } = useDefaultFarmId();
   const { isLoading, data: harvestData } = useGetAllHarvestQuery({
-    farmId: data?.data?.organizations[0]?.farms[0]?.id,
+    farmId: defaultFarmId,
   });
   const [open, setOpen] = useState(false);
   const [openDel, setOpenDel] = useState(false);
@@ -75,10 +77,10 @@ const HarvestPage = () => {
           </div>
         ) : (
           <>
-            {data?.data?.organizations[0]?.farms[0]?.id ? (
+            {defaultFarmId ? (
               <>
                 <AddHarvestModal
-                  farmId={data?.data?.organizations[0]?.farms[0]?.id}
+                  farmId={defaultFarmId}
                   open={open}
                   setOpen={setOpen}
                 />

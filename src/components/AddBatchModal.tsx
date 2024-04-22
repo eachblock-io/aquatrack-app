@@ -158,7 +158,7 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
     // console.log(formdata);
 
     if (Object.values(newErrors).every((error) => !error)) {
-      // setLoading(true);
+      setLoading(true);
       try {
         await createBatch({ formdata, farmId }).unwrap();
         toast.success("Batch created ✔️");
@@ -458,14 +458,9 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
                       )}
                     </div>
                     <div className="flex items-center justify-between space-x-6">
-                      {/* <Button
-                        onClick={() => setOpen(false)}
-                        className=" mt-10 border border-[--secondary] bg-white hover:bg-white w-full h-[53px] text-[--secondary] text-xs font-normal ">
-                        Cancle
-                      </Button> */}
                       <Button
                         disabled={loading}
-                        className=" mt-10 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
+                        className=" mt-6 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
                         {loading ? "Creating batch..." : "Create Batch"}
                       </Button>
                     </div>

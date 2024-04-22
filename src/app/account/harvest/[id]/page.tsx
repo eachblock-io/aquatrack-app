@@ -16,15 +16,17 @@ import emptyImg from "@/public/empty.png";
 import AddCustomerModal from "@/components/AddCustomerModal";
 import { useGetCustomersQuery } from "@/redux/services/customerApiSlice";
 import { searchTableData } from "@/utils";
+import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 
 const HarvestSinglePage = ({ params }: any) => {
   const { data } = useGetCurrentUserQuery(null);
+  const { defaultFarmId } = useDefaultFarmId();
   const { data: harvestData } = useGetHarvestQuery({
-    farmId: data?.data?.organizations[0]?.farms[0]?.id,
+    farmId: defaultFarmId,
     harvestId: params?.id,
   });
   const { data: customerData } = useGetCustomersQuery({
-    farmId: data?.data?.organizations[0]?.farms[0]?.id,
+    farmId: defaultFarmId,
     harvestId: params?.id,
   });
   const [open, setOpen] = useState(false);
@@ -42,7 +44,7 @@ const HarvestSinglePage = ({ params }: any) => {
       <NavHeader userdata={data?.data} />
       <main className="w-11/12 mx-auto mt-8 ">
         <AddCustomerModal
-          farmId={data?.data?.organizations[0]?.farms[0]?.id}
+          farmId={defaultFarmId}
           harvestId={params?.id}
           open={open}
           setOpen={setOpen}
@@ -108,10 +110,11 @@ const HarvestSinglePage = ({ params }: any) => {
       {customerData?.data?.data?.length > 0 ? (
         <div className="table lg:w-11/12 w-12/12 mx-auto mt-20 mb-10">
           <HarvestList
-            data={filteredData?.length > 0
-                ? filteredData : customerData?.data?.data}
+            data={
+              filteredData?.length > 0 ? filteredData : customerData?.data?.data
+            }
             harvestId={params?.id}
-            farmId={data?.data?.organizations[0]?.farms[0]?.id}
+            farmId={defaultFarmId}
           />
         </div>
       ) : (

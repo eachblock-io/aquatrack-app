@@ -107,7 +107,7 @@ const PondDetails = ({ pond, farmId }: any) => {
         <div className="flex items-center whitespace-nowrap space-x-4">
           <p className="text-sm">
             <span className="font-semibold text-gray-500">Size:</span>{" "}
-            <span>{pond?.attributes?.size} 1kg</span>
+            <span>{pond?.attributes?.size} kg</span>
           </p>
           <div className="w-full">
             <Progress
@@ -127,6 +127,13 @@ const PondDetails = ({ pond, farmId }: any) => {
               className="bg-red-400 "
             />
           </div>
+        </div>
+        <div className="flex items-center whitespace-nowrap space-x-4">
+          <p className=" text-sm">
+            <span className="font-semibold text-[--primary] ">
+              {pond?.relationships?.batch?.data?.name}
+            </span>
+          </p>
         </div>
       </div>
     </div>
