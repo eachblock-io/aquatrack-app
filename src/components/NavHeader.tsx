@@ -42,9 +42,12 @@ import {
 } from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
 import LogoutModal from "./LogoutModal";
+import { Notification } from "./Notification";
+import { useGetNotificationsQuery } from "@/redux/services/notificationApiSlice";
 
 const NavHeader = ({ userdata }: any) => {
   const { data } = useGetAllFarmsQuery(null);
+  const { data: notification } = useGetNotificationsQuery(null);
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [openLog, setOpenLog] = useState(false);
@@ -76,14 +79,7 @@ const NavHeader = ({ userdata }: any) => {
           })}
         </div>
         <div className="flex items-center lg:space-x-6 space-x-4">
-          <Image
-            src={notification}
-            alt="notification"
-            layout="notification"
-            width="30"
-            height="30"
-            className="cursor-pointer"
-          />
+          <Notification data={notification} />
 
           <div className="relative inline-block text-left">
             <div>
