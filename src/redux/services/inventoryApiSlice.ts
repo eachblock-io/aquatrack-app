@@ -37,6 +37,7 @@ const inventoryApi = inventoryApiConfig.injectEndpoints({
       }),
       invalidatesTags: ["Inventory"],
     }),
+    
   }),
   overrideExisting: true,
 });

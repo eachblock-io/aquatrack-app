@@ -16,14 +16,72 @@ import { FaPlus } from "react-icons/fa6";
 import AddPurchaseModal from "../@addPurchaseModal/page";
 import FeedsTable from "../@feedsTable/page";
 import DeleteModal from "../@deleteModal/page";
-import { useGetFeedsQuery } from "@/redux/services/feedRecordApiSlice";
+import { useDeleteAllFeedsMutation, useGetFeedsQuery } from "@/redux/services/feedRecordApiSlice";
 import { Skeleton } from "@/components/ui/skeleton";
 import { searchTableData } from "@/utils";
+import toast from "react-hot-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const FeedRecord = ({ farmId }: any) => {
+  const [deleteAllFeeds] = useDeleteAllFeedsMutation();
   const [open, setOpen] = useState(false);
   const [openDel, setOpenDel] = useState(false);
   const { data, isLoading } = useGetFeedsQuery({ farmId });
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+
+  const toggleSelectAll = () => {
+    setSelectAll(!selectAll);
+    setSelectedItems(
+      selectAll ? [] : data?.data?.data?.map((item: { id: any }) => item.id)
+    );
+  };
+
+  const handleCheckboxChange = (id: number) => {
+    const selectedIndex = selectedItems.indexOf(id);
+    let newSelectedItems: number[] = [];
+
+    if (selectedIndex === -1) {
+      newSelectedItems = [...selectedItems, id];
+    } else {
+      newSelectedItems = [
+        ...selectedItems.slice(0, selectedIndex),
+        ...selectedItems.slice(selectedIndex + 1),
+      ];
+    }
+
+    setSelectedItems(newSelectedItems);
+    setSelectAll(newSelectedItems.length === data.length);
+  };
+
+  const handleAllDelete = async () => {
+    const formdata = {
+      model: "inventories",
+      ids: selectedItems,
+    };
+
+    try {
+      if (selectedItems?.length > 0) {
+        await deleteAllFeeds({ formdata });
+        toast.success("Deleted ✔️");
+      }
+    } catch (error: any) {
+      toast.error(
+        error?.data?.message ||
+          "Something went wrong please try again or check your network connection"
+      );
+    }
+  };
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredData, setFilteredData] = useState<any[]>([]);
@@ -49,7 +107,7 @@ const FeedRecord = ({ farmId }: any) => {
           </SelectGroup>
         </SelectContent>
       </Select> */}
-      <section className="flex items-center justify-between gap-8 mt-8">
+      <section className="grid grid-cols-1 lg:flex lg:items-center justify-between gap-8 mt-8">
         <div className="flex items-center justify-between space-x-6 w-8/12">
           <div className="flex items-center bg-white py-2 px-4 rounded-lg w-full">
             <IoMdSearch className="w-6 h-6 text-gray-500" />
@@ -67,11 +125,42 @@ const FeedRecord = ({ farmId }: any) => {
               className="px-2 py-5 bg-[--primary] hover:bg-[--primary]">
               <FaPlus className="w-6 h-6" />
             </Button>
-            <Button
-              onClick={() => setOpenDel(true)}
-              className="px-2 py-5 bg-red-500 hover:bg-red-400">
-              <RiDeleteBinLine className="w-6 h-6" />
-            </Button>
+            {selectedItems?.length > 0 ? (
+              <AlertDialog>
+                <AlertDialogTrigger>
+                  <Button
+                    disabled={false}
+                    className="px-2 py-5 bg-red-500 hover:bg-red-400">
+                    <RiDeleteBinLine className="w-6 h-6" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      this data.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      className="text-red-500 bg-red-100"
+                      onClick={handleAllDelete}>
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            ) : (
+              <Button
+                disabled={true}
+                className="px-2 py-5 bg-red-500 hover:bg-red-400">
+                <RiDeleteBinLine className="w-6 h-6" />
+              </Button>
+            )}
           </div>
         </div>
         <div className="flex lg:items-center items-start lg:justify-around">
@@ -95,11 +184,42 @@ const FeedRecord = ({ farmId }: any) => {
               className="px-6 py-5 bg-[--primary] hover:bg-[--primary]">
               + Add new purchase
             </Button>
-            <Button
-              onClick={() => setOpenDel(true)}
-              className="px-6 py-5 bg-red-500 hover:bg-red-400">
-              Delete
-            </Button>
+            {selectedItems?.length > 0 ? (
+              <AlertDialog>
+                <AlertDialogTrigger>
+                  <Button
+                    disabled={false}
+                    className="px-6 py-5 bg-red-500 hover:bg-red-400">
+                    Delete
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      this data.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      className="text-red-500 bg-red-100"
+                      onClick={handleAllDelete}>
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            ) : (
+              <Button
+                disabled={true}
+                className="px-6 py-5 bg-red-500 hover:bg-red-400">
+                Delete
+              </Button>
+            )}
           </div>
         </div>
       </section>
@@ -118,6 +238,10 @@ const FeedRecord = ({ farmId }: any) => {
           <FeedsTable
             data={filteredData?.length > 0 ? filteredData : data?.data?.data}
             farmId={farmId}
+            selectedItems={selectedItems}
+            toggleSelectAll={toggleSelectAll}
+            handleCheckboxChange={handleCheckboxChange}
+            selectAll={selectAll}
           />
         )}
       </div>
