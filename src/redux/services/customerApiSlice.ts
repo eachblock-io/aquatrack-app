@@ -34,14 +34,14 @@ const customerApi = customerApiConfig.injectEndpoints({
     editPurchase: builder.mutation({
       query: ({ formdata, farmId, harvestId }) => ({
         url: `/farmer/${farmId}/harvest/${harvestId}/purchase`,
-        method: `POST`,
+        method: `PATCH`,
         body: formdata,
       }),
       invalidatesTags: ["Customer"],
     }),
     deletePurchase: builder.mutation({
       query: ({ formdata, farmId, harvestId, purchaseId }) => ({
-        url: `/farmer/${farmId}/harvest/${harvestId}/purchase/${purchaseId}`,
+        url: `/farmer/purchase/${purchaseId}`,
         method: `DELETE`,
         body: formdata,
       }),
@@ -62,6 +62,14 @@ const customerApi = customerApiConfig.injectEndpoints({
       }),
       invalidatesTags: ["Customer"],
     }),
+    AddBeneficiary: builder.mutation({
+      query: ({ formdata, farmId }) => ({
+        url: `/farmer/${farmId}/beneficiary`,
+        method: `POST`,
+        body: formdata,
+      }),
+      invalidatesTags: ["Customer"],
+    }),
   }),
   overrideExisting: true,
 });
@@ -75,4 +83,5 @@ export const {
   useCreateCustomerMutation,
   useEditCustomerMutation,
   useDeleteCustomerMutation,
+  useAddBeneficiaryMutation,
 } = customerApi;

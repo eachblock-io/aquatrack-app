@@ -80,7 +80,7 @@ const AddHarvestModal = ({ open, setOpen, farmId }: any) => {
   };
 
   return (
-    <Modal open={open} setOpen={setOpen}>
+    <Modal open={open} setOpen={setOpen} className="lg:w-[450px]">
       <div className="bg-white lg:py-10 lg:px-14 py-10 px-6">
         <div className="text-center">
           <div className="mt-3 text-center sm:ml-4 sm:mt-0">
