@@ -35,6 +35,14 @@ const batchApi = batchApiConfig.injectEndpoints({
       }),
       invalidatesTags: ["Batchs"],
     }),
+    deleteAllBatch: builder.mutation({
+      query: ({ formdata }) => ({
+        url: `/farmer/delete-all`,
+        method: `POST`,
+        body: formdata,
+      }),
+      invalidatesTags: ["Batchs"],
+    }),
   }),
   overrideExisting: true,
 });
@@ -44,4 +52,5 @@ export const {
   useCreateBatchMutation,
   useEditBatchMutation,
   useDeleteBatchMutation,
+  useDeleteAllBatchMutation,
 } = batchApi;

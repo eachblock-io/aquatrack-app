@@ -12,9 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import toast from "react-hot-toast";
-import {
-  useCreateBatchMutation,
-} from "@/redux/services/batchApiSlice";
+import { useCreateBatchMutation } from "@/redux/services/batchApiSlice";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 
@@ -162,10 +160,11 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
         setOpen(false);
         setFormData("");
         setLoading(false);
-      } catch (error) {
+      } catch (error: any) {
         setLoading(false);
         toast.error(
-          "Something went wrong please try again or check your network connection"
+          error?.data?.message ||
+            "Something went wrong please try again or check your network connection"
         );
       }
     }

@@ -67,7 +67,7 @@ const DeleteBatchModal = ({ open, setOpen, batchID, farmId }: any) => {
                     </div>
                   </div>
                   <p className="text-center text-gray-500 mt-6">
-                    You are about to delete this pondforever. Are you really
+                    You are about to delete this batch forever. Are you really
                     sure about this?
                   </p>
                   <div className="flex items-center justify-between space-x-6">
