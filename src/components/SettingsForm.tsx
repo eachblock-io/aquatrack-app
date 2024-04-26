@@ -16,13 +16,15 @@ const SettingsForm = ({ refetch, data }: any) => {
   const [loading, setLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [IsSaved, setIsSaved] = useState(false);
-  const [previewSrc, setPreviewSrc] = useState("");
   const [formData, setFormData] = useState<any>({
     first_name: data?.attributes?.first_name || "",
     last_name: data?.attributes?.last_name || "",
     email: data?.attributes?.email || "",
     phone_number: data?.attributes?.phone_number || "",
   });
+
+  
+  const [previewSrc, setPreviewSrc] = useState("");
 
   const handleFileChange = async (e: any) => {
     const file = e.target.files?.[0];
