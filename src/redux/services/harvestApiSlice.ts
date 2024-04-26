@@ -39,7 +39,16 @@ const harvestApi = harvestApiConfig.injectEndpoints({
       }),
       invalidatesTags: ["Harvest"],
     }),
+    deleteAllHarvest: builder.mutation({
+      query: ({ formdata }) => ({
+        url: `/farmer/delete-all`,
+        method: `POST`,
+        body: formdata,
+      }),
+      invalidatesTags: ["Harvest"],
+    }),
   }),
+
   overrideExisting: true,
 });
 
@@ -49,4 +58,5 @@ export const {
   useCreateHarvestMutation,
   useEditHarvestMutation,
   useDeleteHarvestMutation,
+  useDeleteAllHarvestMutation,
 } = harvestApi;

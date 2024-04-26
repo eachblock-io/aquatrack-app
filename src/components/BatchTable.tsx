@@ -80,8 +80,6 @@ const BatchTable: React.FC<TableProps> = ({ data, isLoading, farmId }) => {
     filteredData?.length > 0 ? filteredData : data
   );
 
-  // console.log(data);
-
   const toggleSelectAll = () => {
     setSelectAll(!selectAll);
     setSelectedItems(selectAll ? [] : data?.map((item: any) => item?.id));
