@@ -37,37 +37,24 @@ interface TableData {
 interface TableProps {
   data: any[];
   farmId: string;
+  selectedItems: any;
+  toggleSelectAll: any;
+  handleCheckboxChange: any;
+  selectAll: any;
 }
 
-const FeedsTable: React.FC<TableProps> = ({ data, farmId }) => {
+const FeedsTable: React.FC<TableProps> = ({
+  data,
+  farmId,
+  selectedItems,
+  toggleSelectAll,
+  handleCheckboxChange,
+  selectAll,
+}) => {
   const [open, setOpen] = useState(false);
   const [openDel, setOpenDel] = useState(false);
   const [editData, setEditData] = useState({});
   const [feedID, setFeedID] = useState(false);
-  const [selectAll, setSelectAll] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
-
-  const toggleSelectAll = () => {
-    setSelectAll(!selectAll);
-    setSelectedItems(selectAll ? [] : data?.map((item) => item.id));
-  };
-
-  const handleCheckboxChange = (id: number) => {
-    const selectedIndex = selectedItems.indexOf(id);
-    let newSelectedItems: number[] = [];
-
-    if (selectedIndex === -1) {
-      newSelectedItems = [...selectedItems, id];
-    } else {
-      newSelectedItems = [
-        ...selectedItems.slice(0, selectedIndex),
-        ...selectedItems.slice(selectedIndex + 1),
-      ];
-    }
-
-    setSelectedItems(newSelectedItems);
-    setSelectAll(newSelectedItems.length === data?.length);
-  };
 
   const handleEdit = (value: any) => {
     setEditData(value);

@@ -57,6 +57,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useGetHarvestQuery } from "@/redux/services/harvestApiSlice";
 
 interface RowData {
   price_per_unit: string;
@@ -74,6 +75,10 @@ const HarvestTable: React.FC<any> = ({
   customerId,
   harvestId,
 }) => {
+  const { refetch } = useGetHarvestQuery({
+    farmId,
+    harvestId,
+  });
   const [AddBeneficiary] = useAddBeneficiaryMutation();
   const [editPurchase] = useEditPurchaseMutation();
   const [createPurchase] = useCreatePurchaseMutation();
@@ -133,6 +138,7 @@ const HarvestTable: React.FC<any> = ({
     setRows(newRows);
     try {
       await deletePurchase({ harvestId, farmId, purchaseId }).unwrap();
+      refetch();
       toast.success("Deleted ✔️");
     } catch (error) {}
   };
@@ -204,8 +210,10 @@ const HarvestTable: React.FC<any> = ({
           farmId,
           harvestId,
         }).unwrap();
+        refetch();
         toast.success("Purchase created ✔️");
         setIsSave(false);
+        setLoading(false);
       } else {
         setLoading(false);
         toast.error("No new rows to submit.");
@@ -243,6 +251,7 @@ const HarvestTable: React.FC<any> = ({
         farmId,
         harvestId,
       }).unwrap();
+      refetch();
       toast.success("Purchase Saved ✔️");
       setIsSave(false);
       setSaving(false);
@@ -271,7 +280,7 @@ const HarvestTable: React.FC<any> = ({
             <div className="flex items-center pr-4 relative">
               <div className="sec-header flex items-center justify-between px-6 w-full relative">
                 <div className="flex items-center lg:space-x-4 space-x-1">
-                  <h2 className="lg:text-sm text-xs">
+                  <h2 className="lg:text-sm text-xs text-[--primary] font-semibold ">
                     {customer?.attributes?.name}
                   </h2>
                 </div>
@@ -505,7 +514,9 @@ const HarvestTable: React.FC<any> = ({
                       <TableCell>{calculateTotal("size")}(kg)</TableCell>
                       <TableCell>{calculateTotal("pieces")} (pcs)</TableCell>
                       <TableCell>
-                        {formatCurrency(data?.total_amount)}
+                        {calculateTotal("amount")
+                          .toFixed()
+                          ?.replace(/\B(?=(\d{3})+(?!\d))/g, `,`)}
                       </TableCell>
                       <TableCell></TableCell>
                     </TableRow>

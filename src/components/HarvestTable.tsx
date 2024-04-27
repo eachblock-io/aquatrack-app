@@ -36,14 +36,14 @@ import {
 import toast from "react-hot-toast";
 import { useDeleteAllHarvestMutation } from "@/redux/services/harvestApiSlice";
 
-
 interface TableProps {
   data: any[];
   farmId: any[];
   isLoading: boolean;
+  stats: any;
 }
 
-const HarvestTable: React.FC<TableProps> = ({ data, farmId, isLoading }) => {
+const HarvestTable: React.FC<TableProps> = ({ data, farmId, isLoading, stats }) => {
   const [deleteAllHarvest] = useDeleteAllHarvestMutation();
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
@@ -101,16 +101,18 @@ const HarvestTable: React.FC<TableProps> = ({ data, farmId, isLoading }) => {
     }
   };
 
+  // console.log(data);
+
   return (
     <div className="">
       {farmId ? (
         <>
           <AddHarvestModal farmId={farmId} open={open} setOpen={setOpen} />
           <DeleteHarvestModal open={openDel} setOpen={setOpenDel} />
-          <HarvestStats data={data} isLoading={isLoading} />
+          <HarvestStats data={stats} isLoading={isLoading} />
           {/* Header section */}
           <section className="grid grid-cols-1 lg:flex lg:items-center justify-between gap-8 mt-8">
-            <div className="flex items-center space-x-6 w-7/12">
+            <div className="flex items-center space-x-6 lg:w-7/12 w-full">
               <div className="flex items-center bg-white py-2 px-4 rounded-lg w-full">
                 <IoMdSearch className="w-6 h-6 text-gray-500" />
                 <Input

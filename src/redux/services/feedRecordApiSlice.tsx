@@ -37,6 +37,14 @@ const feedRecordApi = feedRecordApiConfig.injectEndpoints({
       }),
       invalidatesTags: ["Feeds"],
     }),
+    deleteAllFeeds: builder.mutation({
+      query: ({ formdata }) => ({
+        url: `/farmer/delete-all`,
+        method: `POST`,
+        body: formdata,
+      }),
+      invalidatesTags: ["Feeds"],
+    }),
   }),
   overrideExisting: true,
 });
@@ -46,4 +54,5 @@ export const {
   useCreateFeedMutation,
   useEditFeedMutation,
   useDeleteFeedMutation,
+  useDeleteAllFeedsMutation,
 } = feedRecordApi;

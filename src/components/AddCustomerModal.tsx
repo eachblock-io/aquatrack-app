@@ -83,14 +83,14 @@ const AddCustomerModal = ({ open, setOpen, farmId, harvestId }: any) => {
             <Label
               htmlFor="message-2"
               className=" text-gray-500 font-normal mb-3">
-              Batch Name
+              Customer Name
             </Label>
             <Input
               type="text"
               name="name"
               value={formData?.name}
               onChange={handleInputChange}
-              placeholder="Batch Name"
+              placeholder="Customer Name"
               className="border-gray-400 focus-visible:outline-none py-6 "
             />
           </div>
