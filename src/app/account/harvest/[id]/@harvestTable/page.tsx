@@ -278,7 +278,7 @@ const HarvestTable: React.FC<any> = ({
         <Accordion type="single" collapsible className="w-full mx-auto ">
           <AccordionItem value={customer?.id} className="w-full relative">
             <div className="flex items-center pr-4 relative">
-              <div className="sec-header flex items-center justify-between px-6 w-full relative">
+              <div className="sec-header grid grid-cols-3 px-6 w-full relative">
                 <div className="flex items-center lg:space-x-4 space-x-1">
                   <h2 className="lg:text-sm text-xs text-[--primary] font-semibold ">
                     {customer?.attributes?.name}
