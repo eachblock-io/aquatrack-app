@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import Image from "next/image";
 import capitalIcon from "@/public/icons/capital-icon.png";
 // import profitIcon from "@/public/icons/profit.png";
@@ -7,8 +7,11 @@ import capitalIcon from "@/public/icons/capital-icon.png";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatCurrency } from "@/utils";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 
 const HarvestStats = ({ data, isLoading }: any) => {
+  const [hide, setHide] = useState(true);
+  // console.log("data", data);
   return (
     <section className="w-full mx-auto lg:mt-4 mb-6">
       <div className="grid lg:grid-cols-3 grid-cols-2 lg:gap-8 gap-4 gap-y-6 lg:mt-4 mt-4">
@@ -29,7 +32,7 @@ const HarvestStats = ({ data, isLoading }: any) => {
               <Skeleton className="h-6 w-[150px] bg-gray-200" />
             ) : (
               <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
-                N {formatCurrency(data?.total_capital)}
+                N {hide ? "**********" : data?.total_harvest}
               </h2>
             )}
             {/* <div className="text-right flex items-center justify-end mt-2">
@@ -50,7 +53,7 @@ const HarvestStats = ({ data, isLoading }: any) => {
               <Skeleton className="h-6 w-[150px] bg-gray-200" />
             ) : (
               <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
-                N {formatCurrency(data?.total_harvest)}
+                N {hide ? "**********" : data?.total_capital}
               </h2>
             )}
             {/* <div className="text-right flex items-center justify-end mt-2">
@@ -61,7 +64,7 @@ const HarvestStats = ({ data, isLoading }: any) => {
             </div> */}
           </div>
         </div>
-        <div className="card lg:block hidden bg-white py-4 px-6 rounded-xl">
+        <div className="card relative lg:block hidden bg-white py-4 px-6 rounded-xl">
           <div className="flex items-center  lg:space-x-4 space-x-2">
             <FaArrowTrendUp className="text-[--primary]" />
             <p className="text-gray-400 lg:text-sm text-xs">Total Profit</p>
@@ -71,7 +74,7 @@ const HarvestStats = ({ data, isLoading }: any) => {
               <Skeleton className="h-6 w-[150px] bg-gray-200" />
             ) : (
               <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
-                N {formatCurrency(data?.total_profit)}
+                N {hide ? "**********" : data?.total_profit}
               </h2>
             )}
             {/* <div className="text-right flex items-center justify-end mt-2">
@@ -81,9 +84,20 @@ const HarvestStats = ({ data, isLoading }: any) => {
               </span>
             </div> */}
           </div>
+          {hide ? (
+            <IoEye
+              onClick={() => setHide(!hide)}
+              className="text-gray-400 text-3xl absolute top-8 right-6"
+            />
+          ) : (
+            <IoEyeOff
+              onClick={() => setHide(!hide)}
+              className="text-gray-400 text-3xl absolute top-8 right-6"
+            />
+          )}
         </div>
       </div>
-      <div className="card lg:hidden block bg-white py-4 px-6 mt-4 rounded-xl">
+      <div className="card relative lg:hidden block bg-white py-4 px-6 mt-4 rounded-xl">
         <div className="flex items-center  lg:space-x-4 space-x-2">
           <FaArrowTrendUp className="text-[--primary]" />
           <p className="text-gray-400 lg:text-sm text-xs">Total Profit</p>
@@ -93,7 +107,7 @@ const HarvestStats = ({ data, isLoading }: any) => {
             <Skeleton className="h-6 w-[150px] bg-gray-200" />
           ) : (
             <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
-              N {formatCurrency(data?.total_profit)}
+              N {hide ? "**********" : data?.total_profit}
             </h2>
           )}
           {/* <div className="text-right flex items-center justify-end">
@@ -103,6 +117,17 @@ const HarvestStats = ({ data, isLoading }: any) => {
             </span>
           </div> */}
         </div>
+        {hide ? (
+          <IoEye
+            onClick={() => setHide(!hide)}
+            className="text-gray-400 text-3xl absolute top-8 right-6"
+          />
+        ) : (
+          <IoEyeOff
+            onClick={() => setHide(!hide)}
+            className="text-gray-400 text-3xl absolute top-8 right-6"
+          />
+        )}
       </div>
     </section>
   );

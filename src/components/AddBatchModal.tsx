@@ -297,6 +297,14 @@ const AddBatchModal = ({ open, setOpen, farmId }: any) => {
                 <SelectContent>
                   <SelectGroup>
                     <SelectItem value="Fingerlings">Fingerlings</SelectItem>
+                    <SelectItem value="Fry">Fry</SelectItem>
+                    <SelectItem value="Post-fingerling">
+                      Post-fingerling
+                    </SelectItem>
+                    <SelectItem value="Juvenile">Juvenile</SelectItem>
+                    <SelectItem value="Jumbo">Jumbo</SelectItem>
+                    <SelectItem value="Table size">Table size</SelectItem>
+                    <SelectItem value="Broodstock">Broodstock</SelectItem>
                     <SelectItem value="Juvenile">Juvenile</SelectItem>
                     <SelectItem value="Adult">Adult</SelectItem>
                   </SelectGroup>

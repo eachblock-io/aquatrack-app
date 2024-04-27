@@ -25,6 +25,8 @@ const HarvestSinglePage = ({ params }: any) => {
     farmId: defaultFarmId,
     harvestId: params?.id,
   });
+
+  // console.log()
   const { data: customerData } = useGetCustomersQuery({
     farmId: defaultFarmId,
     harvestId: params?.id,

@@ -12,6 +12,8 @@ const HarvestPage = () => {
   const { isLoading, data: harvestData } = useGetAllHarvestQuery({
     farmId: defaultFarmId,
   });
+
+  console.log("Data", harvestData?.data);
   return (
     <>
       <NavHeader userdata={data?.data} />
@@ -45,6 +47,7 @@ const HarvestPage = () => {
               isLoading={isLoading}
               farmId={defaultFarmId}
               data={harvestData?.data?.harvests?.data}
+              stats={harvestData?.data}
             />
           </>
         )}
