@@ -18,11 +18,12 @@ import { useGetAllBatchsDataQuery } from "@/redux/services/batchApiSlice";
 import toast from "react-hot-toast";
 import { useEditFeedMutation } from "@/redux/services/feedRecordApiSlice";
 import { Modal } from "./Modal";
+import { formatCurrency } from "@/utils";
 
 const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
   const { data } = useGetAllBatchsDataQuery({ farmId });
-  console.log(editdata?.relationships?.batch?.data?.attributes?.name);
-  const cancelButtonRef = useRef(null);
+  // console.log(editdata?.relationships?.batch?.data?.attributes?.name);
+  // const cancelButtonRef = useRef(null);
   const [editFeed] = useEditFeedMutation();
   const [loading, setLoading] = useState(false);
   const [batchID, setBatchID] = useState<string>(
@@ -181,7 +182,7 @@ const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
               <Input
                 type="text"
                 name="price"
-                value={formData?.price}
+                value={formatCurrency(formData?.price)}
                 onChange={handleInputChange}
                 placeholder="500"
                 className="border-gray-400 focus-visible:outline-none py-6 "
@@ -196,7 +197,7 @@ const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
               <Input
                 type="text"
                 name="amount"
-                value={formData?.amount}
+                value={formatCurrency(formData?.amount)}
                 onChange={handleInputChange}
                 placeholder="300"
                 className="border-gray-400 focus-visible:outline-none py-6 "
