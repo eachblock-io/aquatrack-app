@@ -63,7 +63,7 @@ const AddTask = ({ farmID }: any) => {
           setOpen={setOpenEdit}
         />
       )}
-      <h2 className="text-[--primary] font-bold lg:text-2xl text-lg mb-6">
+      <h2 className="text-[--primary] font-bold lg:text-2xl text-lg lg:mb-6 mb-4">
         Task
       </h2>
       <Button
@@ -160,8 +160,8 @@ const AddTask = ({ farmID }: any) => {
             </div>{" "}
           </div>
         ) : (
-          <div className="flex items-center justify-center h-[40vh]">
-            <p className="text-xl text-gray-400 text-center">
+          <div className="flex items-center justify-center lg:h-[40vh] h-[20vh]">
+            <p className="lg:text-xl text-base text-gray-400 text-center">
               No Current Tasks
             </p>
           </div>

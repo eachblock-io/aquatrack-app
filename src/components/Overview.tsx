@@ -47,7 +47,7 @@ const Overview = ({ data, isLoading }: any) => {
               <>
                 {hide ? (
                   <h2 className="font-bold text-[--primary] lg:text-lg text-base">
-                    *************
+                    ******
                   </h2>
                 ) : (
                   <h2 className="font-bold text-[--primary] lg:text-lg text-base">
@@ -91,7 +91,7 @@ const Overview = ({ data, isLoading }: any) => {
               <>
                 {hide ? (
                   <h2 className="font-bold text-[--primary] lg:text-lg text-base">
-                    *************
+                    ******
                   </h2>
                 ) : (
                   <h2 className="font-bold text-[--primary] lg:text-lg text-base">
@@ -135,7 +135,7 @@ const Overview = ({ data, isLoading }: any) => {
               <>
                 {hide ? (
                   <h2 className="font-bold text-[--primary] lg:text-lg text-base">
-                    *************
+                    ******
                   </h2>
                 ) : (
                   <h2 className="font-bold text-[--primary] lg:text-lg text-base">
@@ -191,7 +191,7 @@ const Overview = ({ data, isLoading }: any) => {
             <>
               {hide ? (
                 <h2 className="font-bold text-[--primary] lg:text-lg text-base">
-                  *************
+                  ******
                 </h2>
               ) : (
                 <h2 className="font-bold text-[--primary] lg:text-lg text-base">
