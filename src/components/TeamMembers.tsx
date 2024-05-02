@@ -63,13 +63,16 @@ const TeamMembers = () => {
       emails: emails,
       role: roleID,
     };
-    setLoading(true);
     try {
-      await inviteTeam({ formdata }).unwrap();
-      toast.success("Invitation Sent ✔️");
-      setEmails([]);
-      setLoading(false);
+      if (formdata) {
+        setLoading(true);
+        await inviteTeam({ formdata }).unwrap();
+        toast.success("Invitation Sent ✔️");
+        setEmails([]);
+        setLoading(false);
+      }
     } catch (error) {
+      setLoading(false);
       toast.error(
         "Something went wrong please try again or check your network connection"
       );
