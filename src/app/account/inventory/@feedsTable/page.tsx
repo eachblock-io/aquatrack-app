@@ -53,12 +53,14 @@ const FeedsTable: React.FC<TableProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [openDel, setOpenDel] = useState(false);
-  const [editData, setEditData] = useState({});
+  const [editData, setEditData] = useState();
   const [feedID, setFeedID] = useState(false);
 
   const handleEdit = (value: any) => {
-    setEditData(value);
-    setOpen(true);
+    if (value) {
+      setEditData(value);
+      setOpen(true);
+    }
   };
 
   const handleDelete = (id: any) => {

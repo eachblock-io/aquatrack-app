@@ -20,11 +20,14 @@ import { useEditFeedMutation } from "@/redux/services/feedRecordApiSlice";
 import { Modal } from "./Modal";
 
 const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
-  // console.log(editdata?.attributes?.name);
+  const { data } = useGetAllBatchsDataQuery({ farmId });
+  console.log(editdata?.relationships?.batch?.data?.attributes?.name);
   const cancelButtonRef = useRef(null);
   const [editFeed] = useEditFeedMutation();
   const [loading, setLoading] = useState(false);
-  const [batchID, setBatchID] = useState<String>("");
+  const [batchID, setBatchID] = useState<string>(
+    editdata?.relationships?.batch?.data?.attributes?.name || ""
+  );
   const [formData, setFormData] = useState<any>({
     name: editdata?.attributes?.name || "",
     quantity: editdata?.attributes?.quantity || "",
@@ -125,8 +128,6 @@ const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
     }
   };
 
-  const { data } = useGetAllBatchsDataQuery({ farmId });
-
   return (
     <Modal open={open} setOpen={setOpen}>
       <div className="bg-white lg:py-10 lg:px-14 py-10 px-6">
@@ -226,6 +227,7 @@ const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
               </Label>
               <Select
                 name="batch_id"
+                value={batchID}
                 onValueChange={(value) => setBatchID(value)}>
                 <SelectTrigger className="w-full h-12 border-gray-400">
                   <SelectValue placeholder="Batch" />
@@ -239,7 +241,10 @@ const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
                     </SelectLabel>
                     {data?.data?.map((task: any) => (
                       <SelectItem value={task?.id} key={task?.id}>
-                        {task?.attributes?.name}
+                        {editdata?.relationships?.batch?.data?.attributes?.name
+                          ? editdata?.relationships?.batch?.data?.attributes
+                              ?.name
+                          : task?.attributes?.name}
                       </SelectItem>
                     ))}
                   </SelectGroup>
