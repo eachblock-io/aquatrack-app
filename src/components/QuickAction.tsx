@@ -20,7 +20,7 @@ const QuickAction = ({ farmId }: any) => {
       <h2 className="text-[--primary] font-bold lg:text-2xl text-lg">
         Quick Actions
       </h2>
-      <div className="lg:w-8/12 grid grid-cols-2 lg:gap-8 gap-6 lg:mt-10 mt-4">
+      <div className="lg:w-8/12 grid grid-cols-2 lg:gap-8 gap-3 lg:mt-10 mt-4">
         <div
           onClick={() => setOpen(true)}
           className="card bg-white rounded-xl lg:p-6 p-4 cursor-pointer flex lg:items-center items-center lg:space-x-4 space-x-2">
@@ -50,7 +50,7 @@ const QuickAction = ({ farmId }: any) => {
         </div>
         <div
           onClick={() => setOpenStats(true)}
-          className="card bg-white rounded-xl p-6 cursor-pointer flex lg:items-center lg:space-x-4 space-x-2">
+          className="card bg-white rounded-xl lg:p-6 p-4 cursor-pointer flex lg:items-center lg:space-x-4 space-x-2">
           <div>
             <Image
               src={viewIcon}

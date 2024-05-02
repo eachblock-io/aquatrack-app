@@ -37,11 +37,11 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
   const [editBatch] = useEditBatchMutation();
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(batchData?.attributes?.status || "");
-  const [type, setType] = useState<String>(
-    batchData?.attributes?.fish_type || ""
+  const [type, setType] = useState<any>(batchData?.attributes?.fish_type || "");
+  const [date, setDate] = useState<any>(
+    batchData?.attributes?.date_purchased || ""
   );
-  const [date, setDate] = useState<Date>();
-  const [specie, setSpecie] = useState<String>(
+  const [specie, setSpecie] = useState<string>(
     batchData?.attributes?.fish_specie || ""
   );
   const [formData, setFormData] = useState<any>({
@@ -51,8 +51,9 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
     amount_spent: batchData?.attributes?.amount_spent || "",
     vendor: batchData?.attributes?.vendor || "",
     status: batchData?.attributes?.status || "",
-    date_purchased: "",
+    date_purchased: batchData?.attributes?.date_purchased || "",
   });
+  console.log(batchData);
   const [errors, setErrors] = useState({
     name: "",
     unit_purchase: "",
@@ -161,8 +162,7 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
       <div className="bg-white lg:py-10 lg:px-14 py-10 px-6">
         <div className="text-center">
           <div className="mt-3 text-center sm:ml-4 sm:mt-0">
-            <h3
-              className="text-xl font-semibold leading-6 text-[--primary] ">
+            <h3 className="text-xl font-semibold leading-6 text-[--primary] ">
               Edit Batch
             </h3>
           </div>
@@ -241,6 +241,7 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
               </Label>
               <Select
                 name="fish_specie"
+                value={specie}
                 onValueChange={(value) => setSpecie(value)}>
                 <SelectTrigger className="w-full h-12 border-gray-400">
                   <SelectValue placeholder="Fish specie" />
@@ -262,6 +263,7 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
               </Label>
               <Select
                 name="fish_type"
+                value={type}
                 onValueChange={(value) => setType(value)}>
                 <SelectTrigger className="w-full h-12 border-gray-400">
                   <SelectValue placeholder="Fish Type" />
@@ -296,7 +298,10 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
               <Label htmlFor="message-2" className=" text-gray-500 font-normal">
                 Status
               </Label>
-              <Select name="status" onValueChange={(value) => setStatus(value)}>
+              <Select
+                name="status"
+                value={status}
+                onValueChange={(value) => setStatus(value)}>
                 <SelectTrigger
                   className={`w-full h-10 ${
                     status === `sold out`
@@ -347,14 +352,9 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
             </Popover>
           </div>
           <div className="flex items-center justify-between space-x-6">
-            {/* <Button
-                        onClick={() => setOpen(false)}
-                        className=" mt-10 border border-[--secondary] bg-white hover:bg-white w-full h-[53px] text-[--secondary] text-xs font-normal ">
-                        Cancle
-                      </Button> */}
             <Button
               disabled={loading}
-              className=" mt-10 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
+              className=" lg:mt-10 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
               {loading ? "Saving..." : "Save Changes"}
             </Button>
           </div>

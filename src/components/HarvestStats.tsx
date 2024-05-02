@@ -25,14 +25,14 @@ const HarvestStats = ({ data, isLoading }: any) => {
               height="15"
               priority
             />
-            <p className="text-gray-400 lg:text-sm text-xs">Total Harvest</p>
+            <p className="text-gray-400 lg:text-sm text-xs">Total Amount Sold</p>
           </div>
           <div className="stat mt-2">
             {isLoading ? (
               <Skeleton className="h-6 w-[150px] bg-gray-200" />
             ) : (
               <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
-                N {hide ? "**********" : data?.total_harvest}
+                N {hide ? "*****" : formatCurrency(data?.total_harvest)}
               </h2>
             )}
             {/* <div className="text-right flex items-center justify-end mt-2">
@@ -53,7 +53,7 @@ const HarvestStats = ({ data, isLoading }: any) => {
               <Skeleton className="h-6 w-[150px] bg-gray-200" />
             ) : (
               <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
-                N {hide ? "**********" : data?.total_capital}
+                N {hide ? "*****" : formatCurrency(data?.total_capital)}
               </h2>
             )}
             {/* <div className="text-right flex items-center justify-end mt-2">
@@ -74,7 +74,7 @@ const HarvestStats = ({ data, isLoading }: any) => {
               <Skeleton className="h-6 w-[150px] bg-gray-200" />
             ) : (
               <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
-                N {hide ? "**********" : data?.total_profit}
+                N {hide ? "*****" : formatCurrency(data?.total_profit)}
               </h2>
             )}
             {/* <div className="text-right flex items-center justify-end mt-2">
@@ -107,7 +107,7 @@ const HarvestStats = ({ data, isLoading }: any) => {
             <Skeleton className="h-6 w-[150px] bg-gray-200" />
           ) : (
             <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
-              N {hide ? "**********" : data?.total_profit}
+              N {hide ? "*****" : data?.total_profit}
             </h2>
           )}
           {/* <div className="text-right flex items-center justify-end">

@@ -145,7 +145,7 @@ const BatchTable: React.FC<TableProps> = ({ data, isLoading, farmId }) => {
     <>
       {/* Header section */}
       <section className="grid grid-cols-1 lg:flex lg:items-center justify-between gap-8 ">
-        <div className="flex items-center space-x-6 w-7/12">
+        <div className="flex items-center space-x-6 lg:w-7/12 w-full">
           <div className="flex items-center bg-white py-2 px-4 rounded-lg w-full">
             <IoMdSearch className="w-6 h-6 text-gray-500" />
             <Input
@@ -281,13 +281,13 @@ const BatchTable: React.FC<TableProps> = ({ data, isLoading, farmId }) => {
 
       {farmId ? (
         <>
-          <div className="table w-full">
+          <div className="">
             {data?.length > 0 ? (
-              <div className="bg-gray-50 border-collapse border border-gray-300 pt-6 pb-4 mb-20 rounded-xl  mt-20">
+              <div className="bg-gray-50 border-collapse border border-gray-300 lg:pt-6 lg:pb-4 mb-20 rounded-xl  lg:mt-20 mt-5 w-full mx-auto ">
                 <Table className="w-full">
                   <TableHeader className="">
                     <TableRow>
-                      <TableHead className="py-4 pl-8 text-black ">
+                      <TableHead className="lg:py-4 lg:pl-8 text-black">
                         <input
                           type="checkbox"
                           checked={selectAll}
@@ -295,19 +295,19 @@ const BatchTable: React.FC<TableProps> = ({ data, isLoading, farmId }) => {
                           className="mr-1 w-4 h-4"
                         />
                       </TableHead>
-                      <TableHead className="py-4 text-black font-bold text-sm">
+                      <TableHead className="py-4 text-black lg:text-sm text-xs">
                         Date
                       </TableHead>
-                      <TableHead className="py-4 text-black font-bold text-sm">
+                      <TableHead className="py-4 text-black lg:text-sm text-xs">
                         Name
                       </TableHead>
-                      <TableHead className="py-4 text-black font-bold text-sm">
-                        Unit Purchased
+                      <TableHead className="py-4 text-black text-nowrap flex gap-x-2 lg:text-sm text-xs">
+                        Unit <span className="hidden lg:block">Purchased</span>
                       </TableHead>
-                      <TableHead className="py-4 text-black font-bold text-sm">
+                      <TableHead className="py-4 text-black text-nowrap lg:text-sm text-xs">
                         Fish Type
                       </TableHead>
-                      <TableHead className="py-4 text-black font-bold text-sm">
+                      <TableHead className="py-4 text-black lg:text-sm text-xs">
                         Status
                       </TableHead>
                     </TableRow>
@@ -342,10 +342,10 @@ const BatchTable: React.FC<TableProps> = ({ data, isLoading, farmId }) => {
                       </TableRow>
                     </TableBody>
                   ) : (
-                    <TableBody className="bg-white pl-8">
+                    <TableBody className="bg-white lg:pl-8">
                       {reversedArray?.map((item: any) => (
                         <TableRow key={item?.id}>
-                          <TableCell className="py-4 pl-8">
+                          <TableCell className="py-4 lg:pl-8">
                             <input
                               type="checkbox"
                               checked={selectedItems.includes(item?.id)}
@@ -353,25 +353,25 @@ const BatchTable: React.FC<TableProps> = ({ data, isLoading, farmId }) => {
                               className="mr-1 w-4 h-4"
                             />
                           </TableCell>
-                          <TableCell className="py-4">
+                          <TableCell className="py-4 lg:text-sm text-xs text-nowrap ">
                             {item?.attributes?.date_purchased}
                           </TableCell>
-                          <TableCell className="py-4">
+                          <TableCell className="py-4 lg:text-sm text-xs">
                             {item?.attributes?.name}
                           </TableCell>
-                          <TableCell className="py-4">
+                          <TableCell className="py-4 lg:text-sm text-xs ">
                             {item?.attributes?.unit_purchase}
                           </TableCell>
-                          <TableCell className="py-4">
+                          <TableCell className="py-4 lg:text-sm text-xs">
                             {item?.attributes?.fish_type}
                           </TableCell>
-                          <TableCell className="py-4">
+                          <TableCell className="py-4 lg:text-sm text-xs">
                             <p
-                              className={`w-full h-10 ${
+                              className={`w-full lg:h-10 px-2 py-1 lg:text-sm text-nowrap text-xs text-center ${
                                 item?.attributes?.status === `sold out`
                                   ? ` bg-red-100 text-red-400`
                                   : `bg-[#A3EED8] text-green-700 `
-                              } border-none rounded-full flex items-center justify-center`}>
+                              } border-none lg:rounded-full rounded-lg  flex items-center justify-center`}>
                               {item?.attributes?.status}
                             </p>
                           </TableCell>
