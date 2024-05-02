@@ -14,14 +14,14 @@ const inventoryApi = inventoryApiConfig.injectEndpoints({
     //   query: ({ farmId }) => `/farmer/batchs/${farmId}/farm-statistics`,
     //   providesTags: ["Harvest"],
     // }),
-    createPurchase: builder.mutation({
-      query: ({ formdata, farmId }) => ({
-        url: `/farmer/${farmId}/harvest`,
-        method: `POST`,
-        body: formdata,
-      }),
-      invalidatesTags: ["Inventory"],
-    }),
+    // createPurchase: builder.mutation({
+    //   query: ({ formdata, farmId }) => ({
+    //     url: `/farmer/${farmId}/harvest`,
+    //     method: `POST`,
+    //     body: formdata,
+    //   }),
+    //   invalidatesTags: ["Inventory"],
+    // }),
     editHarvest: builder.mutation({
       query: ({ formdata, farmId, taskId }) => ({
         url: `/farmer/${farmId}/harvest/${taskId}`,
@@ -44,7 +44,7 @@ const inventoryApi = inventoryApiConfig.injectEndpoints({
 
 export const {
   useGetInventoryQuery,
-  useCreatePurchaseMutation,
+  // useCreatePurchaseMutation,
   useEditHarvestMutation,
   useDeleteHarvestMutation,
 } = inventoryApi;
