@@ -38,9 +38,9 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(batchData?.attributes?.status || "");
   const [type, setType] = useState<any>(batchData?.attributes?.fish_type || "");
-  const [date, setDate] = useState<any>(
-    batchData?.attributes?.date_purchased || ""
-  );
+  // const [date, setDate] = useState<any>(
+  //   batchData?.attributes?.date_purchased || ""
+  // );
   const [specie, setSpecie] = useState<string>(
     batchData?.attributes?.fish_specie || ""
   );
@@ -53,7 +53,6 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
     status: batchData?.attributes?.status || "",
     date_purchased: batchData?.attributes?.date_purchased || "",
   });
-  console.log(batchData);
   const [errors, setErrors] = useState({
     name: "",
     unit_purchase: "",
@@ -100,7 +99,7 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
   };
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
-    const date_purchased = formatDate(date);
+    // const date_purchased = formatDate(date);
     setLoading(true);
     e.preventDefault();
     let newErrors = {
@@ -137,7 +136,7 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
       fish_type: type,
       vendor: formData?.vendor,
       status: status,
-      date_purchased: date_purchased,
+      // date_purchased: date_purchased,
     };
 
     if (Object.values(newErrors).every((error) => !error)) {
@@ -323,7 +322,7 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
               </Select>
             </div>
           </div>
-          <div className="form-control flex flex-col mt-4">
+          {/* <div className="form-control flex flex-col mt-4">
             <Label
               htmlFor="date_established"
               className=" text-gray-500 font-normal mb-2">
@@ -350,7 +349,7 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
                 />
               </PopoverContent>
             </Popover>
-          </div>
+          </div> */}
           <div className="flex items-center justify-between space-x-6">
             <Button
               disabled={loading}

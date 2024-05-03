@@ -238,7 +238,8 @@ const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
                     <SelectLabel>
                       {data?.data?.length === 0
                         ? "Create Batch before creating ponds"
-                        : "Batch"}
+                        : editdata?.relationships?.batch?.data?.attributes
+                            ?.name || "Batch"}
                     </SelectLabel>
                     {data?.data?.map((task: any) => (
                       <SelectItem value={task?.id} key={task?.id}>
