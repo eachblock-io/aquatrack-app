@@ -10,7 +10,7 @@ import { formatCurrency } from "@/utils";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 
 const Overview = ({ data, isLoading }: any) => {
-  const [hide, setHide] = useState(true);
+  const [hide, setHide] = useState(false);
   // console.log(data);
   return (
     <section className="lg:w-11/12 w-11/12 mx-auto">

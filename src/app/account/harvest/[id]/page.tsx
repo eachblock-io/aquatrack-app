@@ -99,7 +99,7 @@ const HarvestSinglePage = ({ params }: any) => {
           <Button
             onClick={downloadCsv}
             disabled={!csvData}
-            className="bg-green-800 lg:py-6 text-xs">
+            className="bg-[#387C59] lg:py-6 text-xs">
             Download sheet
           </Button>
         </div>

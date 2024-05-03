@@ -10,7 +10,7 @@ import { formatCurrency } from "@/utils";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 
 const HarvestStats = ({ data, isLoading }: any) => {
-  const [hide, setHide] = useState(true);
+  const [hide, setHide] = useState(false);
   // console.log("data", data);
   return (
     <section className="w-full mx-auto lg:mt-4 mb-6">
