@@ -15,6 +15,10 @@ const customerApi = customerApiConfig.injectEndpoints({
       query: ({ farmId }) => `/farmer/${farmId}/customers`,
       providesTags: ["Customer"],
     }),
+    downloadSheet: builder.query({
+      query: ({ farmId }) => `/farmer/${farmId}/customers?export=csv`,
+      providesTags: ["Customer"],
+    }),
     createCustomer: builder.mutation({
       query: ({ formdata, farmId, harvestId }) => ({
         url: `/farmer/${farmId}/harvest/${harvestId}/customer`,
@@ -40,7 +44,7 @@ const customerApi = customerApiConfig.injectEndpoints({
       invalidatesTags: ["Customer"],
     }),
     deletePurchase: builder.mutation({
-      query: ({ formdata, farmId, harvestId, purchaseId }) => ({
+      query: ({ formdata, purchaseId }) => ({
         url: `/farmer/purchase/${purchaseId}`,
         method: `DELETE`,
         body: formdata,
@@ -77,6 +81,7 @@ const customerApi = customerApiConfig.injectEndpoints({
 export const {
   useGetCustomersQuery,
   useGetAllCustomersQuery,
+  useDownloadSheetQuery,
   useCreatePurchaseMutation,
   useEditPurchaseMutation,
   useDeletePurchaseMutation,

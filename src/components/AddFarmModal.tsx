@@ -28,7 +28,7 @@ import { useGetCurrentUserQuery } from "@/redux/services/userApiSlice";
 import { Modal } from "./Modal";
 
 const AddFarmModal = ({ open, setOpen }: any) => {
-  const cancelButtonRef = useRef(null);
+  
   const { refetch } = useGetCurrentUserQuery(null);
   const [createFarm] = useCreateFarmMutation();
   const [loading, setLoading] = useState(false);
@@ -96,7 +96,7 @@ const AddFarmModal = ({ open, setOpen }: any) => {
   };
 
   return (
-    <Modal open={open} setOpen={setOpen}>
+    <Modal open={open} setOpen={setOpen} className="lg:w-[500px] rounded-xl">
       <div className="bg-white lg:py-10 lg:px-14 p-10">
         <div className="text-center">
           <div className="mt-3 text-center sm:ml-4 sm:mt-0">
@@ -200,7 +200,7 @@ const AddFarmModal = ({ open, setOpen }: any) => {
               </PopoverContent>
             </Popover>
           </div>
-          <div className="pt-6">
+          <div className="pt-2">
             <Button className="  outline-none border-none text-base font-semibold bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
               {loading ? "Creating farm..." : "Create Farm"}
             </Button>

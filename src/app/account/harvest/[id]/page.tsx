@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { IoMdSearch } from "react-icons/io";
 import { Button } from "@/components/ui/button";
@@ -17,8 +17,12 @@ import AddCustomerModal from "@/components/AddCustomerModal";
 import { useGetCustomersQuery } from "@/redux/services/customerApiSlice";
 import { searchTableData } from "@/utils";
 import useDefaultFarmId from "@/hooks/useDefaultFarmId";
+import { IoArrowBackSharp } from "react-icons/io5";
+import fetchToken from "@/lib/auth";
+import axios from "axios";
 
 const HarvestSinglePage = ({ params }: any) => {
+  const [csvData, setCsvData] = useState("");
   const { data } = useGetCurrentUserQuery(null);
   const { defaultFarmId } = useDefaultFarmId();
   const { data: harvestData } = useGetHarvestQuery({
@@ -41,6 +45,40 @@ const HarvestSinglePage = ({ params }: any) => {
     setFilteredData(searchTableData(customerData?.data?.data, query));
   };
 
+  useEffect(() => {
+    handleDownloadSheet();
+  }, []);
+
+  const handleDownloadSheet = async () => {
+    try {
+      const token = await fetchToken();
+      const headers = {
+        Authorization: `Bearer ${token?.data?.token}`,
+        "Content-Type": "application/json",
+      };
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/farmer/${defaultFarmId}/customers?export=csv`,
+        {
+          headers,
+        }
+      );
+      setCsvData(res?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const downloadCsv = () => {
+    const blob = new Blob([csvData], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "data.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   return (
     <>
       <NavHeader userdata={data?.data} />
@@ -51,6 +89,20 @@ const HarvestSinglePage = ({ params }: any) => {
           open={open}
           setOpen={setOpen}
         />
+        <div className="flex items-center justify-between">
+          <Button
+            variant="ghost"
+            className="space-x-2 text-[--primary] font-semibold">
+            <IoArrowBackSharp className="h-6 w-6" />
+            <span>Back</span>
+          </Button>
+          <Button
+            onClick={downloadCsv}
+            disabled={!csvData}
+            className="bg-green-800 lg:py-6 text-xs">
+            Download sheet
+          </Button>
+        </div>
         <HarvestStats data={harvestData?.data?.card_data} />
         {/* Header section */}
         <section className="grid grid-cols-1 lg:flex lg:items-center justify-between gap-8 mt-8">

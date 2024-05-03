@@ -11,7 +11,7 @@ import { IoEye, IoEyeOff } from "react-icons/io5";
 
 const HarvestStats = ({ data, isLoading }: any) => {
   const [hide, setHide] = useState(true);
-  console.log("data", data);
+  // console.log("data", data);
   return (
     <section className="w-full mx-auto lg:mt-4 mb-6">
       <div className="grid lg:grid-cols-3 grid-cols-2 lg:gap-8 gap-4 gap-y-6 lg:mt-4 mt-4">

@@ -43,7 +43,12 @@ interface TableProps {
   stats: any;
 }
 
-const HarvestTable: React.FC<TableProps> = ({ data, farmId, isLoading, stats }) => {
+const HarvestTable: React.FC<TableProps> = ({
+  data,
+  farmId,
+  isLoading,
+  stats,
+}) => {
   const [deleteAllHarvest] = useDeleteAllHarvestMutation();
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
@@ -228,17 +233,17 @@ const HarvestTable: React.FC<TableProps> = ({ data, farmId, isLoading, stats }) 
             </div>
           </section>
 
-          <div className="table w-full lg:mt-20 mb-10 ">
+          <div className="w-full lg:mt-20 mb-10 ">
             {data?.length > 0 ? (
               <>
                 <h2 className="text-[--primary] font-bold lg:text-xl text-lg mb-4 ">
                   Harvest History
                 </h2>
-                <div className="bg-gray-50 border-collapse border border-gray-300 lg:pt-6 pt-2 pb-4 rounded-xl">
-                  <Table className="lg:w-full w-full overflow-scroll ">
+                <div className="w-full mx-auto overflow-hidden">
+                  <Table className="lg:w-full w-full bg-gray-50 border-collapse border border-gray-300 ">
                     <TableHeader className="">
                       <TableRow>
-                        <TableHead className="py-4 lg:pl-8 pl-4 text-black lg:flex hidden">
+                        <TableHead className="py-4 lg:pl-8 pl-4 text-black">
                           <input
                             type="checkbox"
                             checked={selectAll}
@@ -246,16 +251,16 @@ const HarvestTable: React.FC<TableProps> = ({ data, farmId, isLoading, stats }) 
                             className="mr-1 w-4 h-4"
                           />
                         </TableHead>
-                        <TableHead className="py-4 text-black lg:text-left text-center font-semibold lg:text-base text-xs">
+                        <TableHead className="py-4 text-black lg:text-left font-semibold lg:text-base text-xs">
                           Date
                         </TableHead>
-                        <TableHead className="py-4 text-black lg:text-left text-center font-semibold lg:text-base text-xs">
+                        <TableHead className="py-4 text-black lg:text-left font-semibold lg:text-base text-xs">
                           Name
                         </TableHead>
-                        <TableHead className="py-4 text-black lg:text-left text-center font-semibold lg:text-base text-xs">
+                        <TableHead className="py-4 text-black lg:text-left font-semibold lg:text-base text-xs">
                           Batch
                         </TableHead>
-                        <TableHead className="py-4 text-black lg:text-left text-center font-semibold lg:text-base text-xs">
+                        <TableHead className="py-4 text-nowrap text-black lg:text-left font-semibold lg:text-base text-xs">
                           Total Sales
                         </TableHead>
                       </TableRow>
@@ -264,7 +269,7 @@ const HarvestTable: React.FC<TableProps> = ({ data, farmId, isLoading, stats }) 
                       <TableBody className="bg-white lg:pl-8 p-0 w-full lg:text-left text-center ">
                         {reversedArray?.map((item) => (
                           <TableRow key={item.id}>
-                            <TableCell className="py-4 lg:pl-8 pl-4 lg:flex hidden">
+                            <TableCell className="py-4 lg:pl-8 pl-4">
                               <input
                                 type="checkbox"
                                 checked={selectedItems.includes(item.id)}

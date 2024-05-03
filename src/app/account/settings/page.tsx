@@ -5,6 +5,7 @@ import SettingsForm from "@/components/SettingsForm";
 import { useGetCurrentUserQuery } from "@/redux/services/userApiSlice";
 import NavHeader from "@/components/NavHeader";
 import TeamMembers from "@/components/TeamMembers";
+import Farms from "@/components/Farms";
 
 const SettingsPage = () => {
   const { refetch, data } = useGetCurrentUserQuery(null);
@@ -24,6 +25,11 @@ const SettingsPage = () => {
               className="bg-transparent font-normal data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-[--primary] data-[state=active]:font-bold data-[state=active]:rounded-none data-[state=active]:border-b-4 data-[state=active]:border-[--primary] data-[state=active]:pb-2 text-base data-[state=active]:text-base">
               Manage Account
             </TabsTrigger>
+            <TabsTrigger
+              value="farms"
+              className="bg-transparent font-normal data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-[--primary] data-[state=active]:font-bold data-[state=active]:rounded-none data-[state=active]:border-b-4 data-[state=active]:border-[--primary] data-[state=active]:pb-2 text-base data-[state=active]:text-base">
+              Farms
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="profile" className="pt-8">
             <h1 className="font-bold text-[--primary] mt-10 lg:text-xl text-lg ">
@@ -33,6 +39,12 @@ const SettingsPage = () => {
           </TabsContent>
           <TabsContent value="account">
             <TeamMembers />
+          </TabsContent>
+          <TabsContent value="farms">
+            <h1 className="font-bold text-[--primary] mt-10 lg:text-xl text-lg ">
+              Farms
+            </h1>
+            <Farms />
           </TabsContent>
         </Tabs>
       </main>

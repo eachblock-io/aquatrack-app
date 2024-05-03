@@ -29,6 +29,14 @@ const farmApi = farmApiConfig.injectEndpoints({
       }),
       invalidatesTags: ["Farms"],
     }),
+    editFarm: builder.mutation<void, any>({
+      query: ({ formdata, farmId }) => ({
+        url: `/farmer/${farmId}`,
+        method: `PATCH`,
+        body: formdata,
+      }),
+      invalidatesTags: ["Farms"],
+    }),
   }),
   overrideExisting: true,
 });
@@ -37,4 +45,5 @@ export const {
   useGetAllFarmsQuery,
   useGetFarmDataQuery,
   useCreateFarmMutation,
+  useEditFarmMutation,
 } = farmApi;

@@ -182,7 +182,7 @@ const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
               <Input
                 type="text"
                 name="price"
-                value={formatCurrency(formData?.price)}
+                value={formData?.price}
                 onChange={handleInputChange}
                 placeholder="500"
                 className="border-gray-400 focus-visible:outline-none py-6 "

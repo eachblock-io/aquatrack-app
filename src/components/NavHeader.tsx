@@ -44,20 +44,40 @@ import { Skeleton } from "@/components/ui/skeleton";
 import LogoutModal from "./LogoutModal";
 import { Notification } from "./Notification";
 import { useGetNotificationsQuery } from "@/redux/services/notificationApiSlice";
+import { MdOutlineEdit } from "react-icons/md";
+import EditFarmModal from "./EditFarmModal";
 
 const NavHeader = ({ userdata }: any) => {
   const { data } = useGetAllFarmsQuery(null);
   const { data: notification } = useGetNotificationsQuery(null);
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [openLog, setOpenLog] = useState(false);
   const [toggle, setToggle] = useState(false);
+  const [openLog, setOpenLog] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [farmData, setFarmData] = useState();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { handleFarmClick, defaultFarmId } = useDefaultFarmId();
+
+  const handleEdit = (value: any) => {
+    // console.log(value?.name);
+    if (value?.name) {
+      setFarmData(value);
+      setOpenEdit(true);
+      setToggle(false);
+    }
+  };
 
   return (
     <nav className="bg-white w-full lg:h-[10vh] h-[8vh] flex items-center justify-center">
       <AddFarmModal open={open} setOpen={setOpen} />
+      {farmData && (
+        <EditFarmModal
+          data={farmData}
+          open={openEdit}
+          setOpen={setOpenEdit}
+        />
+      )}
       <LogoutModal open={openLog} setOpen={setOpenLog} />
       <div className="flex items-center justify-between w-11/12 mx-auto">
         <IoIosMenu
@@ -134,24 +154,33 @@ const NavHeader = ({ userdata }: any) => {
                       {data?.data?.organizations?.map(
                         (org: any, index: any) => (
                           <AccordionItem key={org?.id} value={org?.id}>
-                            <AccordionTrigger className="h-2 p-0 py-4 border-none w-full">
+                            <AccordionTrigger className="rounded-lg py-2 px-2 border-none w-full hover:bg-gray-100">
                               <label
-                                className={`text-sm p-2 mb-4 flex items-center cursor-pointer w-full `}>
+                                className={`text-sm flex items-center cursor-pointer w-full `}>
                                 <GiCirclingFish className="text-gray-500 h-4 w-4 mr-2 " />
                                 <span className="text-sm font-normal">
                                   {org?.attributes?.organization_name}
                                 </span>
                               </label>
+                              <IoIosArrowDown />
                             </AccordionTrigger>
                             {org?.farms?.map((farm: any) => (
                               <AccordionContent
-                                onClick={() => handleFarmClick(farm?.id)}
                                 key={farm?.id}
-                                className={` ${
-                                  defaultFarmId === farm?.id && `bg-blue-100`
-                                } hover:bg-blue-100 rounded-lg px-2 py-2 flex items-center border-none font-medium cursor-pointer`}>
-                                <FaArrowAltCircleUp className="text-gray-400 h-3 w-3 mr-2 " />
-                                <p className="text-xs">{farm?.name} farm</p>
+                                className="flex items-center justify-between">
+                                <div
+                                  onClick={() => handleFarmClick(farm?.id)}
+                                  className={`${
+                                    defaultFarmId === farm?.id &&
+                                    `bg-blue-100 py-2`
+                                  } hover:bg-blue-100 rounded-lg w-10/12 px-2 py-2 flex items-center  border-none font-medium cursor-pointer`}>
+                                  <FaArrowAltCircleUp className="text-gray-400 h-3 w-3 mr-2 " />
+                                  <p className="text-xs">{farm?.name}</p>
+                                </div>
+                                <MdOutlineEdit
+                                  className="h-4 w-4 cursor-pointer"
+                                  onClick={() => handleEdit(farm)}
+                                />
                               </AccordionContent>
                             ))}
                           </AccordionItem>
