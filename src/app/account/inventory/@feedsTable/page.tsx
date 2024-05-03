@@ -73,7 +73,12 @@ const FeedsTable: React.FC<TableProps> = ({
   return (
     <div className="bg-gray-50 border-collapse border border-gray-300 pt-6 pb-4 rounded-xl">
       {editData && (
-        <EditFeedModal editdata={editData} open={open} setOpen={setOpen} />
+        <EditFeedModal
+          farmId={farmId}
+          editdata={editData}
+          open={open}
+          setOpen={setOpen}
+        />
       )}
       <DeleteModal
         open={openDel}

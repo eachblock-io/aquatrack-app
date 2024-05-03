@@ -22,13 +22,11 @@ import { formatCurrency } from "@/utils";
 
 const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
   const { data } = useGetAllBatchsDataQuery({ farmId });
-  // console.log(editdata?.relationships?.batch?.data?.attributes?.name);
+  console.log(data);
   // const cancelButtonRef = useRef(null);
   const [editFeed] = useEditFeedMutation();
   const [loading, setLoading] = useState(false);
-  const [batchID, setBatchID] = useState<string>(
-    editdata?.relationships?.batch?.data?.attributes?.name || ""
-  );
+  const [batchID, setBatchID] = useState<string>("");
   const [formData, setFormData] = useState<any>({
     name: editdata?.attributes?.name || "",
     quantity: editdata?.attributes?.quantity || "",
@@ -228,25 +226,24 @@ const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
               </Label>
               <Select
                 name="batch_id"
-                value={batchID}
                 onValueChange={(value) => setBatchID(value)}>
                 <SelectTrigger className="w-full h-12 border-gray-400">
-                  <SelectValue placeholder="Batch" />
+                  <SelectValue
+                    placeholder={
+                      editdata?.relationships?.batch?.data?.attributes?.name ||
+                      "Batch"
+                    }
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>
-                      {data?.data?.length === 0
-                        ? "Create Batch before creating ponds"
-                        : editdata?.relationships?.batch?.data?.attributes
-                            ?.name || "Batch"}
+                    <SelectLabel className="font-bold text-gray-800">
+                      {editdata?.relationships?.batch?.data?.attributes?.name ||
+                        "Batch"}
                     </SelectLabel>
                     {data?.data?.map((task: any) => (
                       <SelectItem value={task?.id} key={task?.id}>
-                        {editdata?.relationships?.batch?.data?.attributes?.name
-                          ? editdata?.relationships?.batch?.data?.attributes
-                              ?.name
-                          : task?.attributes?.name}
+                        {task?.attributes?.name}
                       </SelectItem>
                     ))}
                   </SelectGroup>
