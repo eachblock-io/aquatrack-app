@@ -50,7 +50,7 @@ const AccountPage = () => {
           <>
             {data?.data?.organizations[0]?.farms[0]?.id ? (
               <section className="flex lg:flex-row flex-col lg:space-x-8 space-y-10 lg:space-y-0 lg:mt-20 mt-10 w-11/12 mx-auto pb-10">
-                {/* <Chats data={dashboard?.data} /> */}
+                <Chats data={dashboard?.data} />
                 <AddTask farmID={data?.data?.organizations[0]?.farms[0]?.id} />
               </section>
             ) : (

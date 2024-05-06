@@ -100,7 +100,7 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     // const date_purchased = formatDate(date);
-    setLoading(true);
+    // setLoading(true);
     e.preventDefault();
     let newErrors = {
       name: "",
@@ -119,13 +119,11 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
     }
 
     setErrors(newErrors);
-
+    // console.log(formData);
     // Convert unit_purchase, price_per_unit, and amount_spent to numbers
-    const unit_purchase = parseFloat(formData.unit_purchase.replace(/,/g, ""));
-    const price_per_unit = parseFloat(
-      formData.price_per_unit.replace(/,/g, "")
-    );
-    const amount_spent = parseFloat(formData.amount_spent.replace(/,/g, ""));
+    const unit_purchase = parseFloat(formData?.unit_purchase);
+    const price_per_unit = parseFloat(formData?.price_per_unit);
+    const amount_spent = parseFloat(formData?.amount_spent);
 
     const formdata = {
       name: formData?.name,
@@ -140,7 +138,7 @@ const EditBatchModal = ({ open, setOpen, farmId, batchData }: any) => {
     };
 
     if (Object.values(newErrors).every((error) => !error)) {
-      // setLoading(true);
+      setLoading(true);
       try {
         await editBatch({ formdata, farmId, batchId: batchData?.id }).unwrap();
         toast.success("Batch created ✔️");
