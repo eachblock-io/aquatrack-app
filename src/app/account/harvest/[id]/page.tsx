@@ -7,14 +7,14 @@ import HarvestStats from "@/components/HarvestStats";
 import HarvestList from "./@harvestList/page";
 import NavHeader from "@/components/NavHeader";
 import { useGetCurrentUserQuery } from "@/redux/services/userApiSlice";
-import {
-  useDeleteAllHarvestMutation,
-  useGetHarvestQuery,
-} from "@/redux/services/harvestApiSlice";
+import { useGetHarvestQuery } from "@/redux/services/harvestApiSlice";
 import Image from "next/image";
 import emptyImg from "@/public/empty.png";
 import AddCustomerModal from "@/components/AddCustomerModal";
-import { useGetCustomersQuery } from "@/redux/services/customerApiSlice";
+import {
+  useGetCustomersQuery,
+  useDeleteAllCustomerMutation,
+} from "@/redux/services/customerApiSlice";
 import { searchTableData } from "@/utils";
 import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 import { IoArrowBackSharp } from "react-icons/io5";
@@ -34,8 +34,10 @@ import {
 } from "@/components/ui/alert-dialog";
 import { RiDeleteBinLine } from "react-icons/ri";
 import toast from "react-hot-toast";
+import CustomerStats from "@/components/CustomerStats";
 
 const HarvestSinglePage = ({ params }: any) => {
+  const [deleteAllCustomer] = useDeleteAllCustomerMutation();
   const [csvData, setCsvData] = useState("");
   const { data } = useGetCurrentUserQuery(null);
   const { defaultFarmId } = useDefaultFarmId();
@@ -124,13 +126,13 @@ const HarvestSinglePage = ({ params }: any) => {
 
   const handleAllDelete = async () => {
     const formdata = {
-      model: "harvests",
+      model: "customers",
       ids: selectedItems,
     };
 
     try {
       if (selectedItems?.length > 0) {
-        // await deleteAllHarvest({ formdata });
+        await deleteAllCustomer({ formdata });
         toast.success("Deleted ✔️");
       }
     } catch (error: any) {
@@ -161,13 +163,13 @@ const HarvestSinglePage = ({ params }: any) => {
           <Button
             onClick={downloadCsv}
             disabled={!csvData}
-            className="bg-[#387C59] hover:bg-[#387C59] lg:py-6 text-xs">
+            className="bg-[#387C59] hover:bg-[#387C59] lg:py-6 px-8 text-xs">
             Download sheet
           </Button>
         </div>
-        <HarvestStats data={harvestData?.data?.card_data} />
+        <CustomerStats data={harvestData?.data} />
         {/* Header section */}
-        <section className="grid grid-cols-1 lg:flex lg:items-center justify-between gap-8 mt-8">
+        <section className="flex items-center justify-between lg:gap-8 mt-8">
           <div className="flex items-center space-x-6 lg:w-7/12 w-full">
             <div className="flex items-center bg-white py-2 px-4 rounded-lg w-full">
               <IoMdSearch className="w-6 h-6 text-gray-500" />
@@ -179,11 +181,6 @@ const HarvestSinglePage = ({ params }: any) => {
                 className="border-none bg-transparent outline-none shadow-none"
               />
             </div>
-            <Button
-              onClick={() => setOpen(true)}
-              className="px-2 py-5 bg-[--primary] hover:bg-[--primary] lg:hidden">
-              <FaPlus className="w-6 h-6" />
-            </Button>
           </div>
           <div className="flex lg:items-center items-start lg:justify-around space-x-6">
             {/* <div className="flex items-center space-x-2">

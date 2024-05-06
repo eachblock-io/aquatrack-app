@@ -66,6 +66,14 @@ const customerApi = customerApiConfig.injectEndpoints({
       }),
       invalidatesTags: ["Customer"],
     }),
+    deleteAllCustomer: builder.mutation({
+      query: ({ formdata }) => ({
+        url: `/farmer/delete-all`,
+        method: `POST`,
+        body: formdata,
+      }),
+      invalidatesTags: ["Customer"],
+    }),
     AddBeneficiary: builder.mutation({
       query: ({ formdata, farmId }) => ({
         url: `/farmer/${farmId}/beneficiary`,
@@ -88,5 +96,6 @@ export const {
   useCreateCustomerMutation,
   useEditCustomerMutation,
   useDeleteCustomerMutation,
+  useDeleteAllCustomerMutation,
   useAddBeneficiaryMutation,
 } = customerApi;

@@ -117,8 +117,6 @@ const HarvestTable: React.FC<TableProps> = ({
     }
   };
 
-  // console.log(data);
-
   return (
     <div className="">
       {farmId ? (
@@ -255,14 +253,14 @@ const HarvestTable: React.FC<TableProps> = ({
           <div className="w-full lg:mt-20 mb-10 ">
             {data?.length > 0 ? (
               <>
-                <h2 className="text-[--primary] font-bold lg:text-xl text-lg mb-4 ">
+                <h2 className="text-[--primary] font-bold lg:text-xl text-base mb-4 ">
                   Harvest History
                 </h2>
                 <div className="w-full mx-auto overflow-hidden">
                   <Table className="lg:w-full w-full bg-gray-50 border-collapse border border-gray-300 ">
                     <TableHeader className="">
                       <TableRow>
-                        <TableHead className="py-4 lg:pl-8 pl-4 text-black">
+                        <TableHead className="py-4 lg:pl-8 pl-2 text-black">
                           <input
                             type="checkbox"
                             checked={selectAll}
@@ -270,7 +268,7 @@ const HarvestTable: React.FC<TableProps> = ({
                             className="mr-1 w-4 h-4"
                           />
                         </TableHead>
-                        <TableHead className="py-4 text-black lg:text-left font-semibold lg:text-base text-xs">
+                        <TableHead className="py-4 text-black lg:text-left font-semibold lg:text-base text-xs lg:flex hidden">
                           Date
                         </TableHead>
                         <TableHead className="py-4 text-black lg:text-left font-semibold lg:text-base text-xs">
@@ -288,7 +286,7 @@ const HarvestTable: React.FC<TableProps> = ({
                       <TableBody className="bg-white lg:pl-8 p-0 w-full lg:text-left text-center ">
                         {reversedArray?.map((item) => (
                           <TableRow key={item.id}>
-                            <TableCell className="py-4 lg:pl-8 pl-4">
+                            <TableCell className="py-4 lg:pl-8 pl-2 w-0">
                               <input
                                 type="checkbox"
                                 checked={selectedItems.includes(item.id)}
@@ -296,7 +294,7 @@ const HarvestTable: React.FC<TableProps> = ({
                                 className="mr-1 w-4 h-4"
                               />
                             </TableCell>
-                            <TableCell className="py-4 lg:text-base text-xs text-nowrap">
+                            <TableCell className="py-4 lg:text-base text-xs text-nowrap lg:flex hidden">
                               {item?.date}
                             </TableCell>
                             <TableCell className="py-4 lg:text-base text-xs text-nowrap">
@@ -311,7 +309,7 @@ const HarvestTable: React.FC<TableProps> = ({
                             <TableCell className="py-4 lg:hidden flex">
                               <Link
                                 href={`/account/harvest/${item.id}`}
-                                className="text-[--primary] text-xs ">
+                                className="text-[--primary] text-sm ">
                                 view
                               </Link>
                             </TableCell>
@@ -325,7 +323,7 @@ const HarvestTable: React.FC<TableProps> = ({
                             <TableCell className="">
                               <MdOutlineEdit
                                 onClick={() => handleEdit(item)}
-                                className=" text-[--primary] lg:h-8 lg:w-8 h-4 w-4 cursor-pointer ">
+                                className=" text-[--primary] lg:h-8 lg:w-8 h-5 w-5 cursor-pointer ">
                                 Edit
                               </MdOutlineEdit>
                             </TableCell>

@@ -12,6 +12,10 @@ import { IoEye, IoEyeOff } from "react-icons/io5";
 const HarvestStats = ({ data, isLoading }: any) => {
   const [hide, setHide] = useState(false);
   // console.log("data", data);
+
+  const isNegative = (number: any) => {
+    return number < 0;
+  };
   return (
     <section className="w-full mx-auto lg:mt-4 mb-6">
       <div className="grid lg:grid-cols-3 grid-cols-2 lg:gap-8 gap-4 gap-y-6 lg:mt-4 mt-4">
@@ -25,14 +29,14 @@ const HarvestStats = ({ data, isLoading }: any) => {
               height="15"
               priority
             />
-            <p className="text-gray-400 lg:text-sm text-xs">Total Amount Sold</p>
+            <p className="text-gray-400 lg:text-sm text-xs">Total Harvest</p>
           </div>
           <div className="stat mt-2">
             {isLoading ? (
               <Skeleton className="h-6 w-[150px] bg-gray-200" />
             ) : (
               <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
-                N {hide ? "*****" : formatCurrency(data?.total_harvest)}
+                {hide ? "*****" : formatCurrency(data?.total_harvest)}
               </h2>
             )}
             {/* <div className="text-right flex items-center justify-end mt-2">
@@ -74,7 +78,12 @@ const HarvestStats = ({ data, isLoading }: any) => {
               <Skeleton className="h-6 w-[150px] bg-gray-200" />
             ) : (
               <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
-                N {hide ? "*****" : formatCurrency(data?.total_profit)}
+                N{" "}
+                {hide
+                  ? "*****"
+                  : isNegative(data?.total_profit)
+                  ? "0.00"
+                  : formatCurrency(data?.total_profit)}
               </h2>
             )}
             {/* <div className="text-right flex items-center justify-end mt-2">
@@ -107,7 +116,12 @@ const HarvestStats = ({ data, isLoading }: any) => {
             <Skeleton className="h-6 w-[150px] bg-gray-200" />
           ) : (
             <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
-              N {hide ? "*****" : data?.total_profit}
+              N{" "}
+              {hide
+                ? "*****"
+                : isNegative(data?.total_profit)
+                ? "0.00"
+                : formatCurrency(data?.total_profit)}
             </h2>
           )}
           {/* <div className="text-right flex items-center justify-end">
