@@ -142,7 +142,7 @@ const AddHarvestModal = ({ open, setOpen, farmId }: any) => {
             <Input
               type="text"
               name="consultant"
-              value={formData?.unit_purchase}
+              value={formData?.consultant}
               onChange={handleInputChange}
               placeholder="Consultant"
               className="border-gray-400 focus-visible:outline-none py-6 "

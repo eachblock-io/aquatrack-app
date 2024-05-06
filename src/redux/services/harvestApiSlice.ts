@@ -32,7 +32,16 @@ const harvestApi = harvestApiConfig.injectEndpoints({
       }),
       invalidatesTags: ["Harvest"],
     }),
-    
+
+    editHarvestCus: builder.mutation({
+      query: ({ formdata, farmId, harvestId }) => ({
+        url: `/farmer/${farmId}/harvest/${harvestId}`,
+        method: `PATCH`,
+        body: formdata,
+      }),
+      invalidatesTags: ["Harvest"],
+    }),
+
     deleteHarvest: builder.mutation({
       query: ({ farmId, batchId }) => ({
         url: `/farmer/${farmId}/harvest/${batchId}`,
@@ -58,6 +67,7 @@ export const {
   useGetHarvestQuery,
   useCreateHarvestMutation,
   useEditHarvestMutation,
+  useEditHarvestCusMutation,
   useDeleteHarvestMutation,
   useDeleteAllHarvestMutation,
 } = harvestApi;

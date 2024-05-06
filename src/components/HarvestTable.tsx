@@ -35,6 +35,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import toast from "react-hot-toast";
 import { useDeleteAllHarvestMutation } from "@/redux/services/harvestApiSlice";
+import { MdOutlineEdit } from "react-icons/md";
+import EditHarvestModal from "./EditHarvestModal";
 
 interface TableProps {
   data: any[];
@@ -55,6 +57,8 @@ const HarvestTable: React.FC<TableProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredData, setFilteredData] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [editdata, setEditData] = useState(false);
   const [openDel, setOpenDel] = useState(false);
   const reversedArray = reverseArray(
     filteredData?.length > 0 ? filteredData : data
@@ -106,6 +110,13 @@ const HarvestTable: React.FC<TableProps> = ({
     }
   };
 
+  const handleEdit = (value: any) => {
+    if (value) {
+      setEditData(value);
+      setOpenEdit(true);
+    }
+  };
+
   // console.log(data);
 
   return (
@@ -113,6 +124,14 @@ const HarvestTable: React.FC<TableProps> = ({
       {farmId ? (
         <>
           <AddHarvestModal farmId={farmId} open={open} setOpen={setOpen} />
+          {editdata && (
+            <EditHarvestModal
+              editdata={editdata}
+              farmId={farmId}
+              open={openEdit}
+              setOpen={setOpenEdit}
+            />
+          )}
           <DeleteHarvestModal open={openDel} setOpen={setOpenDel} />
           <HarvestStats data={stats} isLoading={isLoading} />
           {/* Header section */}
@@ -277,16 +296,16 @@ const HarvestTable: React.FC<TableProps> = ({
                                 className="mr-1 w-4 h-4"
                               />
                             </TableCell>
-                            <TableCell className="py-4 lg:text-base text-xs">
+                            <TableCell className="py-4 lg:text-base text-xs text-nowrap">
                               {item?.date}
                             </TableCell>
-                            <TableCell className="py-4 lg:text-base text-xs">
+                            <TableCell className="py-4 lg:text-base text-xs text-nowrap">
                               {item?.name}
                             </TableCell>
-                            <TableCell className="py-4 lg:text-base text-xs">
+                            <TableCell className="py-4 lg:text-base text-xs text-nowrap">
                               {item?.batch?.name}
                             </TableCell>
-                            <TableCell className="py-4 lg:text-base text-xs">
+                            <TableCell className="py-4 lg:text-base text-xs text-nowrap">
                               {item?.total_sales}
                             </TableCell>
                             <TableCell className="py-4 lg:hidden flex">
@@ -299,9 +318,16 @@ const HarvestTable: React.FC<TableProps> = ({
                             <TableCell className="py-4 lg:flex hidden">
                               <Link
                                 href={`/account/harvest/${item.id}`}
-                                className="border border-[--primary] text-[--primary] lg:py-2 py-1 lg:px-4 px-2 lg:text-sm text-xs rounded-lg ">
+                                className="border border-[--primary] text-[--primary] lg:py-2 lg:px-4 px-2 lg:text-sm text-xs rounded-lg ">
                                 view details
                               </Link>
+                            </TableCell>
+                            <TableCell className="">
+                              <MdOutlineEdit
+                                onClick={() => handleEdit(item)}
+                                className=" text-[--primary] lg:h-8 lg:w-8 h-4 w-4 cursor-pointer ">
+                                Edit
+                              </MdOutlineEdit>
                             </TableCell>
                           </TableRow>
                         ))}

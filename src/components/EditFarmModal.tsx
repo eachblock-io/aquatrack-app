@@ -100,6 +100,7 @@ const EditFarmModal = ({ open, setOpen, data }: any) => {
                       <h3 className="text-xl font-semibold text-[--primary] ">
                         Edit Farm
                       </h3>
+                      {data?.name}
                     </div>
                   </div>
                   <form onSubmit={handleSubmit} className="space-y-4 mt-8">

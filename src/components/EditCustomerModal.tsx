@@ -6,22 +6,28 @@ import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import toast from "react-hot-toast";
-import { useCreateCustomerMutation } from "@/redux/services/customerApiSlice";
+import { useEditCustomerMutation } from "@/redux/services/customerApiSlice";
 import { Modal } from "./Modal";
 
-const AddCustomerModal = ({ open, setOpen, farmId, harvestId }: any) => {
-  const cancelButtonRef = useRef(null);
-  const [createCustomer] = useCreateCustomerMutation();
+const EditCustomerModal = ({
+  open,
+  setOpen,
+  farmId,
+  harvestId,
+  editdata,
+}: any) => {
+  const [editCustomer] = useEditCustomerMutation();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<any>({
-    name: "",
-    phone: "",
-    email: "",
+    name: editdata?.attributes?.name || "",
+    phone: editdata?.attributes?.phone_number || "",
+    email: editdata?.attributes?.email || "",
   });
   const [errors, setErrors] = useState({
     name: "",
     phone: "",
   });
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -51,7 +57,12 @@ const AddCustomerModal = ({ open, setOpen, farmId, harvestId }: any) => {
     if (Object.values(newErrors).every((error) => !error)) {
       setLoading(true);
       try {
-        await createCustomer({ formdata, farmId, harvestId }).unwrap();
+        await editCustomer({
+          formdata,
+          farmId,
+          harvestId,
+          customerId: editdata?.id,
+        }).unwrap();
         toast.success("Customer added ✔️");
         setOpen(false);
         setFormData("");
@@ -66,19 +77,17 @@ const AddCustomerModal = ({ open, setOpen, farmId, harvestId }: any) => {
     }
   };
 
-  //  const { data } = useGetAllBatchsDataQuery({ farmId });
-
   return (
     <Modal open={open} setOpen={setOpen} className="lg:w-[450px]">
       <div className="bg-white lg:py-10 lg:px-14 py-10 px-6">
         <div className="text-center">
           <div className="mt-3 text-center sm:ml-4 sm:mt-0">
             <h3 className="text-xl font-semibold leading-6 text-[--primary] ">
-              Create new customer
+              Edit customer
             </h3>
           </div>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4 mt-8">
+        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <div className="form-control">
             <Label
               htmlFor="message-2"
@@ -126,10 +135,15 @@ const AddCustomerModal = ({ open, setOpen, farmId, harvestId }: any) => {
           </div>
 
           <div className="flex items-center justify-between space-x-6">
+            {/* <Button
+              disabled={loading}
+              className=" mt-2 outline-none border border-red-600 font-normal text-base bg-white w-full h-[53px] text-red-600">
+              {loading ? "Saving..." : "Delete"}
+            </Button> */}
             <Button
               disabled={loading}
               className=" mt-2 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
-              {loading ? "Adding..." : "Add customer"}
+              {loading ? "Saving..." : "Save changes"}
             </Button>
           </div>
         </form>
@@ -138,4 +152,4 @@ const AddCustomerModal = ({ open, setOpen, farmId, harvestId }: any) => {
   );
 };
 
-export default AddCustomerModal;
+export default EditCustomerModal;

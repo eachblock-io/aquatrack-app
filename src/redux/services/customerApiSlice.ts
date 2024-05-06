@@ -52,8 +52,8 @@ const customerApi = customerApiConfig.injectEndpoints({
       invalidatesTags: ["Customer"],
     }),
     editCustomer: builder.mutation({
-      query: ({ formdata, farmId, taskId }) => ({
-        url: `/farmer/${farmId}/customer/${taskId}`,
+      query: ({ formdata, farmId, harvestId, customerId }) => ({
+        url: `/farmer/${farmId}/harvest/${harvestId}/customer/${customerId}`,
         method: `PATCH`,
         body: formdata,
       }),

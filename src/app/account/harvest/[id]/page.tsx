@@ -20,6 +20,20 @@ import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 import { IoArrowBackSharp } from "react-icons/io5";
 import fetchToken from "@/lib/auth";
 import axios from "axios";
+import { FaPlus } from "react-icons/fa";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { RiDeleteBinLine } from "react-icons/ri";
+import toast from "react-hot-toast";
 
 const HarvestSinglePage = ({ params }: any) => {
   const [csvData, setCsvData] = useState("");
@@ -29,6 +43,35 @@ const HarvestSinglePage = ({ params }: any) => {
     farmId: defaultFarmId,
     harvestId: params?.id,
   });
+
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+
+  const toggleSelectAll = () => {
+    setSelectAll(!selectAll);
+    setSelectedItems(
+      selectAll
+        ? []
+        : customerData?.data?.data.map((item: { id: any }) => item.id)
+    );
+  };
+
+  const handleCheckboxChange = (id: number) => {
+    const selectedIndex = selectedItems.indexOf(id);
+    let newSelectedItems: number[] = [];
+
+    if (selectedIndex === -1) {
+      newSelectedItems = [...selectedItems, id];
+    } else {
+      newSelectedItems = [
+        ...selectedItems.slice(0, selectedIndex),
+        ...selectedItems.slice(selectedIndex + 1),
+      ];
+    }
+
+    setSelectedItems(newSelectedItems);
+    setSelectAll(newSelectedItems.length === data.length);
+  };
 
   // console.log()
   const { data: customerData } = useGetCustomersQuery({
@@ -79,6 +122,25 @@ const HarvestSinglePage = ({ params }: any) => {
     document.body.removeChild(a);
   };
 
+  const handleAllDelete = async () => {
+    const formdata = {
+      model: "harvests",
+      ids: selectedItems,
+    };
+
+    try {
+      if (selectedItems?.length > 0) {
+        // await deleteAllHarvest({ formdata });
+        toast.success("Deleted ✔️");
+      }
+    } catch (error: any) {
+      toast.error(
+        error?.data?.message ||
+          "Something went wrong please try again or check your network connection"
+      );
+    }
+  };
+
   return (
     <>
       <NavHeader userdata={data?.data} />
@@ -99,14 +161,14 @@ const HarvestSinglePage = ({ params }: any) => {
           <Button
             onClick={downloadCsv}
             disabled={!csvData}
-            className="bg-[#387C59] lg:py-6 text-xs">
+            className="bg-[#387C59] hover:bg-[#387C59] lg:py-6 text-xs">
             Download sheet
           </Button>
         </div>
         <HarvestStats data={harvestData?.data?.card_data} />
         {/* Header section */}
         <section className="grid grid-cols-1 lg:flex lg:items-center justify-between gap-8 mt-8">
-          <div className="flex items-center space-x-6 w-7/12">
+          <div className="flex items-center space-x-6 lg:w-7/12 w-full">
             <div className="flex items-center bg-white py-2 px-4 rounded-lg w-full">
               <IoMdSearch className="w-6 h-6 text-gray-500" />
               <Input
@@ -117,6 +179,11 @@ const HarvestSinglePage = ({ params }: any) => {
                 className="border-none bg-transparent outline-none shadow-none"
               />
             </div>
+            <Button
+              onClick={() => setOpen(true)}
+              className="px-2 py-5 bg-[--primary] hover:bg-[--primary] lg:hidden">
+              <FaPlus className="w-6 h-6" />
+            </Button>
           </div>
           <div className="flex lg:items-center items-start lg:justify-around space-x-6">
             {/* <div className="flex items-center space-x-2">
@@ -140,17 +207,64 @@ const HarvestSinglePage = ({ params }: any) => {
                 + Add new customer
               </Button>
             </div>
+            <div className="btns space-x-4 lg:hidden flex">
+              <Button
+                onClick={() => setOpen(true)}
+                className="px-2 py-5 bg-[--primary] hover:bg-[--primary]">
+                <FaPlus className="w-6 h-6" />
+              </Button>
+              {selectedItems?.length > 0 ? (
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <Button
+                      disabled={false}
+                      className="px-2 py-5 bg-red-500 hover:bg-red-400">
+                      <RiDeleteBinLine className="w-6 h-6" />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete this data.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        className="text-red-500 bg-red-100"
+                        onClick={handleAllDelete}>
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              ) : (
+                <Button
+                  disabled={true}
+                  className="px-2 py-5 bg-red-500 hover:bg-red-400">
+                  <RiDeleteBinLine className="w-6 h-6" />
+                </Button>
+              )}
+            </div>
           </div>
         </section>
       </main>
       {customerData?.data?.data?.length > 0 ? (
-        <div className="table lg:w-11/12 w-12/12 mx-auto mt-20 mb-10">
+        <div className="table lg:w-11/12 w-12/12 mx-auto lg:mt-20 mb-10">
           <HarvestList
             data={
               filteredData?.length > 0 ? filteredData : customerData?.data?.data
             }
             harvestId={params?.id}
             farmId={defaultFarmId}
+            toggleSelectAll={toggleSelectAll}
+            selectedItems={selectedItems}
+            handleCheckboxChange={handleCheckboxChange}
+            selectAll={selectAll}
           />
         </div>
       ) : (

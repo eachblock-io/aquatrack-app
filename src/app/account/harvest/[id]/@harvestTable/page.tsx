@@ -25,7 +25,7 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { IoIosArrowDown } from "react-icons/io";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdOutlineEdit } from "react-icons/md";
 import { formatCurrency } from "@/utils";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
@@ -34,6 +34,7 @@ import {
   useCreatePurchaseMutation,
   useDeletePurchaseMutation,
   useEditPurchaseMutation,
+  useEditCustomerMutation,
 } from "@/redux/services/customerApiSlice";
 import {
   AlertDialog,
@@ -58,6 +59,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useGetHarvestQuery } from "@/redux/services/harvestApiSlice";
+import EditCustomerModal from "@/components/EditCustomerModal";
 
 interface RowData {
   price_per_unit: string;
@@ -74,6 +76,10 @@ const HarvestTable: React.FC<any> = ({
   farmId,
   customerId,
   harvestId,
+  selectAll,
+  toggleSelectAll,
+  handleCheckboxChange,
+  selectedItems,
 }) => {
   const { refetch } = useGetHarvestQuery({
     farmId,
@@ -90,6 +96,8 @@ const HarvestTable: React.FC<any> = ({
   const [purchaseID, setPurchaseID] = useState<any>({});
   const [benefied, setBenefied] = useState(false);
   const [rotate, setRotate] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [editData, setEditData] = useState();
 
   useEffect(() => {
     if (data?.data) {
@@ -272,14 +280,35 @@ const HarvestTable: React.FC<any> = ({
     }
   };
 
+  const handleEdit = (value: any) => {
+    setEditData(value);
+    setOpenEdit(true);
+  };
+
   return (
     <div>
       <>
+        {editData && (
+          <EditCustomerModal
+            farmId={farmId}
+            harvestId={harvestId}
+            open={openEdit}
+            setOpen={setOpenEdit}
+            editdata={editData}
+          />
+        )}
         <Accordion type="single" collapsible className="w-full mx-auto ">
           <AccordionItem value={customer?.id} className="w-full relative">
             <div className="flex items-center pr-4 relative">
               <div className="sec-header grid grid-cols-3 px-6 w-full relative">
                 <div className="flex items-center lg:space-x-4 space-x-1">
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.includes(customer.id)}
+                    onChange={() => handleCheckboxChange(customer.id)}
+                    className="mr-1 w-4 h-4"
+                  />
+
                   <h2 className="lg:text-sm text-xs text-[--primary] font-semibold ">
                     {customer?.attributes?.name}
                   </h2>
@@ -324,12 +353,14 @@ const HarvestTable: React.FC<any> = ({
                         </Button>
                       </MenubarTrigger>
                       <MenubarContent>
-                        <MenubarItem
-                          onClick={handleInsertRow}
-                          className="flex items-center font-normal cursor-pointer ">
-                          <AiOutlinePlus className="text-gray-500 h-4 w-4 mr-2 " />
-                          Add new purchase
-                        </MenubarItem>
+                        <AccordionTrigger>
+                          <MenubarItem
+                            onClick={handleInsertRow}
+                            className="flex items-center font-normal cursor-pointer ">
+                            <AiOutlinePlus className="text-gray-500 h-4 w-4 mr-2 " />
+                            Add new purchase
+                          </MenubarItem>
+                        </AccordionTrigger>
                         <MenubarSeparator />
                         <MenubarItem className="flex items-center font-normal cursor-pointer ">
                           <CiStar className="text-gray-500 h-6 w-6 mr-2 " />
@@ -340,13 +371,19 @@ const HarvestTable: React.FC<any> = ({
                   </Menubar>
                 </div>
               </div>
-              <AccordionTrigger className="w-full mx-auto transition-all [&[data-state=open]>svg]:rotate-180">
-                <IoIosArrowUp
-                  className={`h-6 w-6 shrink-0 text-gray-800 cursor-pointer transition-transform duration-200 ${
-                    rotate && `transition-all rotate-180`
-                  }`}
+              <div className="flex items-center">
+                <MdOutlineEdit
+                  onClick={() => handleEdit(customer)}
+                  className="cursor-pointer lg:h-6 lg:w-6 h-4 w-4 text-[--primary] mr-2 "
                 />
-              </AccordionTrigger>
+                <AccordionTrigger className="w-full mx-auto transition-all [&[data-state=open]>svg]:rotate-180">
+                  <IoIosArrowUp
+                    className={`h-6 w-6 shrink-0 text-gray-800 cursor-pointer transition-transform duration-200 ${
+                      rotate && `transition-all rotate-180`
+                    }`}
+                  />
+                </AccordionTrigger>
+              </div>
             </div>
             <AccordionContent className="">
               <div className="overflow-hidden">

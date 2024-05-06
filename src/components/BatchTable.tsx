@@ -278,157 +278,152 @@ const BatchTable: React.FC<TableProps> = ({ data, isLoading, farmId }) => {
           farmId={farmId}
         />
       )}
-
-      {farmId ? (
-        <>
-          <div className="">
-            {data?.length > 0 ? (
-              <div className="bg-gray-50 border-collapse border border-gray-300 lg:pt-6 lg:pb-4 mb-20 rounded-xl  lg:mt-20 mt-5 w-full mx-auto ">
-                <Table className="w-full">
-                  <TableHeader className="">
+      <>
+        <div className="">
+          {data?.length > 0 ? (
+            <div className="bg-gray-50 border-collapse border border-gray-300 lg:pt-6 lg:pb-4 mb-20 rounded-xl  lg:mt-20 mt-5 w-full mx-auto ">
+              <Table className="w-full">
+                <TableHeader className="">
+                  <TableRow>
+                    <TableHead className="lg:py-4 lg:pl-8 text-black">
+                      <input
+                        type="checkbox"
+                        checked={selectAll}
+                        onChange={toggleSelectAll}
+                        className="mr-1 w-4 h-4"
+                      />
+                    </TableHead>
+                    <TableHead className="py-4 text-black lg:text-sm text-xs">
+                      Date
+                    </TableHead>
+                    <TableHead className="py-4 text-black lg:text-sm text-xs">
+                      Name
+                    </TableHead>
+                    <TableHead className="py-4 text-black text-nowrap flex gap-x-2 lg:text-sm text-xs">
+                      Unit <span className="hidden lg:block">Purchased</span>
+                    </TableHead>
+                    <TableHead className="py-4 text-black text-nowrap lg:text-sm text-xs">
+                      Fish Type
+                    </TableHead>
+                    <TableHead className="py-4 text-black lg:text-sm text-xs">
+                      Status
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                {isLoading ? (
+                  <TableBody className="bg-white pl-8">
                     <TableRow>
-                      <TableHead className="lg:py-4 lg:pl-8 text-black">
-                        <input
-                          type="checkbox"
-                          checked={selectAll}
-                          onChange={toggleSelectAll}
-                          className="mr-1 w-4 h-4"
-                        />
-                      </TableHead>
-                      <TableHead className="py-4 text-black lg:text-sm text-xs">
-                        Date
-                      </TableHead>
-                      <TableHead className="py-4 text-black lg:text-sm text-xs">
-                        Name
-                      </TableHead>
-                      <TableHead className="py-4 text-black text-nowrap flex gap-x-2 lg:text-sm text-xs">
-                        Unit <span className="hidden lg:block">Purchased</span>
-                      </TableHead>
-                      <TableHead className="py-4 text-black text-nowrap lg:text-sm text-xs">
-                        Fish Type
-                      </TableHead>
-                      <TableHead className="py-4 text-black lg:text-sm text-xs">
-                        Status
-                      </TableHead>
+                      <TableCell>
+                        <Skeleton className="h-4 w-full bg-gray-200" />
+                        <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-full bg-gray-200" />
+                        <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-full bg-gray-200" />
+                        <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-full bg-gray-200" />
+                        <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-full bg-gray-200" />
+                        <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-full bg-gray-200" />
+                        <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  {isLoading ? (
-                    <TableBody className="bg-white pl-8">
-                      <TableRow>
-                        <TableCell>
-                          <Skeleton className="h-4 w-full bg-gray-200" />
-                          <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                  </TableBody>
+                ) : (
+                  <TableBody className="bg-white lg:pl-8">
+                    {reversedArray?.map((item: any) => (
+                      <TableRow key={item?.id}>
+                        <TableCell className="py-4 lg:pl-8">
+                          <input
+                            type="checkbox"
+                            checked={selectedItems.includes(item?.id)}
+                            onChange={() => handleCheckboxChange(item.id)}
+                            className="mr-1 w-4 h-4"
+                          />
                         </TableCell>
-                        <TableCell>
-                          <Skeleton className="h-4 w-full bg-gray-200" />
-                          <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                        <TableCell className="py-4 lg:text-sm text-xs text-nowrap ">
+                          {item?.attributes?.date_purchased}
                         </TableCell>
-                        <TableCell>
-                          <Skeleton className="h-4 w-full bg-gray-200" />
-                          <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                        <TableCell className="py-4 lg:text-sm text-xs">
+                          {item?.attributes?.name}
                         </TableCell>
-                        <TableCell>
-                          <Skeleton className="h-4 w-full bg-gray-200" />
-                          <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                        <TableCell className="py-4 lg:text-sm text-xs ">
+                          {item?.attributes?.unit_purchase}
                         </TableCell>
-                        <TableCell>
-                          <Skeleton className="h-4 w-full bg-gray-200" />
-                          <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                        <TableCell className="py-4 lg:text-sm text-xs">
+                          {item?.attributes?.fish_type}
                         </TableCell>
-                        <TableCell>
-                          <Skeleton className="h-4 w-full bg-gray-200" />
-                          <Skeleton className="h-4 w-full bg-gray-200 mt-2" />
+                        <TableCell className="py-4 lg:text-sm text-xs">
+                          <p
+                            className={`w-full lg:h-10 px-2 py-1 lg:text-sm text-nowrap text-xs text-center ${
+                              item?.attributes?.status === `sold out`
+                                ? ` bg-red-100 text-red-400`
+                                : `bg-[#A3EED8] text-green-700 `
+                            } border-none lg:rounded-full rounded-lg  flex items-center justify-center`}>
+                            {item?.attributes?.status}
+                          </p>
+                        </TableCell>
+                        <TableCell className="py-4">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger>
+                              <HiOutlineDotsVertical />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              <DropdownMenuItem
+                                onClick={() => handleEdit(item)}
+                                className="space-x-4 text-blue-600 font-bold">
+                                <MdEdit className="text-blue-600 text-xl" />{" "}
+                                <span>Edit</span>
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onClick={() => handleDelete(item?.id)}
+                                className="space-x-4 text-red-600 font-bold">
+                                <MdDelete className="text-red-600 text-xl" />
+                                <span>Delete</span>
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </TableCell>
                       </TableRow>
-                    </TableBody>
-                  ) : (
-                    <TableBody className="bg-white lg:pl-8">
-                      {reversedArray?.map((item: any) => (
-                        <TableRow key={item?.id}>
-                          <TableCell className="py-4 lg:pl-8">
-                            <input
-                              type="checkbox"
-                              checked={selectedItems.includes(item?.id)}
-                              onChange={() => handleCheckboxChange(item.id)}
-                              className="mr-1 w-4 h-4"
-                            />
-                          </TableCell>
-                          <TableCell className="py-4 lg:text-sm text-xs text-nowrap ">
-                            {item?.attributes?.date_purchased}
-                          </TableCell>
-                          <TableCell className="py-4 lg:text-sm text-xs">
-                            {item?.attributes?.name}
-                          </TableCell>
-                          <TableCell className="py-4 lg:text-sm text-xs ">
-                            {item?.attributes?.unit_purchase}
-                          </TableCell>
-                          <TableCell className="py-4 lg:text-sm text-xs">
-                            {item?.attributes?.fish_type}
-                          </TableCell>
-                          <TableCell className="py-4 lg:text-sm text-xs">
-                            <p
-                              className={`w-full lg:h-10 px-2 py-1 lg:text-sm text-nowrap text-xs text-center ${
-                                item?.attributes?.status === `sold out`
-                                  ? ` bg-red-100 text-red-400`
-                                  : `bg-[#A3EED8] text-green-700 `
-                              } border-none lg:rounded-full rounded-lg  flex items-center justify-center`}>
-                              {item?.attributes?.status}
-                            </p>
-                          </TableCell>
-                          <TableCell className="py-4">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger>
-                                <HiOutlineDotsVertical />
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent>
-                                <DropdownMenuItem
-                                  onClick={() => handleEdit(item)}
-                                  className="space-x-4 text-blue-600 font-bold">
-                                  <MdEdit className="text-blue-600 text-xl" />{" "}
-                                  <span>Edit</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem
-                                  onClick={() => handleDelete(item?.id)}
-                                  className="space-x-4 text-red-600 font-bold">
-                                  <MdDelete className="text-red-600 text-xl" />
-                                  <span>Delete</span>
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  )}
-                </Table>
-              </div>
-            ) : (
-              <section className="h-[70vh] flex items-center justify-center">
-                <div className="relative lg:w-6/12 w-10/12 mx-auto">
-                  <div className="text absolute top-14 w-full text-center">
-                    <h2 className="font-bold text-2xl mb-2">No Batch Added</h2>
-                    <p>
-                      There are no batch here yet. However, once there are any,
-                      they will be displayed here.
-                    </p>
-                  </div>
-                  <Image
-                    src={emptyImg}
-                    alt="empty"
-                    height={300}
-                    width={200}
-                    layout="fixed"
-                    className="mx-auto"
-                  />
+                    ))}
+                  </TableBody>
+                )}
+              </Table>
+            </div>
+          ) : (
+            <section className="h-[70vh] flex items-center justify-center">
+              <div className="relative lg:w-6/12 w-10/12 mx-auto">
+                <div className="text absolute top-14 w-full text-center">
+                  <h2 className="font-bold text-2xl mb-2">No Batch Added</h2>
+                  <p>
+                    There are no batch here yet. However, once there are any,
+                    they will be displayed here.
+                  </p>
                 </div>
-              </section>
-            )}
-          </div>
-        </>
-      ) : (
-        <CreateFarmState vheight="70vh" />
-      )}
+                <Image
+                  src={emptyImg}
+                  alt="empty"
+                  height={300}
+                  width={200}
+                  layout="fixed"
+                  className="mx-auto"
+                />
+              </div>
+            </section>
+          )}
+        </div>
+      </>
     </>
   );
 };
