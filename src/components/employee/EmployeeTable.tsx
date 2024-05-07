@@ -101,7 +101,7 @@ const EmployeeTable: React.FC<TableProps> = ({ data, farmId }) => {
         <Table className="w-full">
           <TableHeader className="">
             <TableRow>
-              <TableHead className="py-4 pl-8 text-black ">
+              <TableHead className="py-4 lg:pl-8 pl-4 text-black ">
                 <input
                   type="checkbox"
                   checked={selectAll}
@@ -109,19 +109,25 @@ const EmployeeTable: React.FC<TableProps> = ({ data, farmId }) => {
                   className="mr-1 w-4 h-4"
                 />
               </TableHead>
-              <TableHead className="py-4 text-black font-bold">Name</TableHead>
-              <TableHead className="py-4 text-black font-bold">Email</TableHead>
-              <TableHead className="py-4 text-black font-bold ">
+              <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+                Name
+              </TableHead>
+              <TableHead className="py-4 text-black font-bold lg:text-base text-xs lg:flex hidden">
+                Email
+              </TableHead>
+              <TableHead className="py-4 text-black font-bold lg:text-base text-xs lg:flex hidden">
                 Phone <span className="lg:flex hidden">Number</span>
               </TableHead>
-              <TableHead className="py-4 text-black font-bold">Role</TableHead>
+              <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+                Role
+              </TableHead>
             </TableRow>
           </TableHeader>
           {data ? (
             <TableBody className="bg-white pl-8">
               {data?.map((item: any) => (
                 <TableRow key={item.id}>
-                  <TableCell className="py-4 pl-8 w-6">
+                  <TableCell className="py-4 lg:pl-8 pl-4 w-6">
                     <input
                       type="checkbox"
                       checked={selectedItems.includes(item.id)}
@@ -129,19 +135,19 @@ const EmployeeTable: React.FC<TableProps> = ({ data, farmId }) => {
                       className="mr-1 w-4 h-4"
                     />
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="py-4 lg:text-base text-xs">
                     {item?.attributes?.first_name} {item?.attributes?.last_name}
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="py-4 lg:text-base text-xs lg:flex hidden">
                     {item?.attributes?.email}
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="py-4 lg:text-base text-xs lg:flex hidden">
                     {item?.attributes?.phone_number}
                   </TableCell>
-                  <TableCell className="py-4 lowercase">
+                  <TableCell className="py-4 lowercase lg:text-base text-xs">
                     {item?.attributes?.role}
                   </TableCell>
-                  <TableCell className="py-4 flex items-center space-x-4">
+                  <TableCell className="py-4 lg:text-base text-xs flex items-center space-x-4">
                     <span
                       className={`${
                         item?.attributes?.status === "in stock"

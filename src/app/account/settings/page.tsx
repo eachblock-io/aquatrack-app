@@ -14,20 +14,20 @@ const SettingsPage = () => {
       <NavHeader userdata={data?.data} />
       <main className="w-11/12 mx-auto mt-10 ">
         <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid w-full lg:grid-cols-4 grid-cols-2 gap-x-8 lg:w-6/12">
+          <TabsList className="grid w-full lg:grid-cols-4 grid-cols-3 lg:gap-x-8 gap-x-20 lg:w-6/12">
             <TabsTrigger
               value="profile"
-              className="bg-transparent font-normal data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-[--primary] data-[state=active]:font-bold data-[state=active]:rounded-none data-[state=active]:border-b-4 data-[state=active]:border-[--primary] data-[state=active]:pb-2 text-base data-[state=active]:text-base">
+              className="bg-transparent font-normal data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-[--primary] data-[state=active]:font-bold data-[state=active]:rounded-none data-[state=active]:border-b-4 data-[state=active]:border-[--primary] data-[state=active]:pb-2 lg:text-base text-sm lg:data-[state=active]:text-base data-[state=active]:text-sm">
               Profile
             </TabsTrigger>
             <TabsTrigger
               value="account"
-              className="bg-transparent font-normal data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-[--primary] data-[state=active]:font-bold data-[state=active]:rounded-none data-[state=active]:border-b-4 data-[state=active]:border-[--primary] data-[state=active]:pb-2 text-base data-[state=active]:text-base">
+              className="bg-transparent font-normal data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-[--primary] data-[state=active]:font-bold data-[state=active]:rounded-none data-[state=active]:border-b-4 data-[state=active]:border-[--primary] data-[state=active]:pb-2 lg:text-base text-sm lg:data-[state=active]:text-base data-[state=active]:text-sm">
               Manage Account
             </TabsTrigger>
             <TabsTrigger
               value="farms"
-              className="bg-transparent font-normal data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-[--primary] data-[state=active]:font-bold data-[state=active]:rounded-none data-[state=active]:border-b-4 data-[state=active]:border-[--primary] data-[state=active]:pb-2 text-base data-[state=active]:text-base">
+              className="bg-transparent font-normal data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-[--primary] data-[state=active]:font-bold data-[state=active]:rounded-none data-[state=active]:border-b-4 data-[state=active]:border-[--primary] data-[state=active]:pb-2 lg:text-base text-sm lg:data-[state=active]:text-base data-[state=active]:text-sm">
               Farms
             </TabsTrigger>
           </TabsList>

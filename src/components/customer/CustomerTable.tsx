@@ -46,30 +46,36 @@ const CustomerTable: React.FC<TableProps> = ({ data }) => {
       <Table className="w-full">
         <TableHeader className="">
           <TableRow>
-            <TableHead className="py-4 pl-8 text-black font-bold">
+            <TableHead className="py-4 pl-8 text-black font-bold lg:flex hidden lg:text-base text-xs">
               Date Added
             </TableHead>
-            <TableHead className="py-4 text-black font-bold">Name</TableHead>
-            <TableHead className="py-4 text-black font-bold">
-              Phone Number
+            <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+              Name
             </TableHead>
-            <TableHead className="py-4 text-black font-bold">
-              Purchases Made
+            <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+              Phone
+            </TableHead>
+            <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+              Purchases
             </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="bg-white pl-8">
           {data?.map((item) => (
             <TableRow key={item.id}>
-              <TableCell className="py-4 pl-8">
+              <TableCell className="py-4 pl-8 lg:flex hidden">
                 {dateFormaterAndTime(item?.attributes?.created_at)}
               </TableCell>
-              <TableCell className="py-4">{item?.attributes?.name}</TableCell>
-              <TableCell className="py-4">{item?.attributes?.email}</TableCell>
-              <TableCell className="py-4">
+              <TableCell className="py-4 lg:text-base text-xs">
+                {item?.attributes?.name}
+              </TableCell>
+              <TableCell className="py-4 lg:text-base text-xs">
+                {item?.attributes?.email}
+              </TableCell>
+              <TableCell className="py-4 lg:text-base text-xs">
                 {item?.attributes?.phone_number}
               </TableCell>
-              <TableCell className="py-4">
+              <TableCell className="py-4 lg:text-base text-xs">
                 {item?.attributes?.purchases_made}
               </TableCell>
             </TableRow>

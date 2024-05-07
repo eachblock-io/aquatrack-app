@@ -285,6 +285,8 @@ const HarvestTable: React.FC<any> = ({
     setOpenEdit(true);
   };
 
+  // console.log(customer?.attributes?.name);
+
   return (
     <div>
       <>
@@ -306,11 +308,11 @@ const HarvestTable: React.FC<any> = ({
                     type="checkbox"
                     checked={selectedItems.includes(customer.id)}
                     onChange={() => handleCheckboxChange(customer.id)}
-                    className="mr-1 w-4 h-4"
+                    className="mr-1 w-5 h-5"
                   />
 
-                  <h2 className="lg:text-sm text-xs text-[--primary] font-semibold ">
-                    {customer?.attributes?.name}
+                  <h2 className="lg:text-sm text-xs font-semibold ">
+                    {customer?.attributes?.name?.split(" ")[0]}
                   </h2>
                 </div>
                 <div className="flex items-center justify-start">
@@ -329,7 +331,7 @@ const HarvestTable: React.FC<any> = ({
                     </span>
                   </p>
                 </div>
-                <div className="flex items-center lg:space-x-6 space-x-4">
+                <div className="flex items-center lg:space-x-6 space-x-4 ml-3">
                   <div>
                     {benefied || customer?.relationships?.is_beneficiary ? (
                       <FaStar
@@ -347,10 +349,14 @@ const HarvestTable: React.FC<any> = ({
                   <Menubar className="border-none">
                     <MenubarMenu>
                       <MenubarTrigger>
-                        <Button className="flex items-center space-x-3 text-[--primary] font-normal border border-[--primary] ">
-                          <AiOutlinePlus className="w-5 h-5 text-gray-400" />
-                          <span className="lg:flex hidden">Insert new row</span>
+                        <Button className="lg:flex hidden items-center justify-center space-x-3 text-[--primary] font-normal border border-[--primary] ">
+                          <AiOutlinePlus className="w-2 h-2 text-gray-400" />
+                          <span>Insert new row</span>
                         </Button>
+
+                        <button className="w-8 h-6 rounded-md flex items-center justify-center space-x-3 text-[--primary] font-normal border border-[--primary] ">
+                          <AiOutlinePlus className="w-4 h-4 text-[--primary]" />
+                        </button>
                       </MenubarTrigger>
                       <MenubarContent>
                         <AccordionTrigger>
@@ -374,7 +380,7 @@ const HarvestTable: React.FC<any> = ({
               <div className="flex items-center">
                 <MdOutlineEdit
                   onClick={() => handleEdit(customer)}
-                  className="cursor-pointer lg:h-6 lg:w-6 h-4 w-4 text-[--primary] mr-2 "
+                  className="cursor-pointer lg:h-6 lg:w-6 h-5 w-5 text-[--primary] mr-2 "
                 />
                 <AccordionTrigger className="w-full mx-auto transition-all [&[data-state=open]>svg]:rotate-180">
                   <IoIosArrowUp
@@ -396,8 +402,11 @@ const HarvestTable: React.FC<any> = ({
                       <TableHead className="py-4 text-black text-xs font-semibold">
                         Price/unit
                       </TableHead>
-                      <TableHead className="py-4 text-black text-xs font-semibold">
-                        Size (kg)
+                      <TableHead className="py-4 text-black text-xs font-semibold flex">
+                        Size
+                        <span className="lg:text-sm text-[8px] ml-[2px]">
+                          (kg)
+                        </span>
                       </TableHead>
                       <TableHead className="py-4 text-black text-xs font-semibold">
                         Pieces
@@ -413,7 +422,7 @@ const HarvestTable: React.FC<any> = ({
                   <TableBody className="bg-white pl-8">
                     {rows?.map((row, index) => (
                       <TableRow key={index} className="mx-auto pl-8">
-                        <TableCell className="text-center">
+                        <TableCell className="text-center lg:text-base text-xs">
                           {index + 1}
                         </TableCell>
                         <TableCell className="p-0">
@@ -428,7 +437,7 @@ const HarvestTable: React.FC<any> = ({
                                 e.target.value
                               )
                             }
-                            className="w-full rounded-none border-b-0  focus-visible:ring-0"
+                            className="w-full rounded-none border-b-0  focus-visible:ring-0 lg:text-base text-xs"
                           />
                         </TableCell>
                         <TableCell className="p-0">
@@ -450,7 +459,7 @@ const HarvestTable: React.FC<any> = ({
                             onChange={(e) =>
                               handleInputChange(index, "pieces", e.target.value)
                             }
-                            className="rounded-none border-b-0 w-full focus-visible:ring-0"
+                            className="rounded-none border-b-0 w-full focus-visible:ring-0 lg:text-base text-xs"
                           />
                         </TableCell>
                         <TableCell className="p-0">
@@ -461,10 +470,10 @@ const HarvestTable: React.FC<any> = ({
                             onChange={(e) =>
                               handleInputChange(index, "amount", e.target.value)
                             }
-                            className="rounded-none border-b-0 w-full focus-visible:ring-0"
+                            className="rounded-none border-b-0 w-full focus-visible:ring-0 lg:text-base text-xs"
                           />
                         </TableCell>
-                        <TableCell className="pl-8 flex items-center">
+                        <TableCell className="lg:pl-8 space-x-2 flex items-center">
                           <DropdownMenu>
                             <DropdownMenuTrigger>
                               <button
@@ -472,7 +481,7 @@ const HarvestTable: React.FC<any> = ({
                                   row.status == "paid"
                                     ? `bg-blue-100 text-blue-700`
                                     : `bg-red-100 text-red-700`
-                                } text-xs  rounded-md px-4 py-1 flex items-center space-x-4 mr-2`}
+                                } text-xs  rounded-md lg:px-4 px-1 py-1 flex items-center lg:space-x-4 space-x-1 lg:mr-2`}
                                 onClick={() =>
                                   setRows((prevRows: any) => {
                                     const newRows = [...prevRows];
@@ -483,7 +492,7 @@ const HarvestTable: React.FC<any> = ({
                                   })
                                 }>
                                 <span>
-                                  {row.status == "paid" ? "Paid" : "Pending"}
+                                  {row.status == "paid" ? "Paid" : "Hold"}
                                 </span>
                                 <IoIosArrowDown />
                               </button>
@@ -510,13 +519,13 @@ const HarvestTable: React.FC<any> = ({
                                     return newRows;
                                   })
                                 }>
-                                Pending
+                                Hold
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
                           <AlertDialog>
                             <AlertDialogTrigger>
-                              <MdDelete className="text-xl text-red-400 cursor-pointer" />
+                              <MdDelete className="lg:h-6 lg:w-6 h-4 w-4 text-red-400 cursor-pointer" />
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
@@ -548,9 +557,22 @@ const HarvestTable: React.FC<any> = ({
                     <TableRow>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
-                      <TableCell>{calculateTotal("size")}(kg)</TableCell>
-                      <TableCell>{calculateTotal("pieces")} (pcs)</TableCell>
-                      <TableCell>
+                      <TableCell className="lg:text-base text-xs font-semibold">
+                        {calculateTotal("size")}
+                        <span className="lg:text-sm text-[8px] ml-[2px]">
+                          (kg)
+                        </span>
+                      </TableCell>
+                      <TableCell className="lg:text-base text-xs flex font-semibold">
+                        {calculateTotal("pieces")}{" "}
+                        <span className="lg:text-sm text-[8px] ml-[2px]">
+                          (pcs)
+                        </span>
+                      </TableCell>
+                      <TableCell className="lg:text-base text-xs font-semibold">
+                        <span className="text-stroke lg:text-sm text-[8px] mr-[2px]">
+                          N
+                        </span>
                         {calculateTotal("amount")
                           .toFixed()
                           ?.replace(/\B(?=(\d{3})+(?!\d))/g, `,`)}
@@ -559,17 +581,17 @@ const HarvestTable: React.FC<any> = ({
                     </TableRow>
                   </TableFooter>
                 </Table>
-                <div className="px-6">
+                <div className="pl-2">
                   {isSave ? (
                     <button
                       onClick={handleSubmit}
-                      className=" border px-3 py-2 bg-blue-300 text-xs font-normal rounded-lg">
+                      className=" border px-3 py-2 bg-[--primary] text-white text-xs font-normal rounded-lg">
                       {loading ? "Saving..." : "Save"}
                     </button>
                   ) : (
                     <button
                       onClick={handleUpdate}
-                      className=" border px-3 py-2 bg-blue-300 text-xs font-normal rounded-lg">
+                      className=" border px-3 py-2 bg-[--primary] text-white text-xs font-normal rounded-lg">
                       {saving ? "Saving..." : "Save changes"}
                     </button>
                   )}

@@ -29,7 +29,7 @@ const CustomerRecord = ({ farmId }: any) => {
     <div>
       <AddCustomerModal open={open} setOpen={setOpen} />
       {/* Header section */}
-      <section className="grid lg:grid-cols-2 grid-cols-1 gap-8 mt-20">
+      <section className="grid lg:grid-cols-2 grid-cols-1 gap-8 lg:mt-20 mt-10">
         <div className="flex items-center space-x-6">
           <div className="flex items-center bg-white py-2 px-4 rounded-lg w-full">
             <IoMdSearch className="w-6 h-6 text-gray-500" />
@@ -70,7 +70,7 @@ const CustomerRecord = ({ farmId }: any) => {
         </div> */}
       </section>
 
-      <div className="table w-full mt-20">
+      <div className="table w-full lg:mt-20 mt-10">
         {isLoading ? (
           <section className="mt-10 w-full mx-auto">
             <div className="space-y-2 bg-white p-6 rounded-xl">

@@ -90,7 +90,7 @@ const FeedsTable: React.FC<TableProps> = ({
         <Table className="w-full">
           <TableHeader className="">
             <TableRow>
-              <TableHead className="py-4 lg:pl-8 pl-2 text-black ">
+              <TableHead className="py-4 lg:pl-8 pl-4 text-black ">
                 <input
                   type="checkbox"
                   checked={selectAll}
@@ -116,7 +116,7 @@ const FeedsTable: React.FC<TableProps> = ({
             <TableBody className="bg-white pl-8">
               {data?.map((item: any) => (
                 <TableRow key={item.id}>
-                  <TableCell className="py-4 lg:pl-8 pl-2 w-6">
+                  <TableCell className="py-4 lg:pl-8 pl-4 w-6">
                     <input
                       type="checkbox"
                       checked={selectedItems.includes(item.id)}

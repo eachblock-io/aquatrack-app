@@ -35,6 +35,7 @@ import {
 import { RiDeleteBinLine } from "react-icons/ri";
 import toast from "react-hot-toast";
 import CustomerStats from "@/components/CustomerStats";
+import Link from "next/link";
 
 const HarvestSinglePage = ({ params }: any) => {
   const [deleteAllCustomer] = useDeleteAllCustomerMutation();
@@ -154,12 +155,14 @@ const HarvestSinglePage = ({ params }: any) => {
           setOpen={setOpen}
         />
         <div className="flex items-center justify-between">
-          <Button
-            variant="ghost"
-            className="space-x-2 text-[--primary] font-semibold">
-            <IoArrowBackSharp className="h-6 w-6" />
-            <span>Back</span>
-          </Button>
+          <Link href="/account/harvest">
+            <Button
+              variant="ghost"
+              className="space-x-2 text-[--primary] font-semibold">
+              <IoArrowBackSharp className="h-6 w-6" />
+              <span>Back</span>
+            </Button>
+          </Link>
           <Button
             onClick={downloadCsv}
             disabled={!csvData}
@@ -251,7 +254,7 @@ const HarvestSinglePage = ({ params }: any) => {
         </section>
       </main>
       {customerData?.data?.data?.length > 0 ? (
-        <div className="table lg:w-11/12 w-12/12 mx-auto lg:mt-20 mb-10">
+        <div className="table lg:w-11/12 w-12/12 mx-auto lg:mt-20 mt-10 mb-10">
           <HarvestList
             data={
               filteredData?.length > 0 ? filteredData : customerData?.data?.data

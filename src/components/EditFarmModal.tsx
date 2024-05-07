@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
@@ -21,9 +21,17 @@ const EditFarmModal = ({ open, setOpen, data }: any) => {
     farmname: "",
   });
 
+  useEffect(() => {
+    setFormData((prevFormData: any) => ({
+      ...prevFormData,
+      farmname: data?.name || "",
+    }));
+  }, [data?.name]);
+
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, farmname: value });
     setErrors({ ...errors, [name]: "" });
   };
 
@@ -100,7 +108,6 @@ const EditFarmModal = ({ open, setOpen, data }: any) => {
                       <h3 className="text-xl font-semibold text-[--primary] ">
                         Edit Farm
                       </h3>
-                      {data?.name}
                     </div>
                   </div>
                   <form onSubmit={handleSubmit} className="space-y-4 mt-8">
@@ -112,7 +119,7 @@ const EditFarmModal = ({ open, setOpen, data }: any) => {
                       </Label>
                       <Input
                         type="text"
-                        name="name"
+                        name="farmname"
                         value={formData?.farmname}
                         onChange={handleInputChange}
                         placeholder="Farm name"

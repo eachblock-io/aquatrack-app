@@ -1,20 +1,37 @@
 import React, { useState } from "react";
-import { useGetAllFarmsQuery } from "@/redux/services/farmApiSlice";
+import {
+  useDeleteFarmMutation,
+  useGetAllFarmsQuery,
+} from "@/redux/services/farmApiSlice";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { IoIosArrowDown } from "react-icons/io";
 import { GiCirclingFish } from "react-icons/gi";
 import { FaArrowAltCircleUp } from "react-icons/fa";
-import { MdOutlineEdit } from "react-icons/md";
+import { MdDelete, MdOutlineEdit } from "react-icons/md";
 import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 import EditFarmModal from "./EditFarmModal";
+import { RiDeleteBin5Line } from "react-icons/ri";
+import toast from "react-hot-toast";
 
 const Farms = () => {
-  const { data } = useGetAllFarmsQuery(null);
+  const [deleteFarm] = useDeleteFarmMutation();
+  const { data, refetch } = useGetAllFarmsQuery(null);
   const { defaultFarmId } = useDefaultFarmId();
   const [openEdit, setOpenEdit] = useState(false);
   const [farmData, setFarmData] = useState();
@@ -26,8 +43,15 @@ const Farms = () => {
     }
   };
 
-  console.log(data?.data?.organizations);
-  
+  const handleDelete = async (value: any) => {
+    console.log(value);
+    try {
+      await deleteFarm({ farmId: value?.id }).unwrap();
+      refetch();
+      toast.success("Deleted ✔️");
+    } catch (error) {}
+  };
+
   return (
     <section className="mt-10">
       {farmData && (
@@ -52,16 +76,43 @@ const Farms = () => {
             {org?.farms?.map((farm: any) => (
               <AccordionContent
                 key={farm?.id}
-                className="flex items-center justify-between p-0 px-4 space-0">
+                className="flex items-center justify-between p-0 space-0">
                 <div
                   className={` hover:bg-blue-100 rounded-lg w-10/12 py-4 px-4 flex items-center  border-none font-medium cursor-pointer`}>
                   <FaArrowAltCircleUp className="text-gray-400 h-4 w-4 mr-2 " />
-                  <p className="text-base font-bold">{farm?.name}</p>
+                  <p className="lg:text-base text-sm font-bold">{farm?.name}</p>
                 </div>
-                <MdOutlineEdit
-                  className="h-6 w-6 cursor-pointer"
-                  onClick={() => handleEdit(farm)}
-                />
+                <div className="flex items-center space-x-4 ml-4">
+                  <MdOutlineEdit
+                    className="h-6 w-6 cursor-pointer text-[--primary] "
+                    onClick={() => handleEdit(farm)}
+                  />
+
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <MdDelete className="text-xl text-red-400 cursor-pointer" />
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete this data.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          className="text-red-500 bg-red-100"
+                          onClick={() => handleDelete(farm)}>
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
               </AccordionContent>
             ))}
           </AccordionItem>

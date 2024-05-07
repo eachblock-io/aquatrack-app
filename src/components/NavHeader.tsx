@@ -134,14 +134,15 @@ const NavHeader = ({ userdata }: any) => {
                       {data?.data?.organizations?.map(
                         (org: any, index: any) => (
                           <AccordionItem key={org?.id} value={org?.id}>
-                            <AccordionTrigger className="h-2 p-0 py-4 border-none w-full">
+                            <AccordionTrigger className="h-2 p-0 py-4 bg-gray-100 border-none w-full flex items-center justify-between">
                               <label
-                                className={`text-sm p-2 mb-4 flex items-center cursor-pointer w-full `}>
+                                className={`text-sm p-2 flex items-center cursor-pointer w-full `}>
                                 <GiCirclingFish className="text-gray-500 h-4 w-4 mr-2 " />
                                 <span className="text-sm font-normal">
                                   {org?.attributes?.organization_name}
                                 </span>
                               </label>
+                              <IoIosArrowDown />
                             </AccordionTrigger>
                             {org?.farms?.map((farm: any) => (
                               <AccordionContent

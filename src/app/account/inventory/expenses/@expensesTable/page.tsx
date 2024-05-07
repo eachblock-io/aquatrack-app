@@ -87,7 +87,7 @@ const ExpensesTable: React.FC<any> = ({ data, farmId }) => {
         <Table className="w-full">
           <TableHeader className="">
             <TableRow>
-              <TableHead className="py-4 pl-8 text-black ">
+              <TableHead className="py-4 lg:pl-8 pl-4 text-black ">
                 <input
                   type="checkbox"
                   checked={selectAll}
@@ -95,12 +95,14 @@ const ExpensesTable: React.FC<any> = ({ data, farmId }) => {
                   className="mr-1 w-4 h-4"
                 />
               </TableHead>
-              <TableHead className="py-4 text-black font-bold">Date</TableHead>
-              <TableHead className="py-4 text-black font-bold">
+              <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+                Date
+              </TableHead>
+              <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
                 Description
               </TableHead>
-              <TableHead className="py-4 text-black font-bold">
-                Amount spent
+              <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+                Amount <span className="lg:flex hidden">spent</span>
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -108,7 +110,7 @@ const ExpensesTable: React.FC<any> = ({ data, farmId }) => {
             <TableBody className="bg-white pl-8">
               {data?.map((item: any) => (
                 <TableRow key={item.id}>
-                  <TableCell className="py-4 pl-8 w-6">
+                  <TableCell className="py-4 lg:pl-8 pl-4 w-6">
                     <input
                       type="checkbox"
                       checked={selectedItems.includes(item?.id)}
@@ -116,13 +118,13 @@ const ExpensesTable: React.FC<any> = ({ data, farmId }) => {
                       className="mr-1 w-4 h-4"
                     />
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="py-4 lg:text-base text-xs">
                     {dateFormaterAndTime(item?.attributes?.created_at)}
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="py-4 lg:text-base text-xs">
                     {item?.attributes?.description}
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="py-4 lg:text-base text-xs">
                     {item?.attributes?.total_amount}
                   </TableCell>
                   <TableCell className="py-4 flex items-center space-x-4">
