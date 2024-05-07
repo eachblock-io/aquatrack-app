@@ -22,7 +22,6 @@ import { formatCurrency } from "@/utils";
 
 const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
   const { data } = useGetAllBatchsDataQuery({ farmId });
-  console.log(data);
   // const cancelButtonRef = useRef(null);
   const [editFeed] = useEditFeedMutation();
   const [loading, setLoading] = useState(false);

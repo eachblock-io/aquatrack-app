@@ -90,7 +90,7 @@ const FeedsTable: React.FC<TableProps> = ({
         <Table className="w-full">
           <TableHeader className="">
             <TableRow>
-              <TableHead className="py-4 pl-8 text-black ">
+              <TableHead className="py-4 lg:pl-8 pl-2 text-black ">
                 <input
                   type="checkbox"
                   checked={selectAll}
@@ -98,12 +98,16 @@ const FeedsTable: React.FC<TableProps> = ({
                   className="mr-1 w-4 h-4"
                 />
               </TableHead>
-              <TableHead className="py-4 text-black font-bold">Date</TableHead>
-              <TableHead className="py-4 text-black font-bold">Brand</TableHead>
-              <TableHead className="py-4 text-black font-bold">
-                Size (mm)
+              <TableHead className="py-4 text-black font-bold lg:flex hidden">
+                Date
               </TableHead>
-              <TableHead className="py-4 text-black font-bold">
+              <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+                Brand
+              </TableHead>
+              <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
+                Size <span className="lg:flex hidden">(mm)</span>
+              </TableHead>
+              <TableHead className="py-4 text-black font-bold lg:text-base text-xs">
                 Quantity
               </TableHead>
             </TableRow>
@@ -112,7 +116,7 @@ const FeedsTable: React.FC<TableProps> = ({
             <TableBody className="bg-white pl-8">
               {data?.map((item: any) => (
                 <TableRow key={item.id}>
-                  <TableCell className="py-4 pl-8 w-6">
+                  <TableCell className="py-4 lg:pl-8 pl-2 w-6">
                     <input
                       type="checkbox"
                       checked={selectedItems.includes(item.id)}
@@ -120,16 +124,16 @@ const FeedsTable: React.FC<TableProps> = ({
                       className="mr-1 w-4 h-4"
                     />
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="py-4 lg:flex hidden">
                     {dateFormaterAndTime(item?.attributes?.created_at)}
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="py-4 lg:text-base text-xs">
                     {item?.attributes?.name}
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="py-4 lg:text-base text-xs">
                     {item?.attributes?.size}mm
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="py-4 lg:text-base text-xs">
                     {item?.attributes?.quantity} Bags
                   </TableCell>
                   <TableCell className="py-4 flex items-center space-x-4">
@@ -138,7 +142,7 @@ const FeedsTable: React.FC<TableProps> = ({
                         item?.attributes?.status === "in stock"
                           ? `bg-blue-100 text-blue-400`
                           : `bg-red-100 text-red-400`
-                      } rounded-full py-2 px-3 text-xs font-semibold`}>
+                      } rounded-full lg:py-2 lg:px-3 py-1 px-2 text-xs font-semibold`}>
                       {item?.attributes?.status}
                     </span>
                     <DropdownMenu>

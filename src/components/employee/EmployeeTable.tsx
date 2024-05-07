@@ -111,8 +111,8 @@ const EmployeeTable: React.FC<TableProps> = ({ data, farmId }) => {
               </TableHead>
               <TableHead className="py-4 text-black font-bold">Name</TableHead>
               <TableHead className="py-4 text-black font-bold">Email</TableHead>
-              <TableHead className="py-4 text-black font-bold">
-                Phone Number
+              <TableHead className="py-4 text-black font-bold ">
+                Phone <span className="lg:flex hidden">Number</span>
               </TableHead>
               <TableHead className="py-4 text-black font-bold">Role</TableHead>
             </TableRow>

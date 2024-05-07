@@ -108,7 +108,7 @@ const FeedRecord = ({ farmId }: any) => {
         </SelectContent>
       </Select> */}
       <section className="grid grid-cols-1 lg:flex lg:items-center justify-between gap-8 mt-8">
-        <div className="flex items-center justify-between space-x-6 w-8/12">
+        <div className="flex items-center justify-between space-x-6 lg:w-8/12 w-full">
           <div className="flex items-center bg-white py-2 px-4 rounded-lg w-full">
             <IoMdSearch className="w-6 h-6 text-gray-500" />
             <Input
@@ -224,7 +224,7 @@ const FeedRecord = ({ farmId }: any) => {
         </div>
       </section>
 
-      <div className="table w-full mt-20">
+      <div className="table w-full lg:mt-20 mt-0">
         {isLoading ? (
           <section className="mt-20 w-full mx-auto">
             <div className="space-y-2 bg-white p-6 rounded-xl">

@@ -12,6 +12,9 @@ import { IoEye, IoEyeOff } from "react-icons/io5";
 const Overview = ({ data, isLoading }: any) => {
   const [hide, setHide] = useState(false);
   // console.log(data);
+  const isNegative = (number: any) => {
+    return number < 0;
+  };
   return (
     <section className="lg:w-11/12 w-11/12 mx-auto">
       <h2 className="text-[--primary] font-bold lg:text-2xl text-lg">
@@ -94,11 +97,13 @@ const Overview = ({ data, isLoading }: any) => {
                     ******
                   </h2>
                 ) : (
-                  <h2 className="font-bold text-[--primary] lg:text-lg text-base">
+                  <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
                     N{" "}
-                    {data?.overview?.net_profit
-                      ? formatCurrency(data?.overview?.net_profit)
-                      : "0.00"}
+                    {hide
+                      ? "*****"
+                      : isNegative(data?.overview?.net_profit)
+                      ? "0.00"
+                      : formatCurrency(data?.overview?.net_profit)}
                   </h2>
                 )}
               </>

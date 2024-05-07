@@ -93,7 +93,7 @@ const ExpensesRecord = ({ farmId }: any) => {
         </div>
       </section>
 
-      <div className="table w-full mt-20">
+      <div className="table w-full lg:mt-20 mt-0">
         <ExpensesTable
           data={filteredData?.length > 0 ? filteredData : data?.data?.data}
           farmId={farmId}

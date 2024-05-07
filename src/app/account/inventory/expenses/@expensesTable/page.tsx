@@ -68,7 +68,7 @@ const ExpensesTable: React.FC<any> = ({ data, farmId }) => {
   };
 
   return (
-    <div className="bg-gray-50 border-collapse border border-gray-300 pt-6 pb-4 rounded-xl">
+    <div className="bg-gray-50 border-collapse border border-gray-300 pb-4 rounded-xl">
       {editData && (
         <EditModal
           editData={editData}

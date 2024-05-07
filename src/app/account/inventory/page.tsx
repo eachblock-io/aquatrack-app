@@ -52,7 +52,7 @@ const InventoryPage = () => {
                     <TabsTrigger
                       value="feeds"
                       className="bg-transparent font-normal data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-[--primary] data-[state=active]:font-bold data-[state=active]:rounded-none data-[state=active]:border-b-4 data-[state=active]:border-[--primary] data-[state=active]:pb-2">
-                      Feed Records
+                      Feed <span className="lg:flex hidden">Records</span>
                     </TabsTrigger>
                     <TabsTrigger
                       value="expenses"
@@ -72,9 +72,7 @@ const InventoryPage = () => {
                   </TabsList>
                   <TabsContent value="feeds" className="pt-8">
                     {defaultFarmId ? (
-                      <FeedRecord
-                        farmId={defaultFarmId}
-                      />
+                      <FeedRecord farmId={defaultFarmId} />
                     ) : (
                       <section className="h-[70vh] flex items-center justify-center">
                         <div className="relative lg:w-6/12 w-10/12 mx-auto">
@@ -98,9 +96,7 @@ const InventoryPage = () => {
                   </TabsContent>
                   <TabsContent value="expenses">
                     {defaultFarmId ? (
-                      <ExpensesRecord
-                        farmId={defaultFarmId}
-                      />
+                      <ExpensesRecord farmId={defaultFarmId} />
                     ) : (
                       <section className="h-[70vh] flex items-center justify-center">
                         <div className="relative lg:w-6/12 w-10/12 mx-auto">
@@ -152,9 +148,7 @@ const InventoryPage = () => {
                   </TabsContent>
                   <TabsContent value="customers">
                     {defaultFarmId ? (
-                      <CustomerRecord
-                        farmId={defaultFarmId}
-                      />
+                      <CustomerRecord farmId={defaultFarmId} />
                     ) : (
                       <section className="h-[70vh] flex items-center justify-center">
                         <div className="relative lg:w-6/12 w-10/12 mx-auto">

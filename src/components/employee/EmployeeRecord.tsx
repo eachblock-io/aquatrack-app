@@ -123,7 +123,7 @@ const EmployeeRecord = ({ farmId }: any) => {
         </div>
       </section>
 
-      <div className="table w-full mt-20">
+      <div className="table w-full lg:mt-20">
         {isLoading ? (
           <section className="mt-10 w-full mx-auto">
             <div className="space-y-2 bg-white p-6 rounded-xl">

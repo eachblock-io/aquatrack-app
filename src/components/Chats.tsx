@@ -1,20 +1,16 @@
-import Image from "next/image";
 import React from "react";
-import chartImg from "@/public/charts.png";
-import farmImg from "@/public/Figpie.png";
 import { GoDotFill } from "react-icons/go";
 import MortalityChart from "./MortalityChart";
-import FarmChart from "./FarmChart";
+import { FarmChart, MobileFarmChart } from "./FarmChart";
 
 const MortalityChat = ({ data }: any) => {
-  console.log(data?.farm_details);
   return (
     <div className="lg:w-[60%] w-full">
       <h2 className="text-[--primary] font-bold lg:text-2xl text-lg mb-4 ">
         Mortality Rate
       </h2>
-      <div className="bg-white rounded-xl p-4 lg:h-[26rem] h-[15rem]">
-        <MortalityChart data={data?.graph_data} />
+      <div className="bg-gray-50 rounded-xl lg:p-4 p-2 lg:py-6 py-4  lg:h-[26rem] h-[20rem]">
+        {data?.graph_data && <MortalityChart data={data?.graph_data} />}
       </div>
 
       <div className="chart mt-8">
@@ -22,8 +18,13 @@ const MortalityChat = ({ data }: any) => {
           Farm Details
         </h2>
         <div className="grid lg:grid-cols-2 grid-cols-1 items-center bg-white rounded-xl">
-          <div className="cha lg:h-[40vh] w-full">
-            <FarmChart data={data?.farm_details} />
+          <div className="cha lg:h-[40vh] h-[30vh] w-full">
+            {data?.farm_details && (
+              <>
+                <FarmChart data={data?.farm_details} />
+                <MobileFarmChart data={data?.farm_details} />
+              </>
+            )}
           </div>
           <div className="flex flex-col space-y-4 mx-auto pb-6">
             <div className="flex items-center">

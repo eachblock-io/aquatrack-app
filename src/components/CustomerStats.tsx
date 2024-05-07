@@ -11,7 +11,7 @@ import { IoEye, IoEyeOff } from "react-icons/io5";
 
 const CustomerStats = ({ data, isLoading }: any) => {
   const [hide, setHide] = useState(false);
-  console.log("data", data);
+  // console.log("data", data);
 
   // Function to check if a number is negative
   const isNegative = (number: any) => {
@@ -39,7 +39,9 @@ const CustomerStats = ({ data, isLoading }: any) => {
             ) : (
               <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
                 {" "}
-                {hide ? "*****" : data?.card_data?.total_harvest}
+                {hide
+                  ? "*****"
+                  : formatCurrency(data?.card_data?.total_harvest)}
               </h2>
             )}
             {/* <div className="text-right flex items-center justify-end mt-2">
