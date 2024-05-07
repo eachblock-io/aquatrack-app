@@ -57,6 +57,7 @@ const OnboardingForm = () => {
           Authorization: `Bearer ${token?.data?.token}`,
           "Content-Type": "application/json",
         };
+        
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/auth/onboarding/farm-owner`,
           {

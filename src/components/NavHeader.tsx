@@ -14,24 +14,8 @@ import { Dialog } from "@headlessui/react";
 import logoImg from "@/public/logo.png";
 import Link from "next/link";
 import AddFarmModal from "./AddFarmModal";
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { useGetAllFarmsQuery } from "@/redux/services/farmApiSlice";
-import fetchToken from "@/lib/auth";
 import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 import { GiCirclingFish } from "react-icons/gi";
 import {
@@ -44,8 +28,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import LogoutModal from "./LogoutModal";
 import { Notification } from "./Notification";
 import { useGetNotificationsQuery } from "@/redux/services/notificationApiSlice";
+import fetchToken from "@/lib/auth";
+import { useRouter } from "next/navigation";
 
 const NavHeader = ({ userdata }: any) => {
+  const { push } = useRouter();
   const { data } = useGetAllFarmsQuery(null);
   const { data: notification } = useGetNotificationsQuery(null);
   const pathname = usePathname();
@@ -54,6 +41,23 @@ const NavHeader = ({ userdata }: any) => {
   const [toggle, setToggle] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { handleFarmClick, defaultFarmId } = useDefaultFarmId();
+
+  useEffect(() => {
+    isAuth();
+  }, []);
+
+  const isAuth = async () => {
+    try {
+      const token = await fetchToken();
+      if (!token?.data?.token) {
+        push("/");
+      }
+    } catch (error: any) {
+      if (error?.response?.status == "401") {
+        push("/");
+      }
+    }
+  };
 
   return (
     <nav className="bg-white w-full lg:h-[10vh] h-[8vh] flex items-center justify-center">

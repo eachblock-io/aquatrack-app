@@ -1,4 +1,3 @@
-import React from "react";
 import { Sidenav } from "@/components/Sidenav";
 
 const Layout = async ({
@@ -6,6 +5,7 @@ const Layout = async ({
 }: {
   children: React.ReactNode | React.ReactElement;
 }) => {
+
   return (
     <section className="flex sm:h-screen h-screen w-full overflow-hidden bg-[#f3f3f5]">
       <Sidenav />
