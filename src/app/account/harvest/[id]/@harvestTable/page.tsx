@@ -198,16 +198,12 @@ const HarvestTable: React.FC<any> = ({
     }
 
     // Filter newlyAddedRows to return only objects where price_per_unit is of type number
-    const filteredNewlyAddedRows = rows.filter(
-      (row) => typeof row.price_per_unit === "number"
-    );
+    const filteredNewlyAddedRows = rows.filter((row) => !row.id);
 
     const rowsWithAmountAsNumber = filteredNewlyAddedRows.map((row) => ({
       ...row,
       amount: parseFloat(row.amount),
     }));
-
-    // console.log(rowsWithAmountAsNumber);
 
     setLoading(true);
 
@@ -350,23 +346,21 @@ const HarvestTable: React.FC<any> = ({
                     <MenubarMenu>
                       <MenubarTrigger>
                         <Button className="lg:flex hidden items-center justify-center space-x-3 text-[--primary] font-normal border border-[--primary] ">
-                          <AiOutlinePlus className="w-2 h-2 text-gray-400" />
+                          <AiOutlinePlus className="w-4 h-4 text-gray-400" />
                           <span>Insert new row</span>
                         </Button>
 
-                        <button className="w-8 h-6 rounded-md flex items-center justify-center space-x-3 text-[--primary] font-normal border border-[--primary] ">
+                        <button className="w-8 h-6 rounded-md flex lg:hidden items-center justify-center space-x-3 text-[--primary] font-normal border border-[--primary] ">
                           <AiOutlinePlus className="w-4 h-4 text-[--primary]" />
                         </button>
                       </MenubarTrigger>
                       <MenubarContent>
-                        <AccordionTrigger>
-                          <MenubarItem
-                            onClick={handleInsertRow}
-                            className="flex items-center font-normal cursor-pointer ">
-                            <AiOutlinePlus className="text-gray-500 h-4 w-4 mr-2 " />
-                            Add new purchase
-                          </MenubarItem>
-                        </AccordionTrigger>
+                        <MenubarItem
+                          onClick={handleInsertRow}
+                          className="flex items-center font-normal cursor-pointer ">
+                          <AiOutlinePlus className="text-gray-500 h-4 w-4 mr-2 " />
+                          Add new purchase
+                        </MenubarItem>
                         <MenubarSeparator />
                         <MenubarItem className="flex items-center font-normal cursor-pointer ">
                           <CiStar className="text-gray-500 h-6 w-6 mr-2 " />

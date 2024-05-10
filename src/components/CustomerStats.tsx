@@ -31,17 +31,17 @@ const CustomerStats = ({ data, isLoading }: any) => {
               height="15"
               priority
             />
-            <p className="text-gray-400 lg:text-sm text-xs">Total Harvest</p>
+            <p className="text-gray-400 lg:text-sm text-xs">Total Amount</p>
           </div>
           <div className="stat mt-2">
             {isLoading ? (
               <Skeleton className="h-6 w-[150px] bg-gray-200" />
             ) : (
               <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
-                {" "}
+                N{" "}
                 {hide
                   ? "*****"
-                  : formatCurrency(data?.card_data?.total_harvest)}
+                  : formatCurrency(data?.details?.relationships?.total_amount)}
               </h2>
             )}
             {/* <div className="text-right flex items-center justify-end mt-2">
@@ -163,19 +163,17 @@ const CustomerStats = ({ data, isLoading }: any) => {
                 height="15"
                 priority
               />
-              <p className="text-gray-400 lg:text-sm text-xs">Total Amount</p>
+              <p className="text-gray-400 lg:text-sm text-xs">Total Expenses</p>
             </div>
             <div className="stat mt-2">
               {isLoading ? (
                 <Skeleton className="h-6 w-[150px] bg-gray-200" />
               ) : (
                 <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
-                  N{" "}
+                  {" "}
                   {hide
                     ? "*****"
-                    : formatCurrency(
-                        data?.details?.relationships?.total_amount
-                      )}
+                    : formatCurrency(data?.card_data?.total_harvest)}
                 </h2>
               )}
               {/* <div className="text-right flex items-center justify-end mt-2">
@@ -211,7 +209,7 @@ const CustomerStats = ({ data, isLoading }: any) => {
           <div className="card relative lg:block hidden bg-white py-4 px-6 rounded-xl">
             <div className="flex items-center  lg:space-x-4 space-x-2">
               <FaArrowTrendUp className="text-[--primary]" />
-              <p className="text-gray-400 lg:text-sm text-xs">Total Sales</p>
+              <p className="text-gray-400 lg:text-sm text-xs">Total Kg</p>
             </div>
             <div className="stat mt-2">
               {isLoading ? (
@@ -221,9 +219,7 @@ const CustomerStats = ({ data, isLoading }: any) => {
                   N{" "}
                   {hide
                     ? "*****"
-                    : formatCurrency(
-                        data?.details?.relationships?.total_profit
-                      )}
+                    : formatCurrency(data?.details?.relationships?.total_size)}
                 </h2>
               )}
               {/* <div className="text-right flex items-center justify-end mt-2">

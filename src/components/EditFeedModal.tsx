@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { IoClose } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
@@ -42,6 +42,18 @@ const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
     vendor: "",
     size: "",
   });
+
+  useEffect(() => {
+    setFormData((prevFormData: any) => ({
+      ...prevFormData,
+      name: editdata?.attributes?.name || "",
+      quantity: editdata?.attributes?.quantity || "",
+      price: editdata?.attributes?.price || "",
+      amount: editdata?.attributes?.amount || "",
+      vendor: editdata?.attributes?.vendor || "",
+      size: editdata?.attributes?.size || "",
+    }));
+  }, [editdata]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -94,10 +106,23 @@ const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
     setErrors(newErrors);
 
     // Convert unit_purchase, price_per_unit, and amount_spent to numbers
-    const quantity = parseFloat(formData.quantity.replace(/,/g, ""));
-    const price = parseFloat(formData.price.replace(/,/g, ""));
-    const amount = parseFloat(formData.amount.replace(/,/g, ""));
-    const size = parseFloat(formData?.size?.replace(/,/g, ""));
+    const quantity =
+      typeof formData.quantity === "string"
+        ? formData.quantity.replace(/[^0-9.]/g, "") || 0
+        : 0;
+    const price =
+      typeof formData.price === "string"
+        ? formData.price.replace(/[^0-9.]/g, "") || 0
+        : 0;
+    const amount =
+      typeof formData.amount === "string"
+        ? formData.amount.replace(/[^0-9.]/g, "") || 0
+        : 0;
+    const size =
+      typeof formData?.size === "string"
+        ? (formData.size || "").replace(/[^0-9.]/g, "") || 0
+        : 0;
+
 
     const formdata = {
       name: formData?.name,
@@ -109,10 +134,12 @@ const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
       batch_id: batchID,
     };
 
+    console.log(amount);
+
     if (Object.values(newErrors).every((error) => !error)) {
       setLoading(true);
       try {
-        await editFeed({ formdata, farmId }).unwrap();
+        // await editFeed({ formdata, farmId }).unwrap();
         toast.success("Purchase created ✔️");
         setOpen(false);
         setFormData("");
@@ -132,7 +159,7 @@ const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
         <div className="text-center">
           <div className="mt-3 text-center sm:ml-4 sm:mt-0">
             <h3 className="text-xl font-semibold leading-6 text-[--primary] ">
-              Edit
+              Edit Feeds
             </h3>
           </div>
         </div>
@@ -194,7 +221,7 @@ const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
               <Input
                 type="text"
                 name="amount"
-                value={formatCurrency(formData?.amount)}
+                value={formData?.amount}
                 onChange={handleInputChange}
                 placeholder="300"
                 className="border-gray-400 focus-visible:outline-none py-6 "
@@ -268,7 +295,7 @@ const EditFeedModal = ({ editdata, open, setOpen, farmId }: any) => {
             </div>
           </div>
           <div className="flex items-center justify-between space-x-6">
-            <Button className=" mt-10 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
+            <Button className="outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
               {loading ? "Loading..." : "Save changes"}
             </Button>
           </div>

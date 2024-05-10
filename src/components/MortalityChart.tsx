@@ -1,4 +1,5 @@
 "use client";
+import { formatCurrency } from "@/utils";
 import { constants } from "fs";
 import React, { PureComponent } from "react";
 import {
@@ -56,7 +57,7 @@ const MortalityChart = ({ data }: any) => {
         <AreaChart width={500} height={400} data={data} margin={{ right: 30 }}>
           <YAxis />
           <XAxis dataKey="name" />
-          <CartesianGrid strokeDasharray="5 5" />
+          <CartesianGrid strokeDasharray="3 5" />
 
           <Tooltip content={<CustomTooltip />} />
           <Legend />
@@ -64,16 +65,16 @@ const MortalityChart = ({ data }: any) => {
           <Area
             type="monotone"
             dataKey="capital"
-            stroke="#2563eb"
-            fill="#3b82f6"
+            stroke="#0180EA"
+            fill="#0180EA"
             stackId="1"
           />
 
           <Area
             type="monotone"
             dataKey="net_profit"
-            stroke="#7c3aed"
-            fill="#8b5cf6"
+            stroke="#0A2A5E"
+            fill="#0A2A5E"
             stackId="1"
           />
           <Area
@@ -85,28 +86,6 @@ const MortalityChart = ({ data }: any) => {
           />
         </AreaChart>
       </ResponsiveContainer>
-      {/* <ResponsiveContainer width="100%" height="100%">
-        <LineChart width={500} height={300} data={data}>
-          <CartesianGrid strokeDasharray="2 3" />
-          <XAxis dataKey="name" padding={{ left: 3, right: 3 }} />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="capital"
-            stroke="#82ca5d"
-            className="mt-4"
-          />
-          <Line
-            type="monotone"
-            dataKey="net_profit"
-            stroke="#0180EA"
-            activeDot={{ r: 8 }}
-          />
-          <Line type="monotone" dataKey="total_expense" stroke="#0A2A5E" />
-        </LineChart>
-      </ResponsiveContainer> */}
     </>
   );
 };
@@ -117,12 +96,20 @@ const CustomTooltip = ({ active, payload, label }: any) => {
       <div className="p-4 bg-[--primary] flex flex-col gap-4 rounded-md">
         <p className="text-medium text-lg text-gray-100">{label}</p>
         <p className="text-sm text-white">
+          Capital:
+          <span className="ml-2">N {formatCurrency(payload[0].value)}</span>
+        </p>
+        <p className="text-sm text-white">
           Net Profit:
-          <span className="ml-2">${payload[0].value}</span>
+          <span className="ml-2">
+            N {payload[1].value < 0 ? "0.00" : formatCurrency(payload[1].value)}
+          </span>
         </p>
         <p className="text-sm text-white">
           Total Expense:
-          <span className="ml-2">${payload[1].value}</span>
+          <span className="ml-2">
+            N {payload[2].value == 0 ? "0.00" : formatCurrency(payload[2].value)}
+          </span>
         </p>
       </div>
     );
