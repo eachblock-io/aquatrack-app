@@ -171,9 +171,7 @@ const CustomerStats = ({ data, isLoading }: any) => {
               ) : (
                 <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
                   {" "}
-                  {hide
-                    ? "*****"
-                    : formatCurrency(data?.card_data?.total_harvest)}
+                  {hide ? "*****" : formatCurrency(data?.card_data?.expenses)}
                 </h2>
               )}
               {/* <div className="text-right flex items-center justify-end mt-2">
