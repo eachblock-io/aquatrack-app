@@ -28,13 +28,16 @@ import useDefaultFarmId from "@/hooks/useDefaultFarmId";
 import EditFarmModal from "./EditFarmModal";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import toast from "react-hot-toast";
+import EditOrgModal from "./EditOrgModal";
 
 const Farms = () => {
   const [deleteFarm] = useDeleteFarmMutation();
   const { data, refetch } = useGetAllFarmsQuery(null);
   const { defaultFarmId } = useDefaultFarmId();
+  const [openOrg, setOpenOrg] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [farmData, setFarmData] = useState();
+  const [orgData, setOrgData] = useState();
 
   const handleEdit = (value: any) => {
     if (value?.name) {
@@ -42,9 +45,14 @@ const Farms = () => {
       setOpenEdit(true);
     }
   };
+  const handleEditOrg = (value: any) => {
+    if (value) {
+      setOrgData(value);
+      setOpenOrg(true);
+    }
+  };
 
   const handleDelete = async (value: any) => {
-    console.log(value);
     try {
       await deleteFarm({ farmId: value?.id }).unwrap();
       refetch();
@@ -57,22 +65,32 @@ const Farms = () => {
       {farmData && (
         <EditFarmModal data={farmData} open={openEdit} setOpen={setOpenEdit} />
       )}
+      {orgData && (
+        <EditOrgModal data={orgData} open={openOrg} setOpen={setOpenOrg} />
+      )}
       <Accordion
         type="single"
         collapsible
         className="w-full border-none underline-none bg-white border rounded-lg p-4 pb-0">
         {data?.data?.organizations?.map((org: any, index: any) => (
           <AccordionItem key={org?.id} value={org?.id}>
-            <AccordionTrigger className="rounded-lg py-4 px-2 border-none w-full hover:bg-gray-100">
-              <label
-                className={`text-sm flex items-center cursor-pointer w-full `}>
-                <GiCirclingFish className="text-gray-500 h-6 w-6 mr-2 " />
-                <span className="text-sm font-bold">
-                  {org?.attributes?.organization_name}
-                </span>
-              </label>
-              <IoIosArrowDown />
-            </AccordionTrigger>
+            <div className="flex items-center justify-between  w-full">
+              <AccordionTrigger className="rounded-lg py-4 px-2 border-none w-full hover:bg-gray-100">
+                <label
+                  className={`text-sm flex items-center cursor-pointer w-full `}>
+                  <GiCirclingFish className="text-gray-500 h-6 w-6 mr-2 " />
+                  <span className="text-sm font-bold">
+                    {org?.attributes?.organization_name}
+                  </span>
+                </label>
+                <IoIosArrowDown />
+              </AccordionTrigger>
+              <MdOutlineEdit
+                className="h-6 w-6 cursor-pointer text-[--primary] "
+                onClick={() => handleEditOrg(org)}
+              />
+            </div>
+
             {org?.farms?.map((farm: any) => (
               <AccordionContent
                 key={farm?.id}

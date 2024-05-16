@@ -16,6 +16,8 @@ const PoundsPage = () => {
   const { isLoading, data: ponds } = useGetAllPondsDataQuery({
     farmId: defaultFarmId,
   });
+
+  console.log(ponds);
   return (
     <>
       <NavHeader userdata={data?.data} />

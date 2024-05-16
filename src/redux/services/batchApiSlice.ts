@@ -7,10 +7,10 @@ const batchApi = batchApiConfig.injectEndpoints({
     getAllBatchsData: builder.query({
       query: ({ farmId }) => `/farmer/${farmId}/batch`,
       providesTags: ["Batchs"],
+      keepUnusedDataFor: 30,
     }),
     getInStockBatchsData: builder.query({
-      query: ({ farmId }) =>
-        `/farmer/${farmId}/batch/filter[status]=in stock`,
+      query: ({ farmId }) => `/farmer/${farmId}/batch?filter[status]=in stock`,
       providesTags: ["Batchs"],
     }),
     getAllBatchsStat: builder.query({
@@ -54,6 +54,7 @@ const batchApi = batchApiConfig.injectEndpoints({
 
 export const {
   useGetAllBatchsDataQuery,
+  useGetInStockBatchsDataQuery,
   useCreateBatchMutation,
   useEditBatchMutation,
   useDeleteBatchMutation,

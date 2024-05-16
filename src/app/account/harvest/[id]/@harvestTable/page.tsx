@@ -266,7 +266,7 @@ const HarvestTable: React.FC<any> = ({
 
   const handleSaveBeneficairy = async () => {
     try {
-      setBenefied(true);
+      setBenefied(!benefied);
       await AddBeneficiary({
         formdata: { harvest_customer_id: customerId },
         farmId,
