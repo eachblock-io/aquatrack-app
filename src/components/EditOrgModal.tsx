@@ -35,7 +35,7 @@ const EditOrgModal = ({ open, setOpen, data }: any) => {
     setErrors({ ...errors, [name]: "" });
   };
 
-//   console.log(data);
+  //   console.log(data?.attributes);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     setLoading(true);
@@ -50,15 +50,11 @@ const EditOrgModal = ({ open, setOpen, data }: any) => {
 
     setErrors(newErrors);
 
-    const formdata = {
-      name: formData?.organization_name,
-    };
-
     if (Object.values(newErrors).every((error) => !error)) {
       setLoading(true);
       try {
         await editOrganization({
-          formdata,
+          formdata: formData,
           orgId: data?.attributes?.tenant_id,
         }).unwrap();
         toast.success("Organization edited ✔️");
