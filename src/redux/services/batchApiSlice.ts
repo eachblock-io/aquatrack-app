@@ -8,6 +8,11 @@ const batchApi = batchApiConfig.injectEndpoints({
       query: ({ farmId }) => `/farmer/${farmId}/batch`,
       providesTags: ["Batchs"],
     }),
+    getInStockBatchsData: builder.query({
+      query: ({ farmId }) =>
+        `/farmer/${farmId}/batch/filter[status]=in stock`,
+      providesTags: ["Batchs"],
+    }),
     getAllBatchsStat: builder.query({
       query: ({ farmId }) => `/farmer/batchs/${farmId}/farm-statistics`,
       providesTags: ["Batchs"],
