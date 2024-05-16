@@ -32,6 +32,7 @@ export const FarmChart = ({ data }: any) => {
 };
 
 export const MobileFarmChart = ({ data }: any) => {
+  // console.log("Pie chart", data);
   return (
     <>
       <ResponsiveContainer

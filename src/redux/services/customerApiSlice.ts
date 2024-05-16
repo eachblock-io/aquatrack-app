@@ -10,6 +10,7 @@ const customerApi = customerApiConfig.injectEndpoints({
       query: ({ farmId, harvestId }) =>
         `/farmer/${farmId}/harvest/${harvestId}/customer`,
       providesTags: ["Customer"],
+      keepUnusedDataFor: 30,
     }),
     getAllCustomers: builder.query({
       query: ({ farmId }) => `/farmer/${farmId}/customers`,

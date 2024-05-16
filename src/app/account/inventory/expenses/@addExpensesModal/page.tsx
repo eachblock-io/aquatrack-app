@@ -5,15 +5,17 @@ import { IoClose } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useGetAllBatchsDataQuery } from "@/redux/services/batchApiSlice";
+import { useGetInStockBatchsDataQuery } from "@/redux/services/batchApiSlice";
 import { useCreateExpenseMutation } from "@/redux/services/expenseRecordApiSlice";
 import toast from "react-hot-toast";
 
 const AddExpensesModal = ({ open, setOpen, farmId }: any) => {
   const cancelButtonRef = useRef(null);
   const [loading, setLoading] = useState(false);
-  const { data } = useGetAllBatchsDataQuery({ farmId });
+  const { data } = useGetInStockBatchsDataQuery({ farmId });
   const [createExpense] = useCreateExpenseMutation();
+
+  // console.log(data);
 
   const [description, setDescription] = useState("");
   const [total, setTotal] = useState("");
@@ -136,13 +138,14 @@ const AddExpensesModal = ({ open, setOpen, farmId }: any) => {
                         <p className="text-xs text-gray-400">
                           Assign expenses to each batch as you wish
                         </p>
-                        <div className="grid grid-cols-3 mt-4 gap-4">
+                        <div className="grid lg:grid-cols-3 grid-cols-2 mt-4 gap-4">
                           {data?.data?.map((item: any, index: any) => (
                             <div
                               key={index}
-                              className="input-batch flex items-center bg-gray-100 rounded-lg">
+                              className="input-batch flex items-center bg-gray-100 rounded-lg w-full">
                               <p className="h-12 text-xs flex items-center justify-center rounded-l-lg px-2 text-nowrap bg-[#C9D5ED] border ">
-                                {`Batch ${index + 1}`}
+                                B<span className="lg:flex hidden">atch</span>{" "}
+                                {index + 1}
                               </p>
                               <Input
                                 type="text"
@@ -156,7 +159,7 @@ const AddExpensesModal = ({ open, setOpen, farmId }: any) => {
                                   )
                                 }
                                 placeholder="20 bags"
-                                className="border-none outline-none focus-visible:ring-0 focus-visible:outline-none py-6 rounded-none"
+                                className="border-none outline-none focus-visible:ring-0 focus-visible:outline-none py-6 rounded-none w-full"
                               />
                               <input
                                 type="hidden"
@@ -184,7 +187,9 @@ const AddExpensesModal = ({ open, setOpen, farmId }: any) => {
                       </div>
                     </div>
                     <div className="flex items-center justify-between space-x-6">
-                      <Button className="mt-4 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
+                      <Button
+                        disabled={!total ? true : false}
+                        className="mt-4 outline-none border-none font-normal text-base bg-[--primary] hover:bg-[--secondary] w-full h-[53px] text-white">
                         {loading ? "Sending..." : "Add new expense"}
                       </Button>
                     </div>

@@ -16,7 +16,7 @@ const AddTask = ({ farmID }: any) => {
   const [editTask] = useEditTaskMutation();
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState(true);
   const [editdata, setEditdata] = useState("");
   // const { defaultFarmId } = useDefaultFarmId(data?.data?.farms);
   const { data } = useGetAllTaskDataQuery({ farmId: farmID });
@@ -31,17 +31,18 @@ const AddTask = ({ farmID }: any) => {
   };
 
   const handleUpdateTaskStatus = async (taskData: any) => {
+    setStatus(!status);
     const formdata = {
-      status: "complete",
+      status: status ? "complete" : "incomplete",
     };
+    console.log(formdata);
     try {
-      const res = await editTask({
+      await editTask({
         formdata,
         farmId: farmID,
         taskId: taskData?.id,
       }).unwrap();
-
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       console.log(error);
       toast.error(
@@ -91,18 +92,19 @@ const AddTask = ({ farmID }: any) => {
                         </div>
                       </div>
                     )}
-                    {task?.attributes?.status == "pending" && (
-                      <div className="due-date w-14 h-12 bg-[#0180EA] text-center text-white flex items-center justify-center rounded-lg">
-                        <div>
-                          <p className="text-sm font-bold uppercase">
-                            {task?.attributes?.time_left.slice(0, 3)}
-                          </p>
-                          {task?.attributes?.status == "pending" && (
-                            <p className="text-xs">PND</p>
-                          )}
+                    {task?.attributes?.status == "pending" ||
+                      (task?.attributes?.status == "incomplete" && (
+                        <div className="due-date w-14 h-12 bg-[#0180EA] text-center text-white flex items-center justify-center rounded-lg">
+                          <div>
+                            <p className="text-sm font-bold uppercase">
+                              {task?.attributes?.time_left.slice(0, 3)}
+                            </p>
+                            {task?.attributes?.status == "pending" && (
+                              <p className="text-xs">PND</p>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      ))}
                     {/* Completed task */}
                     {task?.attributes?.status == "complete" && (
                       <div className="due-date w-14 h-12 bg-green-500 text-center text-white flex items-center justify-center rounded-lg">
@@ -115,14 +117,15 @@ const AddTask = ({ farmID }: any) => {
                     )}
                     <div className=" space-y-2">
                       <p className="text-sm">{task?.attributes?.title}</p>
-                      {task?.attributes?.status == "pending" && (
-                        <p className="text-xs">
-                          You have{" "}
-                          <span className="text-[--primary] ">
-                            {task?.attributes?.time_left}
-                          </span>
-                        </p>
-                      )}
+                      {task?.attributes?.status == "pending" ||
+                        (task?.attributes?.status == "incomplete" && (
+                          <p className="text-xs">
+                            You have{" "}
+                            <span className="text-[--primary] ">
+                              {task?.attributes?.time_left}
+                            </span>
+                          </p>
+                        ))}
                       {task?.attributes?.status == "due" && (
                         <p className="text-xs">
                           You have{" "}
