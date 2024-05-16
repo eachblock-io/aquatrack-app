@@ -15,7 +15,7 @@ import SubscriptionModal from "./SubscriptionModal";
 export function Sidenav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [openSub, setOpenSub] = useState(true);
+  const [openSub, setOpenSub] = useState(false);
 
   return (
     <div
@@ -58,7 +58,7 @@ export function Sidenav() {
           />
           <p>Log Out</p>
         </Button> */}
-        <div className="px-4 pt-8">
+        {/* <div className="px-4 pt-8">
           <SubscriptionModal open={openSub} setOpen={setOpenSub} />
           <div className="subscription space-y-3 bg-[--primary] py-4 px-4 rounded-lg text-white relative ">
             <Image
@@ -79,7 +79,7 @@ export function Sidenav() {
               Upgrade <FaCloudArrowDown className="ml-2 h-6 w-6" />
             </Button>
           </div>
-        </div>
+        </div> */}
       </nav>
     </div>
   );

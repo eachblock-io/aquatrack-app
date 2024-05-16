@@ -11,7 +11,7 @@ import { IoEye, IoEyeOff } from "react-icons/io5";
 
 const CustomerStats = ({ data, isLoading }: any) => {
   const [hide, setHide] = useState(false);
-  // console.log("data", data);
+  console.log("data", data);
 
   // Function to check if a number is negative
   const isNegative = (number: any) => {
@@ -114,6 +114,7 @@ const CustomerStats = ({ data, isLoading }: any) => {
           )}
         </div>
       </div>
+      
       <div className="card relative lg:hidden block bg-white py-4 px-6 mt-4 rounded-xl">
         <div className="flex items-center  lg:space-x-4 space-x-2">
           <FaArrowTrendUp className="text-[--primary]" />
@@ -151,6 +152,7 @@ const CustomerStats = ({ data, isLoading }: any) => {
           />
         )}
       </div>
+
       <div className="">
         <div className="grid lg:grid-cols-3 grid-cols-2 lg:gap-8 gap-4 gap-y-6 lg:mt-4 mt-4">
           <div className="card bg-white py-4 px-6 rounded-xl">
@@ -171,9 +173,7 @@ const CustomerStats = ({ data, isLoading }: any) => {
               ) : (
                 <h2 className="font-semibold text-[--primary] lg:text-lg text-base">
                   {" "}
-                  {hide
-                    ? "*****"
-                    : formatCurrency(data?.card_data?.total_harvest)}
+                  {hide ? "*****" : formatCurrency(data?.card_data?.expenses)}
                 </h2>
               )}
               {/* <div className="text-right flex items-center justify-end mt-2">
@@ -245,7 +245,7 @@ const CustomerStats = ({ data, isLoading }: any) => {
         <div className="card relative lg:hidden block bg-white py-4 px-6 mt-4 rounded-xl">
           <div className="flex items-center  lg:space-x-4 space-x-2">
             <FaArrowTrendUp className="text-[--primary]" />
-            <p className="text-gray-400 lg:text-sm text-xs">Total Sales</p>
+            <p className="text-gray-400 lg:text-sm text-xs">Total Kg</p>
           </div>
           <div className="stat mt-2">
             {isLoading ? (
