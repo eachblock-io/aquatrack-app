@@ -250,7 +250,7 @@ const AddPondModal = ({ open, setOpen, farmId }: any) => {
                 name="size"
                 value={formData?.size}
                 onChange={handleInputChange}
-                placeholder="0 - 0.5g"
+                placeholder="5kg"
                 className="border-gray-400 focus-visible:outline-none py-6 "
               />
               {errors.size && (
