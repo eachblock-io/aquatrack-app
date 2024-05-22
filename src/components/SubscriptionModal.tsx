@@ -1,22 +1,63 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { IoClose } from "react-icons/io5";
 import { Button } from "./ui/button";
 import { GiCheckMark } from "react-icons/gi";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
 import Link from "next/link";
+import { useGetSubsQuery } from "@/redux/services/subApiSlice";
+import { formatCurrency } from "@/utils";
+import fetchToken from "@/lib/auth";
+import { paystackPay } from "@/app/actions/action";
 
 const SubscriptionModal = ({ open, setOpen }: any) => {
   const cancelButtonRef = useRef(null);
+  const [months, setMonths] = useState("");
+  const { data } = useGetSubsQuery(null);
+
+  const [submitting, setSubmitting] = useState<boolean>(false);
+
+  const handlePayment = async (e: any): Promise<void> => {
+    e.preventDefault();
+    // Your code logic goes here
+    const token = await fetchToken();
+    setSubmitting(true);
+    try {
+      const headers = {
+        Authorization: `Bearer ${token?.data?.token}`,
+        "Content-Type": "application/json",
+      };
+      const options = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+          no_of_months: months,
+        }),
+      };
+      const paystackResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/farmer/upgrade-plan`,
+        options
+      );
+      const data = await paystackResponse.json();
+
+      const paystackRes = await paystackPay({
+        amount: data?.data?.paystack_data?.amount,
+        email: data?.data?.paystack_data?.email,
+        reference: data?.data?.paystack_data?.reference,
+        currency: "NGN",
+        callback_url: `${process.env.NEXT_PUBLIC_NEXT_API}/account/confirmpayment`,
+      });
+      // setSubmitting(false);
+
+      if (paystackRes.status === true) {
+        window.location.href = paystackRes.data.authorization_url; //extract the redirection and user it for redirecting the donor to the unique page generated for them to make payment
+      }
+    } catch (error) {
+      console.log(error);
+      setSubmitting(false);
+    }
+  };
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -71,45 +112,59 @@ const SubscriptionModal = ({ open, setOpen }: any) => {
                         </p>
                       </div>
                     </div>
-                    <form className="form mt-6">
+                    <form onSubmit={handlePayment} className="form mt-6">
                       <RadioGroup
-                        defaultValue="comfortable"
-                        className="space-y-2">
-                        <div className="flex items-center space-x-2">
+                        defaultValue="yearly"
+                        className="space-y-2"
+                        onValueChange={(value) => setMonths(value)}>
+                        {data?.data?.map((plan: any) => (
+                          <div
+                            key={plan?.id}
+                            className="flex items-center space-x-2">
+                            <RadioGroupItem
+                              value={plan?.attributes?.duration}
+                              id="r1"
+                              className="h-6 w-6"
+                            />
+                            <label htmlFor="r1" className="mt-8">
+                              <p className="flex items-center font-semibold text-lg">
+                                {plan?.attributes?.title}
+
+                                {plan?.attributes?.duration === 12 && (
+                                  <span className="bg-red-600 text-white text-[10px] px-2 py-1 rounded-full ml-2">
+                                    Best value - Save N
+                                    {plan?.attributes?.best_value}
+                                  </span>
+                                )}
+                              </p>
+                              <p className="text-sm mt-2">
+                                N
+                                {formatCurrency(
+                                  plan?.attributes?.monthly_price
+                                )}{" "}
+                                {plan?.attributes?.description}
+                              </p>
+                            </label>
+                          </div>
+                        ))}
+
+                        {/* <div className="flex items-center space-x-2">
                           <RadioGroupItem
-                            value="default"
-                            id="r1"
+                            value="3"
+                            id="r2"
                             className="h-6 w-6 focus:text-green-600 "
                           />
-                          <label htmlFor="r1" className="mt-8">
-                            <p className="flex items-center font-semibold text-lg">
-                              Yearly{" "}
-                              <span className="bg-red-600 text-white text-xs px-2 py-1 rounded-full ml-2">
-                                Best value - Save N9,700
-                              </span>{" "}
-                            </p>
-                            <p className="text-sm mt-2">
-                              N23,900 (N1,991.66/month)
-                            </p>
-                          </label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="monthly"
-                            id="r1"
-                            className="h-6 w-6 focus:text-green-600 "
-                          />
-                          <label htmlFor="r1" className="mt-6">
+                          <label htmlFor="r2" className="mt-6">
                             <p className="flex items-center font-semibold text-lg">
                               Monthly
                             </p>
 
                             <p className="text-sm">N2,800</p>
                           </label>
-                        </div>
+                        </div> */}
                       </RadioGroup>
                       <Button className="w-full bg-[--primary] hover:bg-[--primary] py-6 font-semibold mt-8">
-                        Next
+                        {submitting ? "Submitting..." : "Next"}
                       </Button>
                     </form>
                     <div className="mt-10">
@@ -125,25 +180,6 @@ const SubscriptionModal = ({ open, setOpen }: any) => {
                         </Link>
                       </p>
                     </div>
-                    {/* <Menubar className="bg-none mt-4">
-                      <MenubarMenu>
-                        <MenubarTrigger>
-                          <button className="w-full bg-white">
-                            Choose custom
-                          </button>
-                        </MenubarTrigger>
-                        <MenubarContent>
-                          <MenubarItem>
-                            New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-                          </MenubarItem>
-                          <MenubarItem>New Window</MenubarItem>
-                          <MenubarSeparator />
-                          <MenubarItem>Share</MenubarItem>
-                          <MenubarSeparator />
-                          <MenubarItem>Print</MenubarItem>
-                        </MenubarContent>
-                      </MenubarMenu>
-                    </Menubar> */}
                   </div>
                   <div className="right-side lg:w-full"></div>
                 </div>
