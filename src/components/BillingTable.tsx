@@ -1,14 +1,14 @@
 import fetchToken from "@/lib/auth";
 import React, { useState, useEffect } from "react";
-// import {
-//   Pagination,
-//   PaginationContent,
-//   PaginationEllipsis,
-//   PaginationItem,
-//   PaginationLink,
-//   PaginationNext,
-//   PaginationPrevious,
-// } from "@/components/ui/pagination";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import {
   Table,
   TableBody,
@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { dateFormaterAndTime } from "@/utils";
+import { dateFormater, dateFormaterAndTime, formatCurrency } from "@/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,10 +35,13 @@ const BillingTable = () => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [statusFilter, setStatusFilter] = useState("");
+  const [paymentMethodFilter, setPaymentMethodFilter] = useState("");
+  const [typeFilter, setTypeFilter] = useState("");
 
   useEffect(() => {
     fetchData(currentPage);
-  }, [currentPage]);
+  }, [currentPage, statusFilter, paymentMethodFilter, typeFilter]);
 
   const fetchData = async (page: any) => {
     try {
@@ -47,14 +50,22 @@ const BillingTable = () => {
         Authorization: `Bearer ${token?.data?.token}`,
         "Content-Type": "application/json",
       };
+
+      const params = new URLSearchParams({
+        page,
+        status: statusFilter,
+        payment_method: paymentMethodFilter,
+        type: typeFilter,
+      });
+
       const response = await fetch(
-        `https://api.aquatrackinc.com/admin/dashboard?page=${page}`,
+        `https://api.aquatrackinc.com/farmer/billing-history?${params.toString()}`,
         { headers }
       );
       const result = await response.json();
-      console.log(result?.data?.users);
-      setData(result.data?.users?.data);
-      setTotalPages(result?.data?.users?.meta?.last_page);
+      setData(result?.data?.transaction_history?.data);
+      // console.log(result?.data?.transaction_history);
+      setTotalPages(result?.data?.transaction_history?.meta?.last_page);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -76,108 +87,185 @@ const BillingTable = () => {
     }
   };
 
-  //   const renderPaginationItems = () => {
-  //     const items = [];
+  const renderPaginationItems = () => {
+    const items = [];
 
-  //     // Previous Button
-  //     items.push(
-  //       <PaginationItem key="prev">
-  //         <PaginationPrevious
-  //           className="lg:text-base text-sm"
-  //           href="#"
-  //           onClick={() => handlePrevPage()}
-  //           // disabled={currentPage === 1}
-  //         />
-  //       </PaginationItem>
-  //     );
+    // Previous Button
+    items.push(
+      <PaginationItem key="prev">
+        <PaginationPrevious
+          className="lg:text-base text-sm"
+          href="#"
+          onClick={() => handlePrevPage()}
+          // disabled={currentPage === 1}
+        />
+      </PaginationItem>
+    );
 
-  //     // Page Numbers
-  //     for (let page = 1; page <= totalPages; page++) {
-  //       items.push(
-  //         <PaginationItem key={page}>
-  //           <PaginationLink
-  //             href="#"
-  //             isActive={currentPage === page}
-  //             onClick={() => handlePageChange(page)}>
-  //             {page}
-  //           </PaginationLink>
-  //         </PaginationItem>
-  //       );
-  //     }
+    // Page Numbers
+    for (let page = 1; page <= totalPages; page++) {
+      items.push(
+        <PaginationItem key={page}>
+          <PaginationLink
+            href="#"
+            isActive={currentPage === page}
+            onClick={() => handlePageChange(page)}>
+            {page}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
 
-  //     // Next Button
-  //     items.push(
-  //       <PaginationItem key="next">
-  //         <PaginationNext
-  //           href="#"
-  //           onClick={() => handleNextPage()}
-  //           // disabled={currentPage === totalPages}
-  //         />
-  //       </PaginationItem>
-  //     );
+    // Next Button
+    items.push(
+      <PaginationItem key="next">
+        <PaginationNext
+          href="#"
+          onClick={() => handleNextPage()}
+          // disabled={currentPage === totalPages}
+        />
+      </PaginationItem>
+    );
 
-  //     return items;
-  //   };
+    return items;
+  };
 
   return (
-    <div className="mt-20 bg-white">
-      <div className="overflow-hidden border rounded-lg bg-white">
-        <Table className="w-full overflow-hidden">
-          <TableHeader className="bg-gray-200 px-4">
-            <TableRow>
-              <TableHead className="py-4 pl-6 text-black text-xs font-semibold">
-                S/N
-              </TableHead>
-              <TableHead className="py-4 lg:flex hidden text-black text-xs font-semibold">
-                Date
-              </TableHead>
-              <TableHead className="py-4 text-black text-xs font-semibold">
-                Plan
-              </TableHead>
-              <TableHead className="py-4 lg:flex hidden text-black text-xs font-semibold">
-                Amount
-              </TableHead>
-              <TableHead className="py-4 text-black text-xs font-semibold">
-                Payment method
-              </TableHead>
-              <TableHead className="py-4 text-black text-xs font-semibold">
-                Status
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody className="bg-white pl-8">
-            {data?.map((item: any) => (
-              <TableRow key={item?.id}>
-                <TableCell className="text-xs ">{item?.name}</TableCell>
-                <TableCell className="text-xs lg:flex hidden ">
-                  {item?.email}
-                </TableCell>
-                <TableCell className="lg:w-[200px]">
-                  <span className="bg-gray-200 lg:px-6 lg:py-1 px-3 text-xs rounded-xl">
-                    {item?.subscription_plan}
-                  </span>
-                </TableCell>
-                <TableCell className="text-xs lg:flex hidden ">
-                  {dateFormaterAndTime(item?.created_at)}
-                </TableCell>
-                <TableCell className="text-xs ">
-                  {!item?.last_seen ? "none" : item?.last_seen}
-                </TableCell>
-                <TableCell className="text-xs ">
-                  <Link href={`/account/users/${item?.tenant_id}`}>View</Link>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+    <div className="lg:my-20 my-10 ">
+      <div className="flex justify-between items-center">
+        <h2 className="font-bold text-xl">Billing history</h2>
+        {/* <div className="filter flex space-x-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="btn">Status</DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => setStatusFilter("")}>
+                All
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setStatusFilter("active")}>
+                Active
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setStatusFilter("pending")}>
+                Pending
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setStatusFilter("inactive")}>
+                Inactive
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger className="btn">
+              Payment Method
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => setPaymentMethodFilter("")}>
+                All
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setPaymentMethodFilter("credit_card")}>
+                Credit Card
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setPaymentMethodFilter("bank_transfer")}>
+                Bank Transfer
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger className="btn">Type</DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => setTypeFilter("")}>
+                All
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTypeFilter("subscription")}>
+                Subscription
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTypeFilter("one_time")}>
+                One-time
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div> */}
       </div>
-      {/* <div className="flex justify-end mt-10">
-        <div className="">
-          <Pagination className="border w-auto">
-            <PaginationContent>{renderPaginationItems()}</PaginationContent>
-          </Pagination>
+      <div className="mt-6 rounded-lg">
+        <div className="overflow-hidden border border-gray-300 rounded-lg bg-white">
+          <Table className="w-full rounded-lg overflow-hidden">
+            <TableHeader className="px-4">
+              <TableRow>
+                <TableHead className="lg:py-6 lg:pl-8 pl-4 text-black lg:text-xs text-[10px] font-semibold">
+                  S/N
+                </TableHead>
+                <TableHead className="text-black lg:text-xs text-[10px] font-semibold">
+                  Date
+                </TableHead>
+                <TableHead className=" text-black lg:text-xs text-[10px] font-semibold">
+                  Plan
+                </TableHead>
+                <TableHead className=" text-black lg:text-xs text-[10px] font-semibold">
+                  Amount
+                </TableHead>
+                <TableHead className=" text-black lg:text-xs text-[10px] font-semibold">
+                  <div className="flex">
+                    <span className="lg:flex hidden mr-4">Payment</span> Method
+                  </div>
+                </TableHead>
+                <TableHead className=" text-black lg:text-xs text-[10px] font-semibold">
+                  Status
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody className="bg-white pl-8">
+              {data?.map((item: any, index) => (
+                <TableRow key={item?.id}>
+                  <TableCell className="lg:text-xs lg:py-4 text-[10px] lg:pl-8 pl-4">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell className="lg:w-[200px]">
+                    <span className="lg:text-xs text-[10px]">
+                      {dateFormater(item?.created_at)}
+                    </span>
+                  </TableCell>
+                  <TableCell className="lg:w-[200px]">
+                    <span className="bg-gray-200 lg:px-6 py-1 px-2 font-semibold capitalize lg:text-xs text-[10px] rounded-md">
+                      {item?.type}
+                    </span>
+                  </TableCell>
+                  <TableCell className="lg:text-xs text-[10px]">
+                    {formatCurrency(item?.amount)}
+                  </TableCell>
+                  <TableCell className="lg:text-xs text-[10px]">
+                    {item?.payment_method}
+                  </TableCell>
+
+                  <TableCell className="text-xs ">
+                    {item?.status === "active" ? (
+                      <span className="text-green-700 lg:text-xs text-[8px] capitalize font-semibold">
+                        {item?.status}
+                      </span>
+                    ) : item?.status === "pending" ? (
+                      <span className="text-orange-500 font-semibold lg:text-xs text-[8px] capitalize">
+                        {item?.status}
+                      </span>
+                    ) : (
+                      <span className="text-red-700 font-semibold lg:text-xs text-[8px] capitalize ">
+                        {item?.status}
+                      </span>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
-      </div> */}
+        <div className="flex justify-end mt-10">
+          <div className="bg-white">
+            <Pagination className="border w-auto rounded-lg">
+              <PaginationContent>{renderPaginationItems()}</PaginationContent>
+            </Pagination>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

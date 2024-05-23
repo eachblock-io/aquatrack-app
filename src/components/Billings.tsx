@@ -1,40 +1,75 @@
-import React from "react";
+"use client";
+import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "./ui/button";
 import BillingTable from "./BillingTable";
-import { useGetBuillingRecordsQuery } from "@/redux/services/subApiSlice";
+import {
+  useGetBuillingRecordsQuery,
+  useActivateAutoRenewalMutation,
+} from "@/redux/services/subApiSlice";
+import SubscriptionModal from "./SubscriptionModal";
 
-const Billings = () => {
-  const { data } = useGetBuillingRecordsQuery(null);
-  console.log(data?.data?.payment_info);
+const Billings = ({ data }: any) => {
+  const [activateAutoRenewal] = useActivateAutoRenewalMutation();
+  const [openSub, setOpenSub] = useState(false);
+  const [renew, setRenew] = useState(false);
+
+  // console.log(data?.data?.transaction_history);
+
+  useEffect(() => {
+    setRenew(data?.data?.payment_info?.auto_renewal == 1 ? true : false);
+  }, [data?.data?.payment_info?.auto_renewal]);
+
+  const handleAutoRenewal = async (value: any) => {
+    setRenew(value);
+    try {
+      await activateAutoRenewal({
+        formdata: {
+          payment_info_id: data?.data?.payment_info?.id,
+          activate_autorenew: renew,
+        },
+      }).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <div className="mt-20">
-      <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-10 gap-y-4 w-10/12">
-        <div className="bg-white w-full p-8 rounded-xl border">
+    <div className="lg:mt-20 mt-10">
+      <SubscriptionModal open={openSub} setOpen={setOpenSub} />
+      <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-10 gap-y-4 lg:w-8/12 w-full">
+        <div className="bg-white w-full lg:p-6 p-4 rounded-xl border">
           <div className="flex justify-between items-center">
-            <h2 className="font-semibold text-xl">Payment info</h2>
+            <h2 className="font-semibold text-base">Payment info</h2>
             <div className="flex items-center space-x-2">
-              <label htmlFor="airplane-mode">Auto renewal</label>
-              <Switch id="airplane-mode" />
+              <label htmlFor="airplane-mode" className="text-xs">
+                Auto renewal
+              </label>
+              <Switch
+                id="airplane-mode"
+                checked={renew}
+                onCheckedChange={(value) => handleAutoRenewal(value)}
+              />
             </div>
           </div>
-          <div className=" mt-10 space-y-2">
-            <p>******</p>
-            <div className="flex space-x-6">
-              <p>CARD LOGO</p>
-              <h2>Master Card</h2>
-            </div>
-            <p>{data?.data?.payment_info?.bank}</p>
-            <p>6774983*******</p>
+          <div className=" mt-6 space-y-2">
+            <h2 className="uppercase text-sm">
+              {data?.data?.payment_info?.brand}
+            </h2>
+            <p className="text-sm">{data?.data?.payment_info?.bank}</p>
+            <p className="text-sm">*****{data?.data?.payment_info?.last4}</p>
           </div>
         </div>
-        <div className="bg-[--primary] text-white w-full p-8 rounded-xl border">
-          <h2 className="font-semibold text-xl">Your current plan</h2>
-          <div className=" mt-10 space-y-2">
-            <p className="text-xl">{data?.data?.current_plan?.type} Plan</p>
-            <p className="text-xl">NGN {data?.data?.current_plan?.amount}</p>
-            <div className="mt-10">
-              <Button className="bg-white w-full py-6 text-[--primary] text-xl font-semibold ">
+        <div className="bg-[--primary] text-white w-full p-6 rounded-xl border">
+          <h2 className="text-base">Your current plan</h2>
+          <div className=" mt-4 space-y-2">
+            <p className="text-base capitalize">
+              {data?.data?.current_plan?.type} Plan
+            </p>
+            <p className="text-sm">NGN {data?.data?.current_plan?.amount}</p>
+            <div className="mt-6">
+              <Button
+                onClick={() => setOpenSub(true)}
+                className="bg-white hover:bg-white w-full py-5 text-[--primary] text-base font-semibold ">
                 Upgrade
               </Button>
             </div>

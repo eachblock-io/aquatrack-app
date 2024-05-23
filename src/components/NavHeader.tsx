@@ -59,6 +59,8 @@ const NavHeader = ({ userdata }: any) => {
     }
   };
 
+  // console.log(notification);
+
   return (
     <nav className="bg-white w-full lg:h-[10vh] h-[8vh] flex items-center justify-center">
       <AddFarmModal open={open} setOpen={setOpen} />
@@ -115,9 +117,9 @@ const NavHeader = ({ userdata }: any) => {
                 </button>
               ) : (
                 <div className="flex items-center space-x-4">
-                  <Skeleton className="h-12 w-12 rounded-full bg-gray-200" />
+                  <Skeleton className="lg:h-12 lg:w-12 h-8 w-8 rounded-full bg-gray-200" />
                   <div className="space-y-2">
-                    <Skeleton className="h-6 w-[150px] bg-gray-200" />
+                    <Skeleton className="lg:h-6 h-4 lg:w-[150px] w-[100px] bg-gray-200" />
                   </div>
                 </div>
               )}

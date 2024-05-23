@@ -35,7 +35,7 @@ const AddTask = ({ farmID }: any) => {
     const formdata = {
       status: status ? "complete" : "incomplete",
     };
-    console.log(formdata);
+    // console.log(formdata);
     try {
       await editTask({
         formdata,
