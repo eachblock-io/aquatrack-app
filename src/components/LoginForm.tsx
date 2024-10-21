@@ -66,7 +66,7 @@ const LoginForm = () => {
             <Input
               type="email"
               placeholder="vinfarm@gmail.com"
-              className="h-[60px] mt-1 px-6 bg-transparent outline-none border-gray-500"
+              className="h-[50px] mt-1 px-6 bg-transparent outline-none border-gray-500"
               name="email"
               value={formData.email}
               onChange={handleInputChange}
@@ -81,7 +81,7 @@ const LoginForm = () => {
               <Input
                 type={hide ? "password" : "text"}
                 placeholder="********"
-                className="h-[60px] mt-1 px-6 bg-transparent outline-none"
+                className="h-[50px] mt-1 px-6 bg-transparent outline-none"
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
@@ -106,7 +106,7 @@ const LoginForm = () => {
           </div>
           <div className="flex items-center justify-between mt-6">
             <div className="flex items-center space-x-2">
-              <Checkbox id="terms2" disabled />
+              <Checkbox id="terms2" />
               <label
                 htmlFor="terms2"
                 className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 lg:text-base text-sm ">

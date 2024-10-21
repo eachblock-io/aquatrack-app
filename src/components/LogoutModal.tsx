@@ -21,6 +21,9 @@ const LogoutModal = ({ open, setOpen, openDelID, farmId }: any) => {
       const res = await axios.post(`/api/logout`);
       if (res?.status == 200) {
         push("/");
+        if (window != undefined) {
+          localStorage.remove("defaultFarmId");
+        }
       }
     } catch (error) {
       toast.error("Fail to log out");

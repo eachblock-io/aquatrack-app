@@ -26,6 +26,14 @@ const subApi = subApiConfig.injectEndpoints({
       }),
       invalidatesTags: ["Sub"],
     }),
+    activateAutoRenewal: builder.mutation({
+      query: ({ formdata }) => ({
+        url: `/farmer/activate-renewal`,
+        method: `POST`,
+        body: formdata,
+      }),
+      invalidatesTags: ["Sub"],
+    }),
     editSub: builder.mutation({
       query: ({ formdata, subid }) => ({
         url: `/subscription-plan/${subid}`,
@@ -50,5 +58,6 @@ export const {
   useGetBuillingRecordsQuery,
   useCreateSubMutation,
   useEditSubMutation,
+  useActivateAutoRenewalMutation,
   useDeleteSubMutation,
 } = subApi;

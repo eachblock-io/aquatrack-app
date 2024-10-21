@@ -35,7 +35,7 @@ const AddTask = ({ farmID }: any) => {
     const formdata = {
       status: status ? "complete" : "incomplete",
     };
-    console.log(formdata);
+    // console.log(formdata);
     try {
       await editTask({
         formdata,
@@ -50,8 +50,6 @@ const AddTask = ({ farmID }: any) => {
       );
     }
   };
-
-  // console.log(data?.data?.data[0]?.attributes);
 
   return (
     <div className="lg:w-[40%] w-full">
