@@ -59,8 +59,6 @@ const NavHeader = ({ userdata }: any) => {
     }
   };
 
-  // console.log(notification);
-
   return (
     <nav className="bg-white w-full lg:h-[10vh] h-[8vh] flex items-center justify-center">
       <AddFarmModal open={open} setOpen={setOpen} />

@@ -51,8 +51,6 @@ const AddTask = ({ farmID }: any) => {
     }
   };
 
-  // console.log(data?.data?.data[0]?.attributes);
-
   return (
     <div className="lg:w-[40%] w-full">
       <AddTaskModal farmId={farmID} open={open} setOpen={setOpen} />

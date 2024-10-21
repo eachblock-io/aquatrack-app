@@ -19,7 +19,6 @@ import Image from "next/image";
 
 export function Notification({ data }: any) {
   const [readNotification] = useReadNotificationMutation();
-  console.log(data?.data);
 
   const handleNotification = async () => {
     try {
